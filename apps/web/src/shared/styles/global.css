@@ -1,0 +1,11 @@
+/* 전역 스타일 최소 예시 */
+:root {
+  --gap: 16px;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
