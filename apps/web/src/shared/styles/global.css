@@ -1,4 +1,5 @@
-/* 전역 스타일 최소 예시 */
+@import "tailwindcss";
+
 :root {
   --gap: 16px;
 }
