@@ -3,9 +3,5 @@ import { router } from "./routes";
 // import { Header } from "@shared/ui";
 
 export function App() {
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
