@@ -25,10 +25,10 @@ export function TabBar() {
           <li className="nav-item">
             <Link
               prefetch="intent"
-              className={`${currentPathname == "/about" ? "active" : ""}`}
-              to="/about"
+              className={`${currentPathname == "/myNotes" ? "active" : ""}`}
+              to="/myNotes"
             >
-              about
+              myNotes
             </Link>
           </li>
         </ul>
