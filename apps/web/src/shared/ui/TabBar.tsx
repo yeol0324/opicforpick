@@ -8,10 +8,6 @@ export function TabBar() {
   return (
     <nav className="navbar navbar-light">
       <div className="container">
-        <Link className="navbar-brand" to="/" prefetch="intent">
-          home
-        </Link>
-
         <ul className="nav navbar-nav pull-xs-right">
           <li className="nav-item">
             <Link
@@ -28,9 +24,11 @@ export function TabBar() {
               className={`${currentPathname == "/myNotes" ? "active" : ""}`}
               to="/myNotes"
             >
-              myNotes
+              나의기록
             </Link>
           </li>
+          <li>문장학습</li>
+          <li>모의고사</li>
         </ul>
       </div>
     </nav>

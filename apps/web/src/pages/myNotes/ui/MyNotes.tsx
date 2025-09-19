@@ -1,4 +1,4 @@
-import { AddSentenceForm } from "@shared/ui/forms/AddNoteForm";
+// import { AddSentenceForm } from "@shared/ui/forms/AddNoteForm";
 
 export function MyNotes() {
   return (
@@ -14,7 +14,7 @@ export function MyNotes() {
           <button>삭제</button>
         </li>
       </ul>
-      <AddSentenceForm onSuccess={() => alert("추가 완료!")} />
+      {/* <AddSentenceForm onSuccess={() => alert("추가 완료!")} /> */}
     </>
   );
 }
