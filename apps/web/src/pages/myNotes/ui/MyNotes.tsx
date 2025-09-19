@@ -1,6 +1,22 @@
-// import { AddSentenceForm } from "@shared/ui/forms/AddNoteForm";
+import { useEffect, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+);
 
 export function MyNotes() {
+  const [list, setList] = useState([]);
+  console.log(supabase, list, setList);
+  useEffect(() => {
+    getList();
+  }, []);
+  async function getList() {
+    const { data } = await supabase.from("instruments").select();
+    setList(data);
+  }
+
   return (
     <>
       <h1>나의 기록</h1>

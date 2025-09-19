@@ -1,9 +1,10 @@
 import { Recorder } from "@shared/ui/recorder";
+import { TodayQuestion } from "@widgets/today-question";
 
 export function HomePage() {
   return (
     <>
-      <h1>오늘의 질문</h1> <h2>"당신의 취미는 무엇인가요?"</h2>
+      <TodayQuestion theme="hobby" />
       <Recorder maxSeconds={300} />
     </>
   );
