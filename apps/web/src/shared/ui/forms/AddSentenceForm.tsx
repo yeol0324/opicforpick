@@ -3,14 +3,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import {
   addSentenceSchema,
   type AddSentenceInput,
-} from "@shared/lib/validation/note";
+} from "@shared/lib/validation/sentence";
 import { TextField } from "@shared/ui/fields/TextField";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@shared/lib/supabase";
+import { unwrap } from "@shared/lib/supabase-helpers";
+import type { Sentence } from "@shared/lib/types/supabase";
 
-type Props = {
-  onSuccess?: (data: AddSentenceInput) => void;
-};
-
-export function AddSentenceForm({ onSuccess }: Props) {
+export function AddSentenceForm({
+  onSuccess,
+}: {
+  onSuccess?: (d: AddSentenceInput) => void;
+}) {
+  const qc = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -21,10 +26,25 @@ export function AddSentenceForm({ onSuccess }: Props) {
     mode: "onChange",
     defaultValues: { text: "", note: "", source: "" },
   });
-  console.log(onSuccess, reset);
+
+  const { mutateAsync } = useMutation({
+    mutationFn: async (payload: AddSentenceInput): Promise<Sentence> => {
+      const res = await supabase
+        .from("sentences")
+        .insert(payload)
+        .select("*")
+        .single();
+      return unwrap(res);
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["sentences"] });
+    },
+  });
 
   const onSubmit = async (data: AddSentenceInput) => {
-    console.log(data);
+    await mutateAsync(data);
+    onSuccess?.(data);
+    reset();
   };
 
   return (
@@ -44,13 +64,12 @@ export function AddSentenceForm({ onSuccess }: Props) {
         error={errors.source?.message}
         {...register("source")}
       />
-
       <button
         type="submit"
         disabled={!isValid || isSubmitting}
         className="w-full rounded-lg bg-emerald-600 px-4 py-2 text-white disabled:opacity-50"
       >
-        {isSubmitting ? "저장중" : "추가하기"}
+        {isSubmitting ? "저장 중..." : "추가하기"}
       </button>
     </form>
   );
