@@ -1,59 +1,43 @@
-import { useEffect, useState } from "react";
-import { supabase } from "@shared/api/supabase";
-import type { RandomLine } from "@entities/qa/model/types";
-import { mapRpcRandomLine } from "@entities/qa/lib/mapRpc";
-import { Spinner } from "@shared/ui/spinner";
+import { useQuery } from "@tanstack/react-query";
+import { fetchRandomLine } from "@shared/lib/queries/randomLine";
 
-type Props = { theme?: string };
+export function TodayQuestion({ theme }: { theme?: string }) {
+  const {
+    data: line,
+    error,
+    isPending,
+    isFetching,
+    refetch,
+  } = useQuery({
+    queryKey: ["randomLine", { theme: theme ?? null }],
+    queryFn: () => fetchRandomLine(theme),
+    // 옵션
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 
-export function TodayQuestion({ theme }: Props) {
-  const [loading, setLoading] = useState(true);
-  const [line, setLine] = useState<RandomLine | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      setLoading(true);
-      setError(null);
-
-      const res = await supabase.rpc("get_random_answer_line", {
-        theme_slug: theme ?? null,
-      });
-
-      if (res.error) {
-        if (!mounted) return;
-        setError(res.error.message);
-        setLine(null);
-        setLoading(false);
-        return;
-      }
-
-      const row = res.data?.[0];
-      if (!mounted) return;
-      setLine(row ? mapRpcRandomLine(row) : null);
-      setLoading(false);
-    })();
-
-    return () => {
-      mounted = false;
-    };
-  }, [theme]);
-
-  if (loading) return <Spinner />;
-  if (error) return <div>오류: {error}</div>;
-  if (!line) return <div>문장을 찾지 못했어요.</div>;
+  if (isPending) return <p>로딩…</p>;
+  if (error)
+    return <p className="text-red-600">에러: {(error as Error).message}</p>;
 
   return (
     <section>
       <h3>오늘의 질문</h3>
       <p>
-        {line.qKo} <em>({line.qEn})</em>
+        {line?.qKo} <em>({line?.qEn})</em>
       </p>
       <h4>예시 답변</h4>
       <p>
-        {line.ko} <em>({line.en})</em>
+        {line?.ko} <em>({line?.en})</em>
       </p>
+      <button
+        className="rounded bg-slate-200 px-3 py-2 hover:bg-slate-300 disabled:opacity-50"
+        onClick={() => refetch()}
+        disabled={isFetching}
+      >
+        {isFetching ? "다시 불러오는 중…" : "다시 뽑기"}
+      </button>
     </section>
   );
 }
