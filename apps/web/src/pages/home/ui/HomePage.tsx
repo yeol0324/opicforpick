@@ -1,5 +1,5 @@
 import { Recorder } from "@shared/ui/recorder";
-import { TodayQuestion } from "@widgets/today-question";
+import { TodayQuestion } from "@entities/today-question";
 
 export function HomePage() {
   return (

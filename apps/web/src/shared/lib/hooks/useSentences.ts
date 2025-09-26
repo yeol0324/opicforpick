@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@shared/lib/supabase";
-import { unwrap } from "@shared/lib/supabase-helpers";
+import { supabase } from "@shared/api/supabase";
+import { unwrap } from "@shared/api/supabase-helpers";
 
 import type { Sentence } from "@shared/lib/types/supabase";
 
