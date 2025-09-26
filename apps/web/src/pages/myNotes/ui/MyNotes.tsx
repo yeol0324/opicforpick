@@ -1,14 +1,21 @@
-import { useSentences } from "@shared/lib/hooks/useSentences";
-import { AddSentenceForm } from "@shared/ui/forms/AddNoteForm";
+import { Sentences } from "./Sentences";
+// import { useSentences } from "@shared/lib/hooks/useSentences";
+import { sentenceApi } from "@entities/sentence";
+import { useQuery } from "@tanstack/react-query";
 
 export function MyNotes() {
-  const { data, isLoading, error } = useSentences();
-  if (isLoading) return <p>불러오는 중…...</p>;
-  if (error) return <p className="text-red-600">에러 발생</p>;
+  // const { data, isLoading, error } = useSentences();
+  // if (isLoading) return <p>불러오는 중…...</p>;
+  // if (error) return <p className="text-red-600">에러 발생</p>;
+  const { data, isFetching, isLoading } = useQuery(
+    sentenceApi.sentenceQueries.list()
+  );
+  console.log(data, isFetching, isLoading);
 
   return (
     <>
-      <h1>나의 기록</h1>
+      <Sentences sentences={data}></Sentences>
+      {/* <h1>나의 기록</h1>
       <button>등록</button>
       <button>정렬</button>
       등록 빠른 순서, 등록 느린 순서, 중요도순, 가나다순
@@ -33,7 +40,7 @@ export function MyNotes() {
           <h1 className="mb-4 text-2xl font-bold">새 문장 추가</h1>
           <AddSentenceForm onSuccess={() => alert("추가 완료!")} />
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

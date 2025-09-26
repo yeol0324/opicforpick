@@ -4,6 +4,7 @@ import { unwrap } from "@shared/api/supabase-helpers";
 
 import type { Sentence } from "@shared/lib/types/supabase";
 
+//TODO: get-sentences 랑 비교 정리
 export function useSentences() {
   return useQuery({
     queryKey: ["sentences"],
