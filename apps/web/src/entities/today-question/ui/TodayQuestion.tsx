@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchRandomLine } from "@shared/lib/queries/randomLine";
+import { fetchRandomLine } from "@entities/today-question/queries/randomLine";
 
 export function TodayQuestion({ theme }: { theme?: string }) {
   const {

@@ -1,8 +1,8 @@
 // libs/queries/randomLine.ts
-import { supabase } from "@shared/lib/supabase";
-import { unwrap } from "@shared/lib/supabase-helpers";
-import { mapRpcRandomLine } from "@entities/qa/lib/mapRpc";
-import type { RandomLine, RpcRandomLine } from "@entities/qa/model/types";
+import { supabase } from "@shared/api/supabase";
+import { unwrap } from "@shared/api/supabase-helpers";
+import { mapRpcRandomLine } from "../qa/lib/mapRpc";
+import type { RandomLine, RpcRandomLine } from "../qa/model/types";
 
 export async function fetchRandomLine(
   theme?: string
