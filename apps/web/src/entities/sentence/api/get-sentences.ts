@@ -6,8 +6,6 @@ export const getSentences = async () => {
     .select("*")
     .order("created_at", { ascending: false });
 
-  console.log(data, " model - repo");
-
   if (error) throw error;
   return data ?? [];
 };
