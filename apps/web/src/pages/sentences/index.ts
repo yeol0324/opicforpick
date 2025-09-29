@@ -1,1 +1,1 @@
-export { Sentences } from "./ui/";
+export { Sentences } from "./ui";

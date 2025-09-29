@@ -1,18 +1,11 @@
 import { Recorder } from "@shared/ui/recorder";
-import { TodayQuestion } from "@entities/today-question";
-import { SentenceItem } from "@entities/sentence";
-import { useQuery } from "@tanstack/react-query";
-import { sentenceQueries } from "@entities/sentence/api";
+import { RandomSentenceBox } from "@features/random-sentence/ui/RandomSentenceBox";
 
 export function HomePage() {
-  const { data, isLoading, error } = useQuery(
-    sentenceQueries.list({ type: 1 })
-  );
-  console.log(isLoading, error);
+  //TODO: theme 추가
   return (
     <>
-      <TodayQuestion theme="hobby" />
-      {data && <SentenceItem sentence={data.items[0]}></SentenceItem>}
+      <RandomSentenceBox type={1} />
       <Recorder maxSeconds={300} />
     </>
   );

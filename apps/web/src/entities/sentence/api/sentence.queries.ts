@@ -1,6 +1,7 @@
 import { keepPreviousData, queryOptions } from "@tanstack/react-query";
 import { getSentences } from "./get-sentences";
-import type { SentenceFilter } from "../model/types";
+import type { SentenceFilter, SentenceType } from "../model/types";
+import { getRandomSentence } from "./get-random-sentence";
 
 const sentenceKeys = {
   all: () => ["sentences"] as const,
@@ -15,6 +16,9 @@ const sentenceKeys = {
         pageSize: f?.pageSize ?? 20,
       },
     ] as const,
+
+  random: (type?: SentenceType) =>
+    ["sentences", "random", type ?? "any"] as const,
 };
 
 export const sentenceQueries = {
@@ -24,5 +28,11 @@ export const sentenceQueries = {
       queryFn: () => getSentences(filter),
       staleTime: 60_000,
       placeholderData: keepPreviousData,
+    }),
+
+  random: (type?: SentenceType) =>
+    queryOptions({
+      queryKey: sentenceKeys.random(type),
+      queryFn: () => getRandomSentence(type),
     }),
 };

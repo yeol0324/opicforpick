@@ -20,7 +20,7 @@ export async function getSentences(
   }
   if (filter?.q && filter.q.trim() !== "") {
     const kw = `%${filter.q.trim()}%`;
-    q = q.or(`text.ilike.${kw},note.ilike.${kw},source.ilike.${kw}`);
+    q = q.or(`sentence_eng.ilike.${kw}`);
   }
 
   const res = await q.range(from, to);
