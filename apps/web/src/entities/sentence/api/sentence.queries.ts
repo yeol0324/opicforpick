@@ -1,14 +1,28 @@
-import { queryOptions } from "@tanstack/react-query";
+import { keepPreviousData, queryOptions } from "@tanstack/react-query";
 import { getSentences } from "./get-sentences";
-// import { getDetailPost } from "./get-detail-post";
-// import { PostDetailQuery } from "./query/post.query";
+import type { SentenceFilter } from "../model/types";
+
+const sentenceKeys = {
+  all: () => ["sentences"] as const,
+  list: (f?: SentenceFilter) =>
+    [
+      ...sentenceKeys.all(),
+      "list",
+      {
+        type: f?.type ?? null,
+        q: f?.q ?? "",
+        page: f?.page ?? 1,
+        pageSize: f?.pageSize ?? 20,
+      },
+    ] as const,
+};
 
 export const sentenceQueries = {
-  all: () => ["sentences"],
-  lists: () => [...sentenceQueries.all(), "list"],
-  list: () =>
+  list: (filter?: SentenceFilter) =>
     queryOptions({
-      queryKey: [...sentenceQueries.lists()],
-      queryFn: () => getSentences(),
+      queryKey: sentenceKeys.list(filter),
+      queryFn: () => getSentences(filter),
+      staleTime: 60_000,
+      placeholderData: keepPreviousData,
     }),
 };

@@ -1,4 +1,4 @@
-export { SentenceItem } from "./ui";
+export * from "./ui";
 export * as sentenceApi from "./api";
 
-export * from "./types";
+export * from "./model/types";

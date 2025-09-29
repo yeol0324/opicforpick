@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 export function TabBar() {
   const location = useLocation();
   const currentPathname = location.pathname;
-  console.log(currentPathname);
 
   return (
     <nav className="navbar navbar-light">
@@ -27,7 +26,15 @@ export function TabBar() {
               나의기록
             </Link>
           </li>
-          <li>문장학습</li>
+          <li className="nav-item">
+            <Link
+              prefetch="intent"
+              className={`${currentPathname == "/sentences" ? "active" : ""}`}
+              to="/sentences"
+            >
+              문장노트
+            </Link>
+          </li>
           <li>모의고사</li>
         </ul>
       </div>

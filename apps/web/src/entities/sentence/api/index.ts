@@ -1,2 +1,2 @@
+export { getSentences } from "./get-sentences";
 export { sentenceQueries } from "./sentence.queries";
-// export { createPost } from "./create-post";

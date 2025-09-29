@@ -4,7 +4,7 @@ type Props = {
   sentences?: Sentence[];
 };
 
-export const Sentences = ({ sentences }: Props) => {
+export const SentenceList = ({ sentences }: Props) => {
   return (
     <div>
       {sentences?.map((sentence, key) => (
