@@ -1,17 +1,37 @@
-// 시작/정지, 타이머, 상태
-import { RecorderButton } from "@shared/ui/RecorderButton";
+import { CircleProgressButton } from "@shared/ui/CircleProgressButton";
 import { useRecordFlow } from "../model/useRecordFlow";
+import { formatMmSs } from "@shared/lib/time/formatDuration";
 
-export const RecordController = ({ sentenceId }: { sentenceId?: string }) => {
-  const { state, start, stopAndSave } = useRecordFlow(sentenceId);
+export const RecordController = ({
+  sentenceId,
+  maxMs = 120000,
+  //TODO: IL: 30~40초, IM1/IM2: 50~60초, IM3/IH: 70~100초, AL: 80~100초
+}: {
+  sentenceId?: string;
+  maxMs?: number;
+}) => {
+  const { state, start, stopAndSave, elapsedMs, progress } = useRecordFlow(
+    sentenceId,
+    { maxMs }
+  );
+
+  const isRecording = state === "recording";
+  const disabled = state === "saving";
+
   return (
-    <div>
-      <RecorderButton
-        onStart={start}
-        onStop={stopAndSave}
-        disabled={state === "saving"}
-      />
-      <span>{state}</span>
+    <div className="grid place-items-center gap-4 py-6 text-red-500">
+      <CircleProgressButton
+        progress={progress}
+        onClick={isRecording ? stopAndSave : start}
+        disabled={disabled}
+        ariaLabel={isRecording ? "Stop recording" : "Start recording"}
+      >
+        <div className="text-4xl">{isRecording ? "⏺" : "▶"}</div>
+      </CircleProgressButton>
+
+      <div className="text-3xl tabular-nums tracking-wider text-black">
+        {formatMmSs(isRecording ? elapsedMs : 0)}
+      </div>
     </div>
   );
 };
