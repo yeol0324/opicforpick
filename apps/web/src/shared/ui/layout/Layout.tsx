@@ -25,10 +25,8 @@ export function Layout() {
       </header>
       <main>
         <h1>SiblingPageSidebar</h1>
-        {/* <SiblingPageSidebar siblingPages={siblingPages} /> */}
-        <Outlet /> {/* 여기에 주요 콘텐츠가 들어갑니다 */}
+        <Outlet />
         <h1>HeadingsSidebar</h1>
-        {/* <HeadingsSidebar headings={headings} /> */}
       </main>
       <footer>
         <ul>
