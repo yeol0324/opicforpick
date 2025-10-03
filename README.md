@@ -1,3 +1,12 @@
-# opicforpick
-
-OpicForPick – Your personalized topic picker for OPIC practice.
+├App
+├Pages
+├ Widgets x
+├ Features
+├ Entities
+│ └─somthing
+│ │ └─api
+│ │ │ ├─get-some: supabase
+│ │ │ └─some.queries: caching
+│ │ └─model
+│ │ │ └─types
+└ Shared
