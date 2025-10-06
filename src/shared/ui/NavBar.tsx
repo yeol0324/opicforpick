@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import logo from "/opicforpick.png";
+import logo from "../logo.png";
 
 const BRAND = "#32B6BF";
 
@@ -99,7 +99,9 @@ export function NavBar() {
           <li>
             <Link
               to="/sentences"
-              className={`mobile-link ${isActive("/sentences") ? "active" : ""}`}
+              className={`mobile-link ${
+                isActive("/sentences") ? "active" : ""
+              }`}
               onClick={() => setOpen(false)}
             >
               문장노트
