@@ -21,4 +21,5 @@ export default tseslint.config([
       globals: globals.browser,
     },
   },
+  reactHooks.configs.flat.recommended,
 ]);
