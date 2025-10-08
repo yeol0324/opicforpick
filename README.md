@@ -29,7 +29,7 @@ React + Vite + TypeScript + Supabase 기반으로 개발되었습니다.
 
 ## 🛠️ 기술 스택
 
-- **Frontend**: React 18, TypeScript, Vite
+- **Frontend**: React 19, TypeScript, Vite
 - **State/Query**: TanStack Query
 - **Form**: React Hook Form + Yup
 - **Style**: Tailwind CSS v4
