@@ -11,6 +11,7 @@ const sentenceKeys = {
       "list",
       {
         type: f?.type ?? null,
+        id: f?.id ?? null,
         q: f?.q ?? "",
         page: f?.page ?? 1,
         pageSize: f?.pageSize ?? 20,

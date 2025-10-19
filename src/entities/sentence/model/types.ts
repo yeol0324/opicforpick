@@ -12,6 +12,7 @@ export type SentenceType = 0 | 1 | 2;
 
 export type SentenceFilter = {
   type?: SentenceType;
+  id?: string;
   q?: string;
   page?: number;
   pageSize?: number;

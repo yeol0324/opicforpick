@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { sentenceQueries } from "@entities/sentence/api";
 import type { SentenceType } from "@entities/sentence";
 import { Spinner } from "@shared/ui/spinner";
+import { useDebouncedValue } from "@shared/lib/debounce/useDebouncedValue";
 
 const BRAND = "#32B6BF";
 
@@ -71,13 +72,4 @@ export function Sentences() {
       )}
     </div>
   );
-}
-
-function useDebouncedValue<T>(value: T, delay = 300): T {
-  const [v, setV] = useState(value);
-  useMemo(() => {
-    const t = setTimeout(() => setV(value), delay);
-    return () => clearTimeout(t);
-  }, [value, delay]);
-  return v;
 }

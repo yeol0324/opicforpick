@@ -9,7 +9,6 @@ const paragraphKeys = {
       ...paragraphKeys.all(),
       "list",
       {
-        type: f?.themeId ?? null,
         q: f?.q ?? "",
         page: f?.page ?? 1,
         pageSize: f?.pageSize ?? 20,

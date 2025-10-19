@@ -7,7 +7,6 @@ export type Paragraph = {
 };
 
 export type ParagraphFilter = {
-  themeId?: number;
   q?: string;
   page?: number;
   pageSize?: number;
