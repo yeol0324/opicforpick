@@ -50,6 +50,14 @@ export function NavBar() {
             </Link>
           </li>
           <li>
+            <Link
+              to="/paragraphs"
+              className={`nav-link ${isActive("/paragraphs") ? "active" : ""}`}
+            >
+              세트학습
+            </Link>
+          </li>
+          <li>
             {/* <Link to="/" className="nav-link">
               모의고사
             </Link> */}
