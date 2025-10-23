@@ -1,5 +1,6 @@
 import { supabase } from "@shared/api/supabase";
 import { unwrap } from "@shared/api/supabase-helpers";
+import { APP } from "@shared/lib";
 import type {
   ParagraphSentence,
   ParagraphSentenceFilter,
@@ -10,7 +11,7 @@ export async function getParagraphsSentences(
   filter?: ParagraphSentenceFilter
 ): Promise<Paged<ParagraphSentence>> {
   const page = Math.max(1, filter?.page ?? 1);
-  const pageSize = Math.max(1, filter?.pageSize ?? 20);
+  const pageSize = Math.max(1, filter?.pageSize ?? APP.DEFAULT_PAGE_SIZE);
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
 

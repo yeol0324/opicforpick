@@ -6,8 +6,7 @@ import { Spinner } from "@shared/ui/spinner";
 import { paragraphSentencesQueries } from "@entities/paragraphSentences/api";
 import { sentenceQueries } from "@entities/sentence/api";
 import { useDebouncedValue } from "@shared/lib/debounce/useDebouncedValue";
-
-const BRAND = "#32B6BF";
+import { THEME, APP } from "@shared/lib";
 
 export function Paragraphs() {
   const [q, setQ] = useState("");
@@ -16,9 +15,9 @@ export function Paragraphs() {
 
   const [paragraphId, setParagraphId] = useState("");
 
-  const pageSize = 20;
+  const pageSize = APP.DEFAULT_PAGE_SIZE;
 
-  const debouncedQ = useDebouncedValue(q, 300);
+  const debouncedQ = useDebouncedValue(q, APP.DEFAULT_DEBOUNCE_DELAY);
 
   const query = useQuery(
     paragraphQueries.list({ q: debouncedQ, page, pageSize })
@@ -68,7 +67,10 @@ export function Paragraphs() {
   );
 
   return (
-    <div className="p-6 space-y-4" style={{ ["--brand" as string]: BRAND }}>
+    <div
+      className="p-6 space-y-4 h-screen flex flex-col overflow-hidden"
+      style={{ ["--brand" as string]: THEME.BRAND }}
+    >
       <div className="flex flex-wrap gap-2">
         <input
           className="border-2 border-(--brand) px-3 py-2 rounded-lg background focus:border-sky-500"

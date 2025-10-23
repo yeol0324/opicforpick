@@ -3,6 +3,8 @@ export * from "./audio/recorder-core";
 export * from "./audio/types";
 
 export * from "./constants/query-keys";
+export * from "./constants/theme";
+export * from "./constants/app";
 
 export * from "./debounce/useDebouncedValue";
 

@@ -1,8 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import logo from "../logo.png";
-
-const BRAND = "#32B6BF";
+import { THEME } from "@shared/lib";
 
 export function NavBar() {
   const { pathname } = useLocation();
@@ -13,7 +12,7 @@ export function NavBar() {
   return (
     <nav
       className="mx-auto max-w-6xl px-4 sm:px-6"
-      style={{ ["--brand" as string]: BRAND }}
+      style={{ ["--brand" as string]: THEME.BRAND }}
     >
       <div className="flex h-14 items-center justify-between">
         <Link to="/" className="flex items-center gap-2 shrink-0">
