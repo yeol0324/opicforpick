@@ -1,7 +1,7 @@
 import { supabase } from "@shared/api/supabase";
 import { unwrap } from "@shared/api/supabase-helpers";
-import { APP } from "@shared/lib";
-import type { Sentence, SentenceFilter, Paged } from "../model/types";
+import { APP, type Paged } from "@shared/lib";
+import type { Sentence, SentenceFilter } from "../model/types";
 
 export async function getSentences(
   filter?: SentenceFilter

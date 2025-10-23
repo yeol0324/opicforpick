@@ -1,10 +1,9 @@
 import { supabase } from "@shared/api/supabase";
 import { unwrap } from "@shared/api/supabase-helpers";
-import { APP } from "@shared/lib";
+import { APP, type Paged } from "@shared/lib";
 import type {
   ParagraphSentence,
   ParagraphSentenceFilter,
-  Paged,
 } from "../model/types";
 
 export async function getParagraphsSentences(

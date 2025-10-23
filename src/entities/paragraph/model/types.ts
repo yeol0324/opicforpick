@@ -11,11 +11,3 @@ export type ParagraphFilter = {
   page?: number;
   pageSize?: number;
 };
-
-export type Paged<T> = {
-  items: T[];
-  total: number;
-  page: number;
-  pageSize: number;
-  pageCount: number;
-};

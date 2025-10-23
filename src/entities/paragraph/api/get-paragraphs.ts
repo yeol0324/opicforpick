@@ -1,7 +1,7 @@
 import { supabase } from "@shared/api/supabase";
 import { unwrap } from "@shared/api/supabase-helpers";
-import { APP } from "@shared/lib";
-import type { Paragraph, ParagraphFilter, Paged } from "../model/types";
+import { APP, type Paged } from "@shared/lib";
+import type { Paragraph, ParagraphFilter } from "../model/types";
 
 export async function getParagraphs(
   filter?: ParagraphFilter
