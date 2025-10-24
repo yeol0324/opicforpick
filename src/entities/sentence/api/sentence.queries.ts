@@ -1,7 +1,8 @@
 import { keepPreviousData, queryOptions } from "@tanstack/react-query";
+import type { Paged } from "@shared/lib";
 import { getSentences } from "./get-sentences";
-import type { SentenceFilter, SentenceType } from "../model/types";
 import { getRandomSentence } from "./get-random-sentence";
+import type { Sentence, SentenceFilter, SentenceType } from "../model/types";
 
 const sentenceKeys = {
   all: () => ["sentences"] as const,
@@ -31,6 +32,20 @@ export const sentenceQueries = {
       placeholderData: keepPreviousData,
     }),
 
+  infiniteList: (filter: Omit<SentenceFilter, "page">) => ({
+    queryKey: sentenceKeys.list({ ...filter, page: 1 }),
+    queryFn: ({ pageParam = 1 }: { pageParam?: number }) => {
+      return getSentences({ ...filter, page: pageParam });
+    },
+
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: Paged<Sentence>) => {
+      console.log(lastPage);
+
+      const nextPage = (lastPage.page ?? 1) + 1;
+      return nextPage <= lastPage.pageCount ? nextPage : undefined;
+    },
+  }),
   random: (type?: SentenceType) =>
     queryOptions({
       queryKey: sentenceKeys.random(type),
