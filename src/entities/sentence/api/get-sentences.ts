@@ -1,36 +1,44 @@
 import { supabase } from "@shared/api/supabase";
 import { unwrap } from "@shared/api/supabase-helpers";
-import { APP, type Paged } from "@shared/lib";
+import {
+  calculatePagination,
+  createPagedResult,
+  type Paged,
+} from "@shared/lib";
 import type { Sentence, SentenceFilter } from "../model/types";
 
 export async function getSentences(
   filter?: SentenceFilter
 ): Promise<Paged<Sentence>> {
-  const page = Math.max(1, filter?.page ?? 1);
-  const pageSize = Math.max(1, filter?.pageSize ?? APP.DEFAULT_PAGE_SIZE);
-  const from = (page - 1) * pageSize;
-  const to = from + pageSize - 1;
+  const { page, pageSize, from, to } = calculatePagination(
+    filter?.page,
+    filter?.pageSize
+  );
 
-  let q = supabase
+  let queryBuilder = supabase
     .from("sentences")
     .select("*", { count: "exact" })
     .order("created_at", { ascending: false });
 
   if (filter?.id) {
-    q = q.eq("id", filter.id);
+    queryBuilder = queryBuilder.eq("id", filter.id);
   }
-  if (filter?.type) {
-    q = q.eq("type", filter.type);
+  if (filter?.type !== undefined) {
+    queryBuilder = queryBuilder.eq("type", filter.type);
   }
   if (filter?.q && filter.q.trim() !== "") {
-    const kw = `%${filter.q.trim()}%`;
-    q = q.or(`sentence_eng.ilike.${kw}`);
+    const searchKeyword = `%${filter.q.trim()}%`;
+    queryBuilder = queryBuilder.ilike("sentence_eng", searchKeyword);
   }
 
-  const res = await q.range(from, to);
-  const items = unwrap<Sentence[]>(res);
-  const total = res.count ?? 0;
-  const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  const response = await queryBuilder.range(from, to);
+  const items = unwrap<Sentence[]>(response);
+  const total = response.count ?? 0;
 
-  return { items, total, page, pageSize, pageCount };
+  return createPagedResult({
+    items,
+    total,
+    page,
+    pageSize,
+  });
 }

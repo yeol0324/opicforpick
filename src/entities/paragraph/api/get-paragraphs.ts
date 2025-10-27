@@ -1,25 +1,38 @@
 import { supabase } from "@shared/api/supabase";
 import { unwrap } from "@shared/api/supabase-helpers";
-import { APP, type Paged } from "@shared/lib";
+import {
+  calculatePagination,
+  createPagedResult,
+  type Paged,
+} from "@shared/lib";
 import type { Paragraph, ParagraphFilter } from "../model/types";
 
 export async function getParagraphs(
   filter?: ParagraphFilter
 ): Promise<Paged<Paragraph>> {
-  const page = Math.max(1, filter?.page ?? 1);
-  const pageSize = Math.max(1, filter?.pageSize ?? APP.DEFAULT_PAGE_SIZE);
-  const from = (page - 1) * pageSize;
-  const to = from + pageSize - 1;
+  const { page, pageSize, from, to } = calculatePagination(
+    filter?.page,
+    filter?.pageSize
+  );
 
-  let q = supabase
+  let queryBuilder = supabase
     .from("paragraphs")
     .select("*", { count: "exact" })
     .order("created_at", { ascending: false });
 
-  const res = await q.range(from, to);
-  const items = unwrap<Paragraph[]>(res);
-  const total = res.count ?? 0;
-  const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  if (filter?.q && filter.q.trim() !== "") {
+    const searchKeyword = `%${filter.q.trim()}%`;
+    queryBuilder = queryBuilder.ilike("title", searchKeyword);
+  }
 
-  return { items, total, page, pageSize, pageCount };
+  const response = await queryBuilder.range(from, to);
+  const items = unwrap<Paragraph[]>(response);
+  const total = response.count ?? 0;
+
+  return createPagedResult({
+    items,
+    total,
+    page,
+    pageSize,
+  });
 }
