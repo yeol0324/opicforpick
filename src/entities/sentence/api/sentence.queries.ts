@@ -40,8 +40,6 @@ export const sentenceQueries = {
 
     initialPageParam: 1,
     getNextPageParam: (lastPage: Paged<Sentence>) => {
-      console.log(lastPage);
-
       const nextPage = (lastPage.page ?? 1) + 1;
       return nextPage <= lastPage.pageCount ? nextPage : undefined;
     },
