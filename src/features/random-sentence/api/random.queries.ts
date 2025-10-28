@@ -1,17 +1,10 @@
 import { queryOptions } from "@tanstack/react-query";
-import { getRandomSentence } from "./get-random-sentence";
+import { sentenceQueries } from "@entities/sentence/api";
 import type { SentenceType } from "@entities/sentence/model/types";
 
-const randomKeys = {
-  base: () => ["random-sentence"] as const,
-  byType: (type?: SentenceType) =>
-    [...randomKeys.base(), type ?? "any"] as const,
-};
-
-export const randomSentenceQuery = (type?: SentenceType) =>
-  queryOptions({
-    queryKey: randomKeys.byType(type),
-    queryFn: () => getRandomSentence(type),
-    staleTime: 0, // 매번 새로 뽑고 싶다면 0
-    refetchOnWindowFocus: false,
-  });
+/**
+ * FSD 패턴 준수: features는 entities의 API를 재사용합니다.
+ * entities/sentence/api의 random 쿼리를 사용합니다.
+ */
+export const randomSentenceQuery = (sentenceType?: SentenceType) =>
+  sentenceQueries.random(sentenceType);
