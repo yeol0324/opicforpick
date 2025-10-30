@@ -17,27 +17,6 @@ export function SentenceBox({
   const queryResult = useQuery(dailySentenceQuery(level));
   const { data: sentence, isLoading, error } = queryResult;
 
-  console.log("[SentenceBox] Query state:", {
-    status: queryResult.status,
-    isLoading,
-    isSuccess: queryResult.isSuccess,
-    isError: queryResult.isError,
-    error: error
-      ? error instanceof Error
-        ? error.message
-        : String(error)
-      : null,
-    data: sentence,
-    dataType: typeof sentence,
-    isNull: sentence === null,
-    isUndefined: sentence === undefined,
-    isTruthy: !!sentence,
-    hasSentenceEng: sentence ? "sentence_eng" in sentence : false,
-    sentenceEngValue:
-      sentence && "sentence_eng" in sentence ? sentence.sentence_eng : "N/A",
-    allKeys: sentence ? Object.keys(sentence) : [],
-  });
-
   if (isLoading) {
     return (
       <div className="rounded-xl p-4 space-y-3">
