@@ -45,6 +45,7 @@
     "eslint.config.js",
     "vitest.config.ts",
     "vitest.shims.d.ts",
-    "index.html"
+    "index.html",
+    "api"
   ]
 }
