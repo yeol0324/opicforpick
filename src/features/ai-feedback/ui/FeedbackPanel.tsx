@@ -2,19 +2,16 @@ import { useFeedback } from "../model/useFeedback";
 
 interface FeedbackPanelProps {
   audioBlob: Blob;
-  referenceSentence?: string;
+  question: string;
 }
 
-export function FeedbackPanel({
-  audioBlob,
-  referenceSentence,
-}: FeedbackPanelProps) {
+export function FeedbackPanel({ audioBlob, question }: FeedbackPanelProps) {
   const { feedback, isLoading, isError, submitFeedback } = useFeedback();
 
   const handleClick = () => {
     submitFeedback({
       audioBlob,
-      referenceSentence,
+      question,
       level: "Intermediate",
       recordingPath: "",
     });

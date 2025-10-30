@@ -1,23 +1,26 @@
-import { supabase } from "@shared/api/supabase";
-import type { FeedbackRequest, FeedbackResponse } from "../model/types";
+import type { FeedbackResponse } from "../model/types";
+
+export type GetFeedbackParams = {
+  question: string;
+  transcript: string;
+  level?: string;
+};
 
 export async function getFeedback(
-  params: FeedbackRequest
+  params: GetFeedbackParams
 ): Promise<FeedbackResponse> {
-  const { transcript, referenceSentence, level } = params;
-
-  const { data, error } = await supabase.functions.invoke("ai-feedback", {
-    body: {
-      transcript,
-      referenceSentence,
-      level,
-    },
+  const res = await fetch("/api/ai-feedback", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(params),
   });
 
-  if (error) {
-    console.error("[getFeedback] error", error);
-    throw error;
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(
+      `Feedback API failed: ${res.status} ${res.statusText} ${text}`
+    );
   }
 
-  return data as FeedbackResponse;
+  return res.json();
 }

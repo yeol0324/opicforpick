@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { recognizeFromBlob } from "../api/sttFromBlob";
+import { getFeedback } from "../api/getFeedback";
 import type { FeedbackResponse, UseFeedbackParam } from "./types";
 
 async function feedbackFlow(
@@ -9,7 +10,14 @@ async function feedbackFlow(
 
   console.log(transcript);
 
+  const feedback = await getFeedback({
+    transcript,
+    question: params.question,
+    level: params.level,
+  });
+
   return {
+    ...feedback,
     rawTranscript: transcript,
   };
 }

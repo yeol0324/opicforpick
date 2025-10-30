@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@fix-webm-duration/fix": "^1.0.1",
+    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.2.1",
     "@supabase/supabase-js": "^2.57.4",
     "@tanstack/react-query": "^5.90.2",
