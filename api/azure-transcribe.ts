@@ -1,5 +1,4 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import fetch from "node-fetch";
 
 const AZURE_SPEECH_KEY = process.env.AZURE_SPEECH_KEY;
 const AZURE_SPEECH_REGION = process.env.AZURE_SPEECH_REGION;
@@ -44,7 +43,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     const audioBuffer = Buffer.from(audioBase64, "base64");
 
     const azureSttResponse = await fetch(
-      `https://${AZURE_SPEECH_REGION}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=ko-KR`,
+      `https://${AZURE_SPEECH_REGION}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=en-US&format=detailed`,
       {
         method: "POST",
         headers: {

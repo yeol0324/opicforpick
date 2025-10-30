@@ -1,3 +1,4 @@
+import { useSttFromMic } from "@features/ai-feedback/model/useSttFromMic";
 import { FeedbackPanel } from "@features/ai-feedback/ui/FeedbackPanel";
 import { BlobPlayer } from "@features/playback/ui/BlobPlayer";
 import { SentenceBox } from "@features/random-sentence/ui/SentenceBox";
@@ -16,6 +17,12 @@ export function HomePage() {
   const recordButtonLabel = isRecording ? "녹음 중지" : "녹음 시작";
   const recordIcon = isRecording ? "⏺" : "▶";
 
+  const {
+    text: sttText,
+    isLoading: isSttLoading,
+    requestStt,
+  } = useSttFromMic();
+
   return (
     <div className="flex flex-col items-center gap-6 p-6">
       <SentenceBox level="Advanced" />
@@ -33,6 +40,17 @@ export function HomePage() {
           {displayTime}
         </div>
       </div>
+      <button
+        type="button"
+        onClick={() => requestStt()}
+        className="mt-2 px-3 py-1 text-sm rounded bg-emerald-600 text-white disabled:opacity-50"
+        disabled={isSttLoading}
+      >
+        {isSttLoading ? "마이크 인식 중..." : "마이크로 STT 테스트"}
+      </button>
+      {sttText && (
+        <div className="mt-1 text-sm text-gray-700">인식 결과: {sttText}</div>
+      )}
       {audioInfo && (
         <div className="flex flex-col items-center gap-4">
           <BlobPlayer blobInfo={audioInfo} />

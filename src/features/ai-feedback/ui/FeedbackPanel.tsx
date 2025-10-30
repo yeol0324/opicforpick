@@ -31,7 +31,12 @@ export function FeedbackPanel({
       >
         AI 피드백 받기
       </button>
-      {feedback && <div></div>}
+      {feedback && (
+        <div>
+          {/* <p>총평: {feedback.summary}</p>
+          <p>총점: {feedback.scores.overall}</p> */}
+        </div>
+      )}
     </div>
   );
 }

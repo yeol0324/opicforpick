@@ -1,11 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import { requestTranscribe } from "../api/requestTranscribe";
+import { recognizeFromBlob } from "../api/sttFromBlob";
 import type { FeedbackResponse, UseFeedbackParam } from "./types";
 
 async function feedbackFlow(
   params: UseFeedbackParam
 ): Promise<FeedbackResponse> {
-  const transcript = await requestTranscribe(params.audioBlob);
+  const transcript = await recognizeFromBlob(params.audioBlob, "en-US");
+
+  console.log(transcript);
 
   return {
     rawTranscript: transcript,
