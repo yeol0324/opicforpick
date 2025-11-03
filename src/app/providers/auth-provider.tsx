@@ -1,16 +1,16 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@shared/api";
-import { getDeviceId } from "@shared/lib/device-id";
-import { isGuestMarked, markGuest, clearGuest } from "@shared/lib/auth-storage";
 import { AuthContext } from "@entities/auth/model/context";
 import type { AuthState } from "@entities/auth/model/types";
 import type { Session } from "@supabase/supabase-js";
+
+const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
+const demoPassword = import.meta.env.VITE_DEMO_PASSWORD;
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [auth, setAuth] = useState<AuthState>({
     mode: "none",
     user: null,
-    deviceId: null,
   });
   const [loading, setLoading] = useState(true);
 
@@ -22,18 +22,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (session?.user) {
         applySession(session);
-      } else if (isGuestMarked()) {
-        const id = getDeviceId();
-        setAuth({
-          mode: "guest",
-          user: null,
-          deviceId: id,
-        });
       } else {
         setAuth({
           mode: "none",
           user: null,
-          deviceId: null,
         });
       }
 
@@ -51,11 +43,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       if (event === "SIGNED_OUT") {
-        clearGuest();
         setAuth({
           mode: "none",
           user: null,
-          deviceId: null,
         });
       }
     });
@@ -66,11 +56,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const applySession = (session: Session) => {
-    clearGuest();
     setAuth({
       mode: "member",
       user: session.user,
-      deviceId: null,
     });
   };
 
@@ -89,18 +77,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    clearGuest();
-    setAuth({ mode: "none", user: null, deviceId: null });
+    setAuth({ mode: "none", user: null });
   };
 
-  const loginAsGuest = () => {
-    const id = getDeviceId();
-    markGuest();
-    setAuth({
-      mode: "guest",
-      user: null,
-      deviceId: id,
+  const loginAsDemo = async () => {
+    if (!demoEmail || !demoPassword) {
+      throw new Error("Demo 계정 env가 설정되어 있지 않습니다.");
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: demoEmail,
+      password: demoPassword,
     });
+
+    if (error) throw error;
+    // 세션 생성 후 onAuthStateChange / init에서 applySession이 알아서 태움
   };
 
   return (
@@ -111,7 +102,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signInWithEmail,
         signUpWithEmail,
         signOut,
-        loginAsGuest,
+        loginAsDemo,
       }}
     >
       {children}

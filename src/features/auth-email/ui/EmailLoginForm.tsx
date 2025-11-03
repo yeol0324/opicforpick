@@ -1,5 +1,12 @@
 import { useState } from "react";
 import { useEmailAuth } from "../model/useEmailAuth";
+import {
+  SegmentedControl,
+  TextField,
+  PrimaryButton,
+  TextButton,
+  ErrorMessage,
+} from "@shared/ui";
 
 export function EmailLoginForm() {
   const { login, register, loading, error } = useEmailAuth();
@@ -16,47 +23,57 @@ export function EmailLoginForm() {
     }
   };
 
+  const isLogin = mode === "login";
+
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>{mode === "login" ? "로그인" : "회원가입"}</h3>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <SegmentedControl
+        options={[
+          { value: "login", label: "이메일 로그인" },
+          { value: "register", label: "회원가입" },
+        ]}
+        value={mode}
+        onChange={setMode}
+      />
 
-      <div>
-        <label>
-          이메일
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoComplete="email"
-          />
-        </label>
+      <div className="space-y-4">
+        <TextField
+          label="이메일"
+          type="email"
+          value={email}
+          autoComplete="email"
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder="you@email.com"
+        />
+
+        <TextField
+          label="비밀번호"
+          type="password"
+          value={password}
+          autoComplete={isLogin ? "current-password" : "new-password"}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          placeholder="8자 이상 입력해주세요"
+        />
       </div>
-      <div>
-        <label>
-          비밀번호
-          <input
-            type="password"
-            value={password}
-            autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-      </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <ErrorMessage message={error} />
 
-      <button type="submit" disabled={loading}>
-        {loading ? "처리 중..." : mode === "login" ? "로그인" : "회원가입"}
-      </button>
+      <PrimaryButton type="submit" disabled={loading}>
+        {loading ? "처리 중..." : isLogin ? "로그인" : "회원가입 완료"}
+      </PrimaryButton>
 
-      <button
+      <TextButton
         type="button"
         onClick={() =>
           setMode((prev) => (prev === "login" ? "register" : "login"))
         }
       >
-        {mode === "login" ? "회원가입으로 전환" : "로그인으로 전환"}
-      </button>
+        {isLogin
+          ? "아직 계정이 없나요? 회원가입 하기"
+          : "이미 계정이 있나요? 로그인 하기"}
+      </TextButton>
     </form>
   );
 }

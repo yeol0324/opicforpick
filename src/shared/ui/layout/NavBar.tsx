@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import logo from "../../logo.png";
+import logo from "@shared/logo.png";
 import { THEME } from "@shared/lib";
 
 export function NavBar() {
@@ -40,14 +40,7 @@ export function NavBar() {
               나의기록
             </Link>
           </li>
-          <li>
-            <Link
-              to="/sentences"
-              className={`nav-link ${isActive("/sentences") ? "active" : ""}`}
-            >
-              문장노트
-            </Link>
-          </li>
+
           <li>
             <Link
               to="/practice"
@@ -103,17 +96,7 @@ export function NavBar() {
               나의기록
             </Link>
           </li>
-          <li>
-            <Link
-              to="/sentences"
-              className={`mobile-link ${
-                isActive("/sentences") ? "active" : ""
-              }`}
-              onClick={() => setOpen(false)}
-            >
-              문장노트
-            </Link>
-          </li>
+
           <li>
             <Link
               to="/mock"

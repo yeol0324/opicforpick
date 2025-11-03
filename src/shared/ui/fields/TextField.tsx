@@ -1,23 +1,32 @@
-import { forwardRef } from "react";
+import { useId } from "react";
 
-type Props = React.InputHTMLAttributes<HTMLInputElement> & {
-  label?: string;
+interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string;
   error?: string;
-};
+}
 
-export const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
-  { label, error, className = "", ...rest },
-  ref
-) {
+export function TextField({
+  label,
+  error,
+  className = "",
+  ...props
+}: TextFieldProps) {
+  const id = useId();
+
   return (
-    <label className="block space-y-1">
-      {label && <span className="text-sm text-slate-700">{label}</span>}
+    <div className="space-y-1.5">
+      <label htmlFor={id} className="block text-xs font-medium text-slate-700">
+        {label}
+      </label>
       <input
-        ref={ref}
-        className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500 ${error ? "border-red-400" : "border-slate-300"} ${className}`}
-        {...rest}
+        id={id}
+        {...props}
+        className={`w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900
+          outline-none ring-0 transition
+          placeholder:text-slate-400
+          focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-100 ${className}`}
       />
       {error && <span className="text-xs text-red-600">{error}</span>}
-    </label>
+    </div>
   );
-});
+}
