@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createQueryClient } from "@app/providers/query-client";
 import { router } from "./routes";
 import { useState } from "react";
-import { AuthProvider } from "./providers/auth-providers";
+import { AuthProvider } from "./providers/auth-provider";
 
 export function App() {
   const [client] = useState(() => createQueryClient());

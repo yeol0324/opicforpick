@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { SupabaseError } from "@shared/api/supabase-helpers";
+import { SupabaseError } from "@shared/api";
 
 export function createQueryClient() {
   return new QueryClient({

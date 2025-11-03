@@ -1,10 +1,10 @@
-import { dailySentenceQuery } from "@entities/today-question/queries/dailySentence.queries";
+import { dailySentenceQuery } from "@entities/today-question/api/daily-sentence.queries";
 import { FeedbackPanel } from "@features/ai-feedback/ui/FeedbackPanel";
 import { BlobPlayer } from "@features/playback/ui/BlobPlayer";
 import { SentenceBox } from "@features/random-sentence/ui/SentenceBox";
 import { useRecordFlow } from "@features/record-start-stop";
-import { formatMmSs } from "@shared/lib/time/formatDuration";
-import { CircleProgressButton } from "@shared/ui/CircleProgressButton";
+import { formatMmSs } from "@shared/lib";
+import { CircleProgressButton } from "@shared/ui/recorder/CircleProgressButton";
 import { useQuery } from "@tanstack/react-query";
 
 export function HomePage() {

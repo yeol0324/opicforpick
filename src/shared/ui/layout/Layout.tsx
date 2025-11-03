@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import { useThemeSwitcher } from "./useThemeSwitcher";
+import { useThemeSwitcher } from "../../lib/hooks/useThemeSwitcher";
 
 // export function Layout({ siblingPages, headings }) {
 export function Layout() {

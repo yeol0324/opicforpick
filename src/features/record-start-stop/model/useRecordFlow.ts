@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { createRecorder } from "@shared/lib/audio/recorder-core";
+import { createRecorder } from "@shared/lib";
 import { createRecording } from "@entities/recording/api/create-recording";
 
 type State = "idle" | "recording" | "preview" | "saving";
