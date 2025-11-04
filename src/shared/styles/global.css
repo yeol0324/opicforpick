@@ -18,8 +18,8 @@ body {
 
 /** bottom-nav */
 .bottom-nav .link {
-  @apply block px-2 py-3 text-base text-gray-800 text-center;
+  @apply block px-2 py-3 text-base text-gray-400 text-center;
 }
 .bottom-nav .link.active {
-  @apply text-[color:var(--brand)] font-bold font-medium text-shadow-sm;
+  @apply text-black font-bold font-medium;
 }

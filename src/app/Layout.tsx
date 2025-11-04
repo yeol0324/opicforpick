@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { AppHeader } from "@shared/ui";
+import { AppHeader, BottomNav } from "@shared/ui";
 
 export function Layout() {
   return (
@@ -9,6 +9,8 @@ export function Layout() {
       <main className="mx-auto flex max-w-md flex-col px-4 pt-3 pb-20">
         <Outlet />
       </main>
+
+      <BottomNav />
     </div>
   );
 }
