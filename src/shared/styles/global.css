@@ -10,25 +10,16 @@ body {
   margin: 0;
   font-family: system-ui, sans-serif;
 }
-
-/** tabBar */
-/* 전역 CSS (src/app/globals.css 등) */
-.nav-link {
-  @apply relative text-sm text-gray-700 hover:text-[color:var(--brand)] transition-colors;
-}
-.nav-link.active {
-  @apply text-[color:var(--brand)];
-}
-.nav-link.active::after {
-  content: "";
-  @apply absolute left-0 right-0 -bottom-2 h-0.5 rounded-full;
-  background: color-mix(in oklab, var(--brand) 88%, white);
+@property --brand {
+  syntax: "<color>";
+  initial-value: #32b6bf;
+  inherits: false;
 }
 
-.mobile-link {
-  @apply block px-2 py-3 text-base text-gray-800;
+/** bottom-nav */
+.bottom-nav .link {
+  @apply block px-2 py-3 text-base text-gray-800 text-center;
 }
-.mobile-link.active {
-  @apply text-[color:var(--brand)] font-medium;
-  background: color-mix(in oklab, var(--brand) 12%, white);
+.bottom-nav .link.active {
+  @apply text-[color:var(--brand)] font-bold font-medium text-shadow-sm;
 }
