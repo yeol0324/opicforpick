@@ -1,3 +1,7 @@
+/**0 전체 |1 question |2 answer */
+export type SentenceType = 0 | 1 | 2;
+export type Level = "Beginner" | "Intermediate" | "Advanced";
+
 export type Sentence = {
   id: string;
   created_at: string;
@@ -7,8 +11,6 @@ export type Sentence = {
   level: string;
   theme_id: number;
 };
-
-export type SentenceType = 0 | 1 | 2;
 
 export type SentenceFilter = {
   type?: SentenceType;

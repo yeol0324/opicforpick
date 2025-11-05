@@ -1,7 +1,13 @@
 import { keepPreviousData, queryOptions } from "@tanstack/react-query";
 import { getSentences } from "./get-sentences";
 import { getRandomSentence } from "./get-random-sentence";
-import type { Sentence, SentenceFilter, SentenceType } from "../model/types";
+import { fetchDailySentence } from "./get-daily-sentence";
+import type {
+  Sentence,
+  SentenceFilter,
+  SentenceType,
+  Level,
+} from "../model/types";
 import type { Paged } from "@shared/api";
 
 const sentenceKeys = {
@@ -18,7 +24,8 @@ const sentenceKeys = {
         pageSize: f?.pageSize ?? 20,
       },
     ] as const,
-
+  daily: () => ["daily-sentence"] as const,
+  byLevel: (level: Level) => [...sentenceKeys.daily(), level] as const,
   random: (type?: SentenceType) =>
     ["sentences", "random", type ?? "any"] as const,
 };
@@ -44,6 +51,13 @@ export const sentenceQueries = {
       return nextPage <= lastPage.pageCount ? nextPage : undefined;
     },
   }),
+  daily: (level: Level = "Advanced") =>
+    queryOptions({
+      queryKey: sentenceKeys.byLevel(level),
+      queryFn: () => fetchDailySentence(level),
+      staleTime: 24 * 60 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    }),
   random: (type?: SentenceType) =>
     queryOptions({
       queryKey: sentenceKeys.random(type),

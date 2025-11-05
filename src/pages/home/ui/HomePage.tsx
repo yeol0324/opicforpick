@@ -1,7 +1,6 @@
-import { dailySentenceQuery } from "@entities/today-question/api/daily-sentence.queries";
+import { sentenceQueries } from "@entities/sentence/api";
 import { FeedbackPanel } from "@features/ai-feedback/ui/FeedbackPanel";
 import { BlobPlayer } from "@features/playback/ui/BlobPlayer";
-import { SentenceBox } from "@features/random-sentence/ui/SentenceBox";
 import { useRecordFlow } from "@features/record-start-stop";
 import { formatMmSs } from "@shared/lib";
 import { CircleProgressButton } from "@shared/ui/recorder/CircleProgressButton";
@@ -18,12 +17,13 @@ export function HomePage() {
   const recordButtonLabel = isRecording ? "녹음 중지" : "녹음 시작";
   const recordIcon = isRecording ? "⏺" : "▶";
 
-  const queryResult = useQuery(dailySentenceQuery("Advanced"));
+  const queryResult = useQuery(sentenceQueries.daily());
   const { data: sentence } = queryResult;
 
   return (
     <div className="flex flex-col items-center gap-6 p-6">
-      <SentenceBox level="Advanced" />
+      <h2>오늘의 문장</h2>
+      <div>{sentence?.sentence_eng}</div>
       <div className="grid place-items-center gap-4 py-6">
         <CircleProgressButton
           progress={progress}
@@ -38,7 +38,6 @@ export function HomePage() {
           {displayTime}
         </div>
       </div>
-
       {audioInfo && sentence && (
         <div className="flex flex-col items-center gap-4">
           <BlobPlayer blobInfo={audioInfo} />

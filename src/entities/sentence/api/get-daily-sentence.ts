@@ -3,8 +3,6 @@ import type { Sentence } from "@entities/sentence/model/types";
 import type { Level } from "../model/types";
 
 /**
- * API 응답 등 다양한 형태의 데이터를 표준 Sentence 객체로 변환합니다.
- * 이 함수는 데이터의 일관성을 보장하여 앱의 안정성을 높입니다.
  * @param data - 변환할 원본 데이터 객체
  * @returns 표준화된 Sentence 객체 또는 null
  */
@@ -13,7 +11,6 @@ function mapToSentence(data: unknown): Sentence | null {
     return null;
   }
 
-  // 필수 필드 검사
   if (!("id" in data) || !("created_at" in data)) {
     console.error(
       "Invalid sentence data: 'id' or 'created_at' is missing.",
