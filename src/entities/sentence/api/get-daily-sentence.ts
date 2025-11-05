@@ -1,6 +1,6 @@
 import { supabase } from "@shared/api/supabase-client";
 import type { Sentence } from "@entities/sentence/model/types";
-import type { Level } from "../model/types";
+import type { ProficiencyLevel } from "@shared/lib";
 
 /**
  * @param data - 변환할 원본 데이터 객체
@@ -51,7 +51,7 @@ function mapToSentence(data: unknown): Sentence | null {
  * Supabase RPC 함수 get_daily_sentence 사용
  */
 export async function fetchDailySentence(
-  level: Level = "Advanced"
+  level: ProficiencyLevel = "Advanced"
 ): Promise<Sentence | null> {
   try {
     const { data, error } = await supabase.rpc("get_daily_sentence", {
