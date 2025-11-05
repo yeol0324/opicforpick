@@ -1,10 +1,10 @@
-import { sentenceQueries } from "@entities/sentence/api";
 import { FeedbackPanel } from "@features/ai-feedback/ui/FeedbackPanel";
+import { useDailyQuestion } from "@features/daily-question/model/useDailyQuestion";
+import { DailyQuestionSection } from "@features/daily-question/ui/DailyQuestionSection";
 import { BlobPlayer } from "@features/playback/ui/BlobPlayer";
 import { useRecordFlow } from "@features/record-start-stop";
 import { formatMmSs } from "@shared/lib";
 import { CircleProgressButton } from "@shared/ui/recorder/CircleProgressButton";
-import { useQuery } from "@tanstack/react-query";
 
 export function HomePage() {
   const { state, start, stop, save, retry, audioInfo, elapsedMs, progress } =
@@ -17,13 +17,15 @@ export function HomePage() {
   const recordButtonLabel = isRecording ? "녹음 중지" : "녹음 시작";
   const recordIcon = isRecording ? "⏺" : "▶";
 
-  const queryResult = useQuery(sentenceQueries.daily());
-  const { data: sentence } = queryResult;
+  const { data: sentence, isLoading, error } = useDailyQuestion("Advanced");
 
   return (
     <div className="flex flex-col items-center gap-6 p-6">
-      <h2>오늘의 문장</h2>
-      <div>{sentence?.sentence_eng}</div>
+      <DailyQuestionSection
+        sentence={sentence}
+        loading={isLoading}
+        error={error}
+      />
       <div className="grid place-items-center gap-4 py-6">
         <CircleProgressButton
           progress={progress}
