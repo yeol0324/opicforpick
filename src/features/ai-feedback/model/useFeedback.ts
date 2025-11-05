@@ -1,7 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import { recognizeFromBlob } from "../api/sttFromBlob";
-import { getFeedback } from "../api/getFeedback";
-import type { FeedbackResponse, UseFeedbackParam } from "./types";
+import type { UseFeedbackParam } from "./types";
+import { recognizeFromBlob } from "@entities/stt/api/sttFromBlob";
+import { getFeedback } from "@entities/feedback/api/getFeedback";
+import type { FeedbackResponse } from "@entities/feedback/model/types";
 
 async function feedbackFlow(
   params: UseFeedbackParam
