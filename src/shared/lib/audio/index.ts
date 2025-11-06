@@ -1,4 +1,4 @@
-export * from "./convert-to-wav";
-export * from "./player-core";
-export * from "./recorder-core";
+export * from "./convertToWav";
+export * from "./playerCore";
+export * from "./recorderCore";
 export * from "./types";

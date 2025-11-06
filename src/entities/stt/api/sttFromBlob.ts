@@ -1,12 +1,12 @@
 import * as speechsdk from "microsoft-cognitiveservices-speech-sdk";
-import { getAzureSpeechToken } from "./getToken";
+import { requestAzureToken } from "./requestAzureToken";
 import { convertWebmBlobToWav } from "@shared/lib";
 
 export async function recognizeFromBlob(
   blob: Blob,
   lang: string = "en-US"
 ): Promise<string> {
-  const { authToken, region } = await getAzureSpeechToken();
+  const { authToken, region } = await requestAzureToken();
 
   const speechConfig = speechsdk.SpeechConfig.fromAuthorizationToken(
     authToken,

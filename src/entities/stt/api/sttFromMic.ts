@@ -1,8 +1,8 @@
 import * as speechsdk from "microsoft-cognitiveservices-speech-sdk";
-import { getAzureSpeechToken } from "./getToken";
+import { requestAzureToken } from "./requestAzureToken";
 
 export async function sttFromMic(lang = "ko-KR") {
-  const { authToken, region } = await getAzureSpeechToken();
+  const { authToken, region } = await requestAzureToken();
 
   const speechConfig = speechsdk.SpeechConfig.fromAuthorizationToken(
     authToken,

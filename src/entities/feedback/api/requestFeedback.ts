@@ -6,7 +6,7 @@ export type GetFeedbackParams = {
   level?: string;
 };
 
-export async function getFeedback(
+export async function requestFeedback(
   params: GetFeedbackParams
 ): Promise<FeedbackResponse> {
   const res = await fetch("/api/ai-feedback", {
