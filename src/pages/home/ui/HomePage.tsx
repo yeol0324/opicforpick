@@ -7,7 +7,7 @@ import { formatMmSs } from "@shared/lib";
 import { CircleProgressButton } from "@shared/ui/recorder/CircleProgressButton";
 
 export function HomePage() {
-  const { state, start, stop, save, retry, audioInfo, elapsedMs, progress } =
+  const { state, start, stop, retry, audioInfo, elapsedMs, progress } =
     useRecordFlow();
 
   const isRecording = state === "recording";
@@ -26,35 +26,12 @@ export function HomePage() {
         loading={isLoading}
         error={error}
       />
-      <div className="grid place-items-center gap-4 py-6">
-        <CircleProgressButton
-          progress={progress}
-          onClick={handleRecordClick}
-          disabled={isSaving}
-          ariaLabel={recordButtonLabel}
-        >
-          <div className="text-4xl">{recordIcon}</div>
-        </CircleProgressButton>
 
-        <div className="text-3xl tabular-nums tracking-wider text-black">
-          {displayTime}
-        </div>
-      </div>
-      {audioInfo && sentence && (
+      {audioInfo && sentence ? (
         <div className="flex flex-col items-center gap-4">
           <BlobPlayer blobInfo={audioInfo} />
           <div className="flex gap-2">
-            <FeedbackPanel
-              audioBlob={audioInfo.blob}
-              question={sentence?.sentence_eng}
-            />
-            <button
-              onClick={save}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isSaving}
-            >
-              {isSaving ? "저장 중..." : "저장"}
-            </button>
+            <FeedbackPanel audioBlob={audioInfo.blob} question={sentence} />
             <button
               onClick={retry}
               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -62,6 +39,21 @@ export function HomePage() {
             >
               다시하기
             </button>
+          </div>
+        </div>
+      ) : (
+        <div className="grid place-items-center gap-4 py-6">
+          <CircleProgressButton
+            progress={progress}
+            onClick={handleRecordClick}
+            disabled={isSaving}
+            ariaLabel={recordButtonLabel}
+          >
+            <div className="text-4xl">{recordIcon}</div>
+          </CircleProgressButton>
+
+          <div className="text-3xl tabular-nums tracking-wider text-black">
+            {displayTime}
           </div>
         </div>
       )}

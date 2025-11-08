@@ -4,8 +4,6 @@ const AZURE_SPEECH_KEY = process.env.AZURE_SPEECH_KEY;
 const AZURE_SPEECH_REGION = process.env.AZURE_SPEECH_REGION;
 
 export default async function (req: VercelRequest, res: VercelResponse) {
-  console.log("[azure-transcribe] called");
-
   if (req.method !== "POST") {
     return res.status(405).send("Method Not Allowed");
   }
@@ -24,8 +22,6 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    console.log("[azure-transcribe] get-token start");
-
     const tokenResponse = await fetch(
       `https://${AZURE_SPEECH_REGION}.api.cognitive.microsoft.com/sts/v1.0/issueToken`,
       {
@@ -37,7 +33,6 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     );
     const token = await tokenResponse.text();
 
-    console.log("[azure-transcribe] tokenResponse", tokenResponse);
     if (!tokenResponse.ok) throw new Error("Token failed: " + token);
 
     const audioBuffer = Buffer.from(audioBase64, "base64");
@@ -54,7 +49,6 @@ export default async function (req: VercelRequest, res: VercelResponse) {
         body: audioBuffer,
       }
     );
-    console.log("[azure-transcribe] azureSttResponse", azureSttResponse);
 
     const azureResult = await azureSttResponse.json();
     if (!azureSttResponse.ok)

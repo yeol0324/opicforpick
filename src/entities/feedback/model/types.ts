@@ -8,14 +8,16 @@ export interface FeedbackRequest {
 
 export type FeedbackResponse = {
   transcript: string;
-  pronunciationComment: string;
-  grammarComment: string;
-  vocabularyComment: string;
-  contentComment: string;
-  overallComment: string;
-  pronunciationScore?: number;
-  grammarScore?: number;
-  vocabularyScore?: number;
-  contentScore?: number;
-  rawTranscript?: string;
+  result: {
+    pronunciationComment: string;
+    grammarComment: string;
+    vocabularyComment: string;
+    contentComment: string;
+    overallComment: string;
+    pronunciationScore?: number;
+    grammarScore?: number;
+    vocabularyScore?: number;
+    contentScore?: number;
+    rawTranscript?: string;
+  };
 };
