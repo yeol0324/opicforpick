@@ -2,50 +2,44 @@ export type Player = {
   load(src: string | Blob): Promise<void>;
   play(): void;
   pause(): void;
-  seek(s: number): void; // seconds
-  setRate(r: number): void;
+  seek(seconds: number): void;
+  setRate(rate: number): void;
   duration(): number;
   currentTime(): number;
   onended?: () => void;
 };
 
-export function createPlayer(audioEl: HTMLAudioElement): Player {
+export function createPlayer(audioElement: HTMLAudioElement): Player {
   const player: Player = {
     async load(src: string | Blob) {
-      audioEl.src = typeof src === "string" ? src : URL.createObjectURL(src);
-      audioEl.load();
+      audioElement.src =
+        typeof src === "string" ? src : URL.createObjectURL(src);
+      audioElement.load();
     },
-    play: () => {
-      void audioEl.play();
+    play() {
+      void audioElement.play();
     },
-    pause: () => audioEl.pause(),
-    seek: (s) => {
-      audioEl.currentTime = s;
+    pause() {
+      audioElement.pause();
     },
-    setRate: (r) => {
-      audioEl.playbackRate = r;
+    seek(seconds: number) {
+      audioElement.currentTime = seconds;
     },
-    duration: () => audioEl.duration || 0,
-    currentTime: () => audioEl.currentTime || 0,
+    setRate(rate: number) {
+      audioElement.playbackRate = rate;
+    },
+    duration() {
+      return audioElement.duration ?? 0;
+    },
+    currentTime() {
+      return audioElement.currentTime ?? 0;
+    },
     onended: undefined,
   };
 
-  audioEl.onended = () => {
-    if (player) player.onended?.();
+  audioElement.onended = () => {
+    player.onended?.();
   };
 
-  function load(src: string | Blob) {
-    audioEl.src = typeof src === "string" ? src : URL.createObjectURL(src);
-    return (audioEl.load(), Promise.resolve());
-  }
-  return {
-    load,
-    play: () => audioEl.play(),
-    pause: () => audioEl.pause(),
-    seek: (s) => (audioEl.currentTime = s),
-    setRate: (r) => (audioEl.playbackRate = r),
-    duration: () => audioEl.duration ?? 0,
-    currentTime: () => audioEl.currentTime ?? 0,
-    onended: undefined,
-  };
+  return player;
 }
