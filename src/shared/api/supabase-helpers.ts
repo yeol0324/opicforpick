@@ -3,23 +3,23 @@ import type { PostgrestError } from "@supabase/supabase-js";
 export class SupabaseError extends Error {
   status?: number;
   code?: string;
+
   constructor(error: PostgrestError) {
     super(error.message);
     this.name = "SupabaseError";
-    // this.status = error.status;
     this.code = error.code;
   }
 }
 
-export function unwrap<T>(res: {
+export function unwrap<T>(response: {
   data: T | null;
   error: PostgrestError | null;
 }): T {
-  if (res.error) {
-    throw new SupabaseError(res.error);
+  if (response.error) {
+    throw new SupabaseError(response.error);
   }
-  if (res.data === null) {
+  if (response.data === null) {
     throw new Error("No data returned from Supabase");
   }
-  return res.data;
+  return response.data;
 }

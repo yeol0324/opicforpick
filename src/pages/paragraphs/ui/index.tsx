@@ -1,70 +1,47 @@
-import { useQuery, useQueries } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { paragraphQueries } from "@entities/paragraph/api";
-import type { SentenceType } from "@entities/sentence";
-import { Spinner } from "@shared/ui/spinner";
-import { paragraphSentencesQueries } from "@entities/paragraphSentences/api";
-import { sentenceQueries } from "@entities/sentence/api";
-import { useDebouncedValue } from "@shared/lib/debounce/useDebouncedValue";
-import { THEME, APP } from "@shared/lib";
+import { Spinner, ErrorMessage, EmptyState, SearchInput } from "@shared/ui";
+import { useDebouncedValue, THEME, APP } from "@shared/lib";
+import { SentenceList } from "./SentenceList";
+import { ParagraphListItem } from "./ParagraphListItem";
 
 export function Paragraphs() {
-  const [q, setQ] = useState("");
-  const [type, setType] = useState<SentenceType | undefined>(1);
-  const [page, setPage] = useState(1);
-
-  const [paragraphId, setParagraphId] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedParagraphId, setSelectedParagraphId] = useState("");
 
   const pageSize = APP.DEFAULT_PAGE_SIZE;
-
-  const debouncedQ = useDebouncedValue(q, APP.DEFAULT_DEBOUNCE_DELAY);
-
-  const query = useQuery(
-    paragraphQueries.list({ q: debouncedQ, page, pageSize })
+  const debouncedSearchQuery = useDebouncedValue(
+    searchQuery,
+    APP.DEFAULT_DEBOUNCE_DELAY
   );
 
-  const paragraphSentencesQuery = useQuery({
-    ...paragraphSentencesQueries.list({ paragraphId }),
-    enabled: !!paragraphId,
-  });
-  const sentenceItems = paragraphSentencesQuery.data?.items ?? [];
+  const paragraphsQuery = useQuery(
+    paragraphQueries.list({
+      q: debouncedSearchQuery,
+      page: currentPage,
+      pageSize,
+    })
+  );
 
-  const sentencesQueriesConfig = sentenceItems
-    .toReversed()
-    .map((item: any) => ({
-      queryKey: sentenceQueries.list({ id: item.sentence_id }).queryKey,
-      queryFn: sentenceQueries.list({ id: item.sentence_id }).queryFn,
-      enabled: !!item.sentence_id,
-    }));
-
-  const sentencesResults = useQueries({ queries: sentencesQueriesConfig });
-
-  const sentencesData = sentencesResults
-    .filter((res) => res.isSuccess)
-    .map((res) => res.data);
-
-  const { items, total, pageCount } = query.data ?? {
+  const { items: paragraphs, total } = paragraphsQuery.data ?? {
     items: [],
     total: 0,
-    pageCount: 1,
   };
 
-  const handleTypeChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const value = e.target.value;
-      setType(value === "" ? undefined : (Number(value) as SentenceType));
-      setPage(1);
-    },
-    []
-  );
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    setCurrentPage(1);
+  };
 
-  const handleQChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setQ(e.target.value);
-      setPage(1);
-    },
-    []
-  );
+  const handleParagraphClick = (paragraphId: string) => {
+    setSelectedParagraphId(paragraphId);
+  };
+
+  const isLoading = paragraphsQuery.isLoading;
+  const hasError = !!paragraphsQuery.error;
+  const isEmpty = paragraphs.length === 0 && !isLoading;
 
   return (
     <div
@@ -72,74 +49,46 @@ export function Paragraphs() {
       style={{ ["--brand" as string]: THEME.BRAND }}
     >
       <div className="flex flex-wrap gap-2">
-        <input
-          className="border-2 border-(--brand) px-3 py-2 rounded-lg background focus:border-sky-500"
+        <SearchInput
+          value={searchQuery}
+          onChange={handleSearchChange}
           placeholder="검색어"
-          value={q}
-          onChange={handleQChange}
         />
-        <select
-          className="border-2 border-(--brand) px-3 py-2 rounded-lg focus:border-sky-500"
-          value={type ?? ""}
-          onChange={handleTypeChange}
-        >
-          <option value="">전체 타입</option>
-          <option value={0}>question</option>
-          <option value={1}>answer</option>
-          <option value={2}>generic</option>
-        </select>
       </div>
 
-      <div className="border p-4 mt-4 rounded-lg bg-gray-50">
-        {!paragraphId ? (
-          <p className="text-sm text-gray-500">
-            단락을 선택하면 문장이 표시됩니다.
-          </p>
-        ) : sentencesResults.some((res) => res.isLoading) ? (
-          <Spinner />
-        ) : sentencesResults.every((res) => res.isSuccess) ? (
-          <ul className="list-disc list-inside space-y-1">
-            {sentencesData.map((sentence, index) => (
-              <li key={index} className="text-sm">
-                {sentence.items[0].sentence_kor || ""}
-                <p className="text-xs text-slate-500 ml-4">
-                  {sentence.items[0].sentence_eng || ""}
-                </p>
-              </li>
-            ))}
-          </ul>
+      <div className="border p-4 mt-4 rounded-lg bg-gray-50 min-h-[200px]">
+        {!selectedParagraphId ? (
+          <EmptyState
+            message="단락을 선택하면 문장이 표시됩니다"
+            className="text-sm text-gray-500"
+          />
         ) : (
-          <p className="text-red-600">error</p>
+          <SentenceList paragraphId={selectedParagraphId} />
         )}
       </div>
 
-      {query.isLoading ? (
-        <Spinner />
-      ) : query.isError ? (
-        <p className="text-red-600">에러</p>
-      ) : (
-        <>
-          <div className="text-sm text-slate-600">총 {total}개</div>
-          <ul className="list-disc list-none">
-            {items.map((s) => (
-              <li
-                key={s.id}
-                className="pb-3 cursor-pointer hover:bg-slate-100 p-2 rounded"
-                onClick={() => setParagraphId(s.id)}
-                style={{
-                  backgroundColor:
-                    s.id === paragraphId
-                      ? "rgba(50, 182, 191, 0.1)"
-                      : "transparent",
-                  fontWeight: s.id === paragraphId ? "bold" : "normal",
-                }}
-              >
-                {s.title}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+      <div className="flex flex-col flex-1 overflow-y-auto">
+        {isLoading ? (
+          <Spinner />
+        ) : hasError ? (
+          <ErrorMessage />
+        ) : (
+          <>
+            <div className="text-sm text-slate-600 mb-2">총 {total}개</div>
+            <ul className="list-disc list-none space-y-1">
+              {paragraphs.map((paragraph) => (
+                <ParagraphListItem
+                  key={paragraph.id}
+                  paragraph={paragraph}
+                  isSelected={paragraph.id === selectedParagraphId}
+                  onClick={() => handleParagraphClick(paragraph.id)}
+                />
+              ))}
+            </ul>
+            {isEmpty && <EmptyState message="단락이 없습니다" />}
+          </>
+        )}
+      </div>
     </div>
   );
 }
