@@ -1,3 +1,4 @@
+import { fixWebmDuration } from "@fix-webm-duration/fix";
 import type {
   Recorder,
   RecorderOptions,
@@ -175,14 +176,22 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
       }
     });
 
-    const blob = new Blob(chunks, { type: mime });
+    const rawBlob = new Blob(chunks, { type: mime });
     const durationMs = Math.max(0, performance.now() - startedAt);
+
+    // 🔥 여기서 duration 메타데이터를 패치해준다
+    let fixedBlob: Blob = rawBlob;
+    try {
+      fixedBlob = await fixWebmDuration(rawBlob, durationMs);
+    } catch (e) {
+      console.warn("[recorder] fixWebmDuration failed, using raw blob", e);
+    }
 
     cleanupStream();
     mediaRecorder = null;
     _state = "idle";
 
-    return { blob, mime, durationMs };
+    return { blob: fixedBlob, mime, durationMs };
   }
 
   function pause() {

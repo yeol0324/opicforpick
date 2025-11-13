@@ -1,8 +1,11 @@
+import { dailySentenceQuery } from "@entities/today-question/queries/dailySentence.queries";
+import { FeedbackPanel } from "@features/ai-feedback/ui/FeedbackPanel";
 import { BlobPlayer } from "@features/playback/ui/BlobPlayer";
 import { SentenceBox } from "@features/random-sentence/ui/SentenceBox";
 import { useRecordFlow } from "@features/record-start-stop";
 import { formatMmSs } from "@shared/lib/time/formatDuration";
 import { CircleProgressButton } from "@shared/ui/CircleProgressButton";
+import { useQuery } from "@tanstack/react-query";
 
 export function HomePage() {
   const { state, start, stop, save, retry, audioInfo, elapsedMs, progress } =
@@ -14,6 +17,9 @@ export function HomePage() {
   const handleRecordClick = isRecording ? stop : start;
   const recordButtonLabel = isRecording ? "녹음 중지" : "녹음 시작";
   const recordIcon = isRecording ? "⏺" : "▶";
+
+  const queryResult = useQuery(dailySentenceQuery("Advanced"));
+  const { data: sentence } = queryResult;
 
   return (
     <div className="flex flex-col items-center gap-6 p-6">
@@ -32,10 +38,15 @@ export function HomePage() {
           {displayTime}
         </div>
       </div>
-      {audioInfo && (
+
+      {audioInfo && sentence && (
         <div className="flex flex-col items-center gap-4">
           <BlobPlayer blobInfo={audioInfo} />
           <div className="flex gap-2">
+            <FeedbackPanel
+              audioBlob={audioInfo.blob}
+              question={sentence?.sentence_eng}
+            />
             <button
               onClick={save}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
