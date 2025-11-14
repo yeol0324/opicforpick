@@ -1,0 +1,24 @@
+import { createContext, useContext } from "react";
+import type { AuthState } from "./types";
+
+export type AuthContextValue = {
+  auth: AuthState;
+  loading: boolean;
+
+  signInWithEmail: (email: string, password: string) => Promise<void>;
+  signUpWithEmail: (email: string, password: string) => Promise<void>;
+  signOut: () => Promise<void>;
+  loginAsGuest: () => void;
+};
+
+export const AuthContext = createContext<AuthContextValue | undefined>(
+  undefined
+);
+
+export function useAuthContext() {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
+    throw new Error("AuthProvider 내부에서 호출 필요");
+  }
+  return ctx;
+}

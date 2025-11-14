@@ -5,16 +5,22 @@ import { Login } from "@pages/login";
 import { MyNotes } from "@pages/myNotes";
 import { Sentences } from "@pages/sentences";
 import { Paragraphs } from "@pages/paragraphs";
+import { ProtectedRoute } from "@app/providers/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-      { path: "/", element: <HomePage />, index: true },
       { path: "/login", element: <Login /> },
-      { path: "/myNotes", element: <MyNotes /> },
-      { path: "/sentences", element: <Sentences /> },
-      { path: "/paragraphs", element: <Paragraphs /> },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { index: true, path: "/", element: <HomePage /> },
+          { path: "/myNotes", element: <MyNotes /> },
+          { path: "/sentences", element: <Sentences /> },
+          { path: "/paragraphs", element: <Paragraphs /> },
+        ],
+      },
     ],
   },
 ]);

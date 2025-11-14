@@ -6,7 +6,7 @@ export async function login(email: string, password: string) {
     password,
   });
   if (error) throw error;
-  // access_token
+
   const token = data.session?.access_token;
   return { user: data.user, token };
 }
