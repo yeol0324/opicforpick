@@ -5,12 +5,13 @@ import { Login } from "@pages/login";
 import { Notes } from "@pages/notes";
 import { Practice } from "@pages/practice";
 import { ProtectedRoute } from "@app/providers/ProtectedRoute";
+import { DemoLoginRedirect } from "@features/auth-demo/ui/DemoLoginRedirect";
 
 export const router = createBrowserRouter([
+  { path: "/login", element: <Login /> },
   {
     element: <Layout />,
     children: [
-      { path: "/login", element: <Login /> },
       {
         index: true,
         path: "/",
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
         path: "/practice",
         element: <ProtectedRoute children={<Practice />} />,
       },
+      { path: "/demo-login", element: <DemoLoginRedirect /> },
     ],
   },
 ]);

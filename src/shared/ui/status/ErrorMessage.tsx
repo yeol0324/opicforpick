@@ -1,5 +1,5 @@
 type ErrorMessageProps = {
-  message?: string;
+  message?: string | null;
   className?: string;
 };
 
@@ -9,4 +9,3 @@ export function ErrorMessage({
 }: ErrorMessageProps) {
   return <p className={className}>{message}</p>;
 }
-

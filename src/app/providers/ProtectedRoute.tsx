@@ -12,7 +12,7 @@ export function ProtectedRoute({ children }: Props) {
     return <div>Loading...</div>;
   }
 
-  if (auth.mode === "none") {
+  if (!auth.user) {
     return <Navigate to="/login" replace />;
   }
 

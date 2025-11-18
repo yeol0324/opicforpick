@@ -4,11 +4,10 @@ import type { AuthState } from "./types";
 export type AuthContextValue = {
   auth: AuthState;
   loading: boolean;
-
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
-  loginAsGuest: () => void;
+  loginAsDemo: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextValue | undefined>(
