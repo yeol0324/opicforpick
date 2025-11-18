@@ -1,4 +1,3 @@
-export * from "./Header";
-export * from "./Layout";
-export * from "./NavBar";
+export * from "./AppHeader";
+export * from "./BottomNav";
 export * from "./CenterColumn";
