@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  dailySentenceQuery,
-  type Level,
-} from "@entities/today-question/queries/dailySentence.queries";
+import { dailySentenceQuery } from "@entities/today-question/api/daily-sentence.queries";
+import type { Level } from "@entities/today-question/model/types";
 import { Spinner, ErrorMessage, EmptyState } from "@shared/ui";
 
 type SentenceBoxProps = {
@@ -40,33 +38,11 @@ export function SentenceBox({
     );
   }
 
-  if (sentence !== null && sentence !== undefined) {
-    const sentenceText =
-      ("sentence_eng" in sentence && sentence.sentence_eng) ||
-      ("sentenceEng" in sentence && sentence.sentenceEng) ||
-      ("text" in sentence && sentence.text) ||
-      ("content" in sentence && sentence.content) ||
-      null;
-
-    if (sentenceText) {
-      return (
-        <div className="rounded-xl p-4 space-y-3">
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <div className="text-base">{String(sentenceText)}</div>
-        </div>
-      );
-    }
-
-    console.warn("[SentenceBox] Sentence exists but no text field found:", {
-      sentence,
-      keys: Object.keys(sentence),
-      allValues: Object.entries(sentence),
-    });
-
+  if (sentence && sentence.sentence_eng) {
     return (
       <div className="rounded-xl p-4 space-y-3">
         <h2 className="text-lg font-semibold">{title}</h2>
-        <EmptyState message="문장 데이터 형식이 올바르지 않습니다" />
+        <div className="text-base">{sentence.sentence_eng}</div>
       </div>
     );
   }
@@ -74,7 +50,7 @@ export function SentenceBox({
   return (
     <div className="rounded-xl p-4 space-y-3">
       <h2 className="text-lg font-semibold">{title}</h2>
-      <EmptyState message="문장이 없습니다" />
+      <EmptyState message="오늘의 문장이 없습니다." />
     </div>
   );
 }

@@ -1,17 +1,20 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuthContext } from "@entities/auth/model/context";
+import type { JSX } from "react";
 
-export function ProtectedRoute() {
+type Props = {
+  children: JSX.Element;
+};
+export function ProtectedRoute({ children }: Props) {
   const { auth, loading } = useAuthContext();
 
   if (loading) {
     return <div>Loading...</div>;
   }
-  console.log(auth.mode);
 
   if (auth.mode === "none") {
     return <Navigate to="/login" replace />;
   }
 
-  return <Outlet />;
+  return children;
 }

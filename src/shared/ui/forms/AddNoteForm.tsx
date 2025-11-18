@@ -1,10 +1,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  addSentenceSchema,
-  type AddSentenceInput,
-} from "@shared/lib/validation/note";
-import { TextField } from "@shared/ui/fields/TextField";
+import { addSentenceSchema, type AddSentenceInput } from "@shared/lib";
+import { TextField } from "@shared/ui";
 
 type Props = {
   onSuccess?: (data: AddSentenceInput) => void;

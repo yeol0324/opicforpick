@@ -1,6 +1,6 @@
-import { CircleProgressButton } from "@shared/ui/CircleProgressButton";
+import { CircleProgressButton } from "@shared/ui";
 import { useRecordFlow } from "../model/useRecordFlow";
-import { formatMmSs } from "@shared/lib/time/formatDuration";
+import { formatMmSs } from "@shared/lib";
 
 export const RecordController = ({
   sentenceId,

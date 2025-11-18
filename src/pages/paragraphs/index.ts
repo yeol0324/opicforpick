@@ -1,1 +1,0 @@
-export { Paragraphs } from "./ui";

@@ -1,8 +1,8 @@
 import { keepPreviousData, queryOptions } from "@tanstack/react-query";
-import type { Paged } from "@shared/lib";
 import { getSentences } from "./get-sentences";
 import { getRandomSentence } from "./get-random-sentence";
 import type { Sentence, SentenceFilter, SentenceType } from "../model/types";
+import type { Paged } from "@shared/api";
 
 const sentenceKeys = {
   all: () => ["sentences"] as const,
