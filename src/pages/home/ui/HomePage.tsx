@@ -1,11 +1,10 @@
-import { dailySentenceQuery } from "@entities/today-question/api/daily-sentence.queries";
 import { FeedbackPanel } from "@features/ai-feedback/ui/FeedbackPanel";
+import { useDailyQuestion } from "@features/daily-question/model/useDailyQuestion";
+import { DailyQuestionSection } from "@features/daily-question/ui/DailyQuestionSection";
 import { BlobPlayer } from "@features/playback/ui/BlobPlayer";
-import { SentenceBox } from "@features/random-sentence/ui/SentenceBox";
 import { useRecordFlow } from "@features/record-start-stop";
 import { formatMmSs } from "@shared/lib";
 import { CircleProgressButton } from "@shared/ui/recorder/CircleProgressButton";
-import { useQuery } from "@tanstack/react-query";
 
 export function HomePage() {
   const { state, start, stop, save, retry, audioInfo, elapsedMs, progress } =
@@ -18,12 +17,15 @@ export function HomePage() {
   const recordButtonLabel = isRecording ? "녹음 중지" : "녹음 시작";
   const recordIcon = isRecording ? "⏺" : "▶";
 
-  const queryResult = useQuery(dailySentenceQuery("Advanced"));
-  const { data: sentence } = queryResult;
+  const { data: sentence, isLoading, error } = useDailyQuestion("Advanced");
 
   return (
     <div className="flex flex-col items-center gap-6 p-6">
-      <SentenceBox level="Advanced" />
+      <DailyQuestionSection
+        sentence={sentence}
+        loading={isLoading}
+        error={error}
+      />
       <div className="grid place-items-center gap-4 py-6">
         <CircleProgressButton
           progress={progress}
@@ -38,7 +40,6 @@ export function HomePage() {
           {displayTime}
         </div>
       </div>
-
       {audioInfo && sentence && (
         <div className="flex flex-col items-center gap-4">
           <BlobPlayer blobInfo={audioInfo} />
