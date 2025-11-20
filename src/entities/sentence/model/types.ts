@@ -1,6 +1,5 @@
 /**0 전체 |1 question |2 answer */
 export type SentenceType = 0 | 1 | 2;
-export type Level = "Beginner" | "Intermediate" | "Advanced";
 
 export type Sentence = {
   id: string;

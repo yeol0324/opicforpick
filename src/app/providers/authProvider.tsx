@@ -1,7 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@shared/api";
-import { AuthContext } from "@entities/auth/model/context";
-import type { AuthState } from "@entities/auth/model/types";
+import { AuthContext, type AuthState } from "@entities/auth";
 import type { Session } from "@supabase/supabase-js";
 
 const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
@@ -35,8 +34,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     init();
 
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("[onAuthStateChange]", event, session);
-
       if (session?.user) {
         applySession(session);
         return;

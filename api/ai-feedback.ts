@@ -10,7 +10,6 @@ if (!apiKey) {
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  console.log("[ai-feedback] called =====================");
   if (req.method !== "POST") {
     return res.status(405).send("Method Not Allowed");
   }
@@ -20,7 +19,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     transcript: string;
     level: string;
   };
-  console.log("[ai-feedback] transcript =====================", transcript);
 
   if (!transcript) {
     return res.status(400).json({ error: "Missing transcript" });
@@ -92,7 +90,6 @@ Important:
     const response = result.response;
 
     let text = response.text();
-    console.log("[ai-feedback] response:::", text);
 
     if (text.startsWith("```")) {
       text = text.replace(/^```(?:json)?\s*/i, "");
@@ -111,7 +108,7 @@ Important:
     }
 
     return res.status(200).json({
-      ...parsed,
+      result: { ...parsed },
       transcript,
     });
   } catch (e) {
