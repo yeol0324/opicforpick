@@ -75,10 +75,10 @@ Write explanations in Korean, but keep English examples or expressions exactly a
   "vocabularyComment": "string, feedback on word/phrase choice",
   "contentComment": "string, feedback on how well the answer addresses the question",
   "overallComment": "string, final summary and recommended next steps",
-  "pronunciationScore": 0-100 (optional),
-  "grammarScore": 0-100 (optional),
-  "vocabularyScore": 0-100 (optional),
-  "contentScore": 0-100 (optional)
+  "pronunciationScore": 0-100,
+  "grammarScore": 0-100,
+  "vocabularyScore": 0-100,
+  "contentScore": 0-100
 }
 
 Important:
