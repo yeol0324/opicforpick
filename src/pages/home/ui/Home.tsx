@@ -6,7 +6,7 @@ import { useRecordFlow } from "@features/record-start-stop";
 import { formatMmSs } from "@shared/lib";
 import { CircleProgressButton } from "@shared/ui/recorder/CircleProgressButton";
 
-export function HomePage() {
+export function Home() {
   const { state, start, stop, retry, audioInfo, elapsedMs, progress } =
     useRecordFlow();
 
