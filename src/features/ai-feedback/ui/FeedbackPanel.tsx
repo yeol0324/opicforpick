@@ -1,50 +1,72 @@
-import { Spinner } from "@shared/ui";
-import { useFeedback } from "../model/useFeedback";
-import type { Sentence } from "@entities/sentence";
+import { CircleProgress } from "@shared/ui";
 
-interface FeedbackPanelProps {
-  audioBlob: Blob;
-  question: Sentence;
+interface FeedbackResult {
+  overallComment: string;
+  pronunciationScore?: number;
+  pronunciationComment?: string;
+  grammarScore?: number;
+  grammarComment?: string;
+  vocabularyScore?: number;
+  vocabularyComment?: string;
+  contentScore?: number;
+  contentComment?: string;
 }
 
-export function FeedbackPanel({ audioBlob, question }: FeedbackPanelProps) {
-  const { feedback, isLoading, isError, submitFeedback } = useFeedback();
+interface FeedbackData {
+  transcript: string;
+  result: FeedbackResult;
+}
 
-  const handleClick = () => {
-    submitFeedback({
-      audioBlob,
-      question,
-      level: "Intermediate",
-    });
-  };
+interface FeedbackPanelProps {
+  feedback: FeedbackData | null;
+}
 
-  if (isLoading) return <Spinner />;
-  if (isError) return <div>피드백 요청 중 오류가 발생했습니다.</div>;
+function ScoreCircle({ label, score }: { label: string; score?: number }) {
+  const safeScore = score ?? 0;
 
   return (
-    <div>
-      <button
-        onClick={handleClick}
-        className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        AI 피드백 받기
-      </button>
-      {feedback && (
-        <div>
-          <span>내 답변</span>
-          <p>{feedback.transcript}</p>
-          <span>총평</span>
-          <p>{feedback.result.overallComment}</p>
-          <span>발음 : {feedback.result.pronunciationScore}</span>
-          <p>{feedback.result.pronunciationComment}</p>
-          <span>문법 : {feedback.result.grammarScore}</span>
-          <p>{feedback.result.vocabularyComment}</p>
-          <span>단어 : {feedback.result.vocabularyScore}</span>
-          <p>{feedback.result.grammarComment}</p>
-          <span>내용 : {feedback.result.contentScore}</span>
-          <p>{feedback.result.contentComment}</p>
+    <div className="flex items-center gap-2 my-2">
+      <div className="relative grid place-items-center w-[64px] h-[64px]">
+        <CircleProgress progress={safeScore / 100} size={64} />
+        <div className="absolute text-xs text-black">
+          {label} : {safeScore}
         </div>
-      )}
+      </div>
     </div>
+  );
+}
+
+export function FeedbackPanel({ feedback }: FeedbackPanelProps) {
+  if (!feedback) return null;
+
+  const { transcript, result } = feedback;
+
+  return (
+    <section className="flex flex-col gap-4">
+      <div>
+        <span className="font-semibold">내 답변</span>
+        <p className="text-sm leading-relaxed whitespace-pre-wrap">
+          {transcript}
+        </p>
+      </div>
+
+      <div>
+        <span className="font-semibold">총평</span>
+        <p className="text-sm leading-relaxed whitespace-pre-wrap">
+          {result.overallComment}
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <ScoreCircle label="발음" score={result.pronunciationScore} />
+        <p className="text-sm">{result.pronunciationComment}</p>
+        <ScoreCircle label="문법" score={result.grammarScore} />
+        <p className="text-sm">{result.grammarComment}</p>
+        <ScoreCircle label="단어" score={result.vocabularyScore} />
+        <p className="text-sm">{result.vocabularyComment}</p>
+        <ScoreCircle label="내용" score={result.contentScore} />
+        <p className="text-sm">{result.contentComment}</p>
+      </div>
+    </section>
   );
 }
