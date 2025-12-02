@@ -1,19 +1,20 @@
 import { keepPreviousData, queryOptions } from "@tanstack/react-query";
 import { getFeedback } from "./get-feedback";
 import type { FeedbackFilter } from "../model/types";
+import { getLatestFeedback } from "./get-latest-feedback";
 
 const feedbackKeys = {
   all: () => ["feedback"] as const,
-  list: (f?: FeedbackFilter) =>
+  list: (filter?: FeedbackFilter) =>
     [
       ...feedbackKeys.all(),
       "list",
       {
-        q: f?.q ?? "",
-        page: f?.page ?? 1,
-        pageSize: f?.pageSize ?? 20,
+        page: filter?.page ?? 1,
+        pageSize: filter?.pageSize ?? 20,
       },
     ] as const,
+  latest: () => [...feedbackKeys.all(), "latest"] as const,
 };
 
 export const feedbackQueries = {
@@ -23,5 +24,11 @@ export const feedbackQueries = {
       queryFn: () => getFeedback(filter),
       staleTime: 60_000,
       placeholderData: keepPreviousData,
+    }),
+  latest: () =>
+    queryOptions({
+      queryKey: feedbackKeys.latest(),
+      queryFn: () => getLatestFeedback("ddd"),
+      staleTime: 60_000,
     }),
 };

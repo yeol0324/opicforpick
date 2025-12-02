@@ -1,10 +1,13 @@
+import type { Sentence } from "@entities/sentence";
+
 export type Feedback = {
   created_at: string;
-  feedback: JSON;
+  feedback: FeedbackContent;
   id: string;
   sentence_id: string;
   transcript: string;
   user_id: string;
+  sentences: Sentence;
 };
 export type FeedbackContent = {
   pronunciationComment: string;
@@ -19,7 +22,6 @@ export type FeedbackContent = {
   rawTranscript?: string;
 };
 export type FeedbackFilter = {
-  q?: string;
   page?: number;
   pageSize?: number;
 };

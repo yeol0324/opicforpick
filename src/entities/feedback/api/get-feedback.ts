@@ -17,13 +17,8 @@ export async function getFeedback(
 
   let queryBuilder = supabase
     .from("ai_feedback")
-    .select("*", { count: "exact" })
+    .select("*, sentences(*)", { count: "exact" })
     .order("created_at", { ascending: false });
-
-  if (filter?.q && filter.q.trim() !== "") {
-    const searchKeyword = `%${filter.q.trim()}%`;
-    queryBuilder = queryBuilder.ilike("title", searchKeyword);
-  }
 
   const response = await queryBuilder.range(from, to);
   const items = unwrap<Feedback[]>(response);
