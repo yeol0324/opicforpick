@@ -17,7 +17,7 @@ export async function getFeedback(
 
   let queryBuilder = supabase
     .from("ai_feedback")
-    .select("*", { count: "exact" })
+    .select("*, sentences(*)", { count: "exact" })
     .order("created_at", { ascending: false });
 
   if (filter?.q && filter.q.trim() !== "") {
