@@ -1,4 +1,4 @@
-import type { FeedbackResponse } from "../model/types";
+import type { FeedbackResponse } from "./types";
 
 export type GetFeedbackParams = {
   question: string;

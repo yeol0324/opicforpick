@@ -1,9 +1,8 @@
-import { FeedbackPanel } from "@features/ai-feedback/ui/FeedbackPanel";
+import { useFeedback, FeedbackPanel } from "@features/ai-feedback";
 import { useDailyQuestion } from "@features/daily-question/model/useDailyQuestion";
 import { DailyQuestionSection } from "@features/daily-question/ui/DailyQuestionSection";
 import { BlobPlayer } from "@features/playback/ui/BlobPlayer";
 import { useRecordFlow } from "@features/record-start-stop";
-import { useFeedback } from "@features/ai-feedback/model/useFeedback";
 import { formatMmSs } from "@shared/lib";
 import { RecorderButton, Spinner } from "@shared/ui";
 

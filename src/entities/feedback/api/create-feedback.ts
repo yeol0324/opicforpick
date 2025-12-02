@@ -1,21 +1,21 @@
 import { supabase } from "@shared/api";
-import type { FeedbackResponse } from "../model/types";
+import type { FeedbackContent } from "../model/types";
 
-interface CreateFeedbackRecordParams {
+interface CreateFeedbackParam {
   userId: string;
   sentenceId: string;
   transcript: string;
-  feedback: FeedbackResponse;
+  feedback: FeedbackContent;
 }
 
-export async function createFeedbackRecord(params: CreateFeedbackRecordParams) {
+export async function createFeedback(params: CreateFeedbackParam) {
   const { data, error } = await supabase
     .from("ai_feedback")
     .insert({
       user_id: params.userId,
       sentence_id: params.sentenceId,
-      transcript: params.feedback.transcript,
-      feedback: params.feedback.result,
+      transcript: params.transcript,
+      feedback: params.feedback,
     })
     .select("*")
     .single();

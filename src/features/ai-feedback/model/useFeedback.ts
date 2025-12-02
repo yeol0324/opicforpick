@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import type { UseFeedbackParam } from "./types";
 import { recognizeFromBlob } from "@entities/stt";
-import { requestFeedback, type FeedbackResponse } from "@entities/feedback";
 import { useAuthContext } from "@entities/auth";
-import { createFeedbackRecord } from "@entities/feedback/api/createFeedbackRecord";
+import { createFeedback } from "@entities/feedback";
+import type { UseFeedbackParam, FeedbackResponse } from "./types";
+import { requestFeedback } from "./requestFeedback";
 
 async function feedbackFlow(
   params: UseFeedbackParam & { userId: string | null }
@@ -20,11 +20,11 @@ async function feedbackFlow(
     throw new Error("로그인이 필요합니다.");
   }
 
-  await createFeedbackRecord({
+  await createFeedback({
     userId: params.userId,
     sentenceId: params.question.id,
     transcript: transcript,
-    feedback: feedback,
+    feedback: feedback.result,
   });
 
   return {

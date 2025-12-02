@@ -1,3 +1,4 @@
+import type { FeedbackContent } from "@entities/feedback";
 import type { Sentence } from "@entities/sentence";
 import type { ProficiencyLevel } from "@shared/lib";
 
@@ -6,6 +7,13 @@ export interface UseFeedbackParam {
   // userId: string;
   level?: ProficiencyLevel;
   audioBlob: Blob;
-
-  // recordingPath: string;
+}
+export type FeedbackResponse = {
+  transcript: string;
+  result: FeedbackContent;
+};
+export interface FeedbackRequest {
+  transcript: string;
+  question: string;
+  level?: ProficiencyLevel;
 }
