@@ -1,3 +1,5 @@
+import type { Sentence } from "@entities/sentence";
+
 export type ParagraphSentence = {
   created_at: string;
   id: number;
@@ -12,4 +14,8 @@ export type ParagraphSentenceFilter = {
   paragraphId?: string;
   page?: number;
   pageSize?: number;
+};
+
+export type ParagraphSentenceWithSentence = ParagraphSentence & {
+  sentences: Sentence | null;
 };

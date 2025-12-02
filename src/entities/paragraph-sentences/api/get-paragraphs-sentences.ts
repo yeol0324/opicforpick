@@ -6,13 +6,13 @@ import {
   type Paged,
 } from "@shared/api";
 import type {
-  ParagraphSentence,
   ParagraphSentenceFilter,
+  ParagraphSentenceWithSentence,
 } from "../model/types";
 
 export async function getParagraphsSentences(
   filter?: ParagraphSentenceFilter
-): Promise<Paged<ParagraphSentence>> {
+): Promise<Paged<ParagraphSentenceWithSentence>> {
   const { page, pageSize, from, to } = calculatePagination(
     filter?.page,
     filter?.pageSize
@@ -20,7 +20,7 @@ export async function getParagraphsSentences(
 
   let queryBuilder = supabase
     .from("paragraph_sentences")
-    .select("*", { count: "exact" })
+    .select("*, sentences(*)", { count: "exact" })
     .order("position", { ascending: false });
 
   if (filter?.paragraphId) {
@@ -28,7 +28,7 @@ export async function getParagraphsSentences(
   }
 
   const response = await queryBuilder.range(from, to);
-  const items = unwrap<ParagraphSentence[]>(response);
+  const items = unwrap<ParagraphSentenceWithSentence[]>(response);
   const total = response.count ?? 0;
 
   return createPagedResult({
