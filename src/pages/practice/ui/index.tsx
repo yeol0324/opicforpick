@@ -1,47 +1,72 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { paragraphQueries } from "@entities/paragraph/api";
+import type { Paragraph } from "@entities/paragraph";
 import { Spinner, ErrorMessage, EmptyState, SearchInput } from "@shared/ui";
-import { useDebouncedValue, THEME, APP } from "@shared/lib";
-import { SentenceList } from "./ParagraphSentences";
+import { useDebouncedValue, THEME, APP, useInfiniteScroll } from "@shared/lib";
+import { ParagraphSentenceList } from "./ParagraphSentenceList";
 import { ParagraphListItem } from "./ParagraphListItem";
 
 export function Practice() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedParagraphId, setSelectedParagraphId] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
+  const [selectedParagraphId, setSelectedParagraphId] = useState<string | null>(
+    null
+  );
+
+  const [paragraphs, setParagraphs] = useState<Paragraph[]>([]);
 
   const pageSize = APP.DEFAULT_PAGE_SIZE;
-  const debouncedSearchQuery = useDebouncedValue(
-    searchQuery,
+  const debouncedSearchTerm = useDebouncedValue(
+    searchTerm,
     APP.DEFAULT_DEBOUNCE_DELAY
   );
 
   const paragraphsQuery = useQuery(
     paragraphQueries.list({
-      q: debouncedSearchQuery,
-      page: currentPage,
+      q: debouncedSearchTerm,
+      page,
       pageSize,
     })
   );
 
-  const { items: paragraphs, total } = paragraphsQuery.data ?? {
-    items: [],
-    total: 0,
-  };
+  const items = paragraphsQuery.data?.items ?? [];
+  const total = paragraphsQuery.data?.total ?? 0;
+
+  useEffect(() => {
+    if (!items) return;
+
+    setParagraphs((prev) => {
+      if (page === 1) return items as Paragraph[];
+      return [...prev, ...(items as Paragraph[])];
+    });
+  }, [items, page]);
+
+  const isLoading = paragraphsQuery.isLoading && page === 1;
+  const hasError = !!paragraphsQuery.error;
+  const isEmpty = paragraphs.length === 0 && !isLoading;
+
+  const hasMore = total > paragraphs.length;
 
   const handleSearchChange = (value: string) => {
-    setSearchQuery(value);
-    setCurrentPage(1);
+    setSearchTerm(value);
+    setPage(1);
+    setParagraphs([]);
   };
 
   const handleParagraphClick = (paragraphId: string) => {
-    setSelectedParagraphId(paragraphId);
+    setSelectedParagraphId((prev) =>
+      prev === paragraphId ? prev : paragraphId
+    );
   };
 
-  const isLoading = paragraphsQuery.isLoading;
-  const hasError = !!paragraphsQuery.error;
-  const isEmpty = paragraphs.length === 0 && !isLoading;
+  const containerRef = useInfiniteScroll({
+    onLoadMore: () => {
+      if (paragraphsQuery.isLoading || hasError || !hasMore) return;
+      setPage((prev) => prev + 1);
+    },
+    enabled: !paragraphsQuery.isLoading && !hasError && hasMore,
+  });
 
   return (
     <div
@@ -50,7 +75,7 @@ export function Practice() {
     >
       <div className="flex flex-wrap gap-2">
         <SearchInput
-          value={searchQuery}
+          value={searchTerm}
           onChange={handleSearchChange}
           placeholder="검색어"
         />
@@ -63,11 +88,11 @@ export function Practice() {
             className="text-sm text-gray-500"
           />
         ) : (
-          <SentenceList paragraphId={selectedParagraphId} />
+          <ParagraphSentenceList paragraphId={selectedParagraphId} />
         )}
       </div>
 
-      <div className="flex flex-col flex-1 overflow-y-auto">
+      <div className="flex flex-col flex-1 overflow-y-auto" ref={containerRef}>
         {isLoading ? (
           <Spinner />
         ) : hasError ? (

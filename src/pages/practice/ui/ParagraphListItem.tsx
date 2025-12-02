@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import type { Paragraph } from "@entities/paragraph";
 
 type ParagraphListItemProps = {
@@ -12,20 +11,16 @@ export function ParagraphListItem({
   isSelected,
   onClick,
 }: ParagraphListItemProps) {
-  const backgroundColor = useMemo(() => {
-    if (isSelected) {
-      return "rgba(50, 182, 191, 0.1)";
-    }
-    return "transparent";
-  }, [isSelected]);
-
   return (
     <li
-      className="pb-3 cursor-pointer hover:bg-slate-100 p-2 rounded transition-colors"
+      className={[
+        "pb-3 cursor-pointer p-2 rounded transition-colors",
+        "hover:bg-slate-100",
+        isSelected ? "font-bold" : "font-normal",
+      ].join(" ")}
       onClick={onClick}
       style={{
-        backgroundColor,
-        fontWeight: isSelected ? "bold" : "normal",
+        backgroundColor: isSelected ? "rgba(50, 182, 191, 0.1)" : "transparent",
       }}
     >
       {paragraph.title}
