@@ -1,21 +1,13 @@
 import { keepPreviousData, queryOptions } from "@tanstack/react-query";
 import { getParagraphs } from "./get-paragraphs";
 import type { ParagraphFilter, Paragraph } from "../model/types";
+import { buildListKey } from "@shared/lib";
 
 const paragraphKeys = {
   all: () => ["paragraphs"] as const,
-  list: (f?: ParagraphFilter) =>
-    [
-      ...paragraphKeys.all(),
-      "list",
-      {
-        q: f?.q ?? "",
-        page: f?.page ?? 1,
-        pageSize: f?.pageSize ?? 20,
-      },
-    ] as const,
-
-  random: (type?: Paragraph) => ["sentences", "random", type ?? "any"] as const,
+  list: (filter?: ParagraphFilter) => buildListKey(paragraphKeys.all(), filter),
+  random: (type?: Paragraph) =>
+    [...paragraphKeys.all(), "random", type ?? "any"] as const,
 };
 
 export const paragraphQueries = {

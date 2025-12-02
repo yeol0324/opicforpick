@@ -2,18 +2,11 @@ import { keepPreviousData, queryOptions } from "@tanstack/react-query";
 import { getFeedback } from "./get-feedback";
 import type { FeedbackFilter } from "../model/types";
 import { getLatestFeedback } from "./get-latest-feedback";
+import { buildListKey } from "@shared/lib";
 
 const feedbackKeys = {
   all: () => ["feedback"] as const,
-  list: (filter?: FeedbackFilter) =>
-    [
-      ...feedbackKeys.all(),
-      "list",
-      {
-        page: filter?.page ?? 1,
-        pageSize: filter?.pageSize ?? 20,
-      },
-    ] as const,
+  list: (filter?: FeedbackFilter) => buildListKey(feedbackKeys.all(), filter),
   latest: () => [...feedbackKeys.all(), "latest"] as const,
 };
 
