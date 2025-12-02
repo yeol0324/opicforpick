@@ -20,11 +20,6 @@ export async function getFeedback(
     .select("*, sentences(*)", { count: "exact" })
     .order("created_at", { ascending: false });
 
-  if (filter?.q && filter.q.trim() !== "") {
-    const searchKeyword = `%${filter.q.trim()}%`;
-    queryBuilder = queryBuilder.ilike("title", searchKeyword);
-  }
-
   const response = await queryBuilder.range(from, to);
   const items = unwrap<Feedback[]>(response);
   const total = response.count ?? 0;

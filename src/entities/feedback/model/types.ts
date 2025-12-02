@@ -22,7 +22,6 @@ export type FeedbackContent = {
   rawTranscript?: string;
 };
 export type FeedbackFilter = {
-  q?: string;
   page?: number;
   pageSize?: number;
 };
