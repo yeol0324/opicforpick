@@ -1,23 +1,41 @@
-import type { ProficiencyLevel } from "@shared/lib";
-
-export interface FeedbackRequest {
+export type Feedback = {
+  created_at: string;
+  feedback: JSON;
+  id: string;
+  sentence_id: string;
   transcript: string;
-  question: string;
-  level?: ProficiencyLevel;
-}
-
-export type FeedbackResponse = {
+  user_id: string;
+};
+export type FeedbackContent = {
+  pronunciationComment: string;
+  grammarComment: string;
+  vocabularyComment: string;
+  contentComment: string;
+  overallComment: string;
+  pronunciationScore?: number;
+  grammarScore?: number;
+  vocabularyScore?: number;
+  contentScore?: number;
+  rawTranscript?: string;
+};
+export type FeedbackFilter = {
+  q?: string;
+  page?: number;
+  pageSize?: number;
+};
+export type CreateFeedback = {
+  created_at?: string;
+  feedback: FeedbackContent;
+  id?: string;
+  sentence_id: string;
   transcript: string;
-  result: {
-    pronunciationComment: string;
-    grammarComment: string;
-    vocabularyComment: string;
-    contentComment: string;
-    overallComment: string;
-    pronunciationScore?: number;
-    grammarScore?: number;
-    vocabularyScore?: number;
-    contentScore?: number;
-    rawTranscript?: string;
-  };
+  user_id: string;
+};
+export type UpdateFeedback = {
+  created_at?: string;
+  feedback?: JSON;
+  id?: string;
+  sentence_id?: string;
+  transcript?: string;
+  user_id?: string;
 };
