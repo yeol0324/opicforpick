@@ -1,17 +1,26 @@
+import { supabase } from "@shared/api";
 import type { Recording } from "../model/types";
 
-export type CreateRecordingInput = {
+export type CreateRecordingParam = {
+  userId: string;
   sentenceId?: string | null;
-  blob: Blob;
+  audioUrl: string;
   durationMs: number;
 };
 
 export async function createRecording(
-  input: CreateRecordingInput
+  params: CreateRecordingParam
 ): Promise<Recording> {
-  console.log(input);
+  const { data, error } = await supabase
+    .from("speech_recording")
+    .insert({
+      user_id: params.userId,
+      sentence_id: params.sentenceId,
+      audio_url: params.audioUrl,
+    })
+    .select("*")
+    .single();
 
-  // TODO: 1) upload to storage 2) save meta via server/Supabase 3) return row
-  // return await post('/recordings', formData)
-  throw new Error("not implemented");
+  if (error) throw error;
+  return data;
 }

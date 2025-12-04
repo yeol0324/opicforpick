@@ -8,10 +8,7 @@ export interface UseFeedbackParam {
   level?: ProficiencyLevel;
   audioBlob: Blob;
 }
-export type FeedbackResponse = {
-  transcript: string;
-  result: FeedbackContent;
-};
+export type FeedbackResponse = { result: FeedbackContent };
 export interface FeedbackRequest {
   transcript: string;
   question: string;

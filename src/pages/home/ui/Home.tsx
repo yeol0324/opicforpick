@@ -77,7 +77,7 @@ export function Home() {
             </div>
           )}
 
-          {feedback && <FeedbackPanel feedback={feedback} />}
+          {feedback && <FeedbackPanel feedback={feedback.result} />}
         </div>
       ) : (
         <div className="grid place-items-center gap-4 py-6">

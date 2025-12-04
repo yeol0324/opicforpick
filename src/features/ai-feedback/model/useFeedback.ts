@@ -1,8 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { useAuthContext } from "@entities/auth";
 import { createFeedback } from "@entities/feedback";
-import type { UseFeedbackParam, FeedbackResponse } from "./types";
+import { createRecording, uploadRecording } from "@entities/recording";
 import { requestFeedback } from "./requestFeedback";
+import type { UseFeedbackParam, FeedbackResponse } from "./types";
 
 async function feedbackFlow(
   params: UseFeedbackParam & { userId: string | null }
@@ -15,17 +16,27 @@ async function feedbackFlow(
     level: params.level,
   });
 
+  const audioPath = await uploadRecording({
+    userId: params.userId,
+    sentenceId: params.question.id,
+    blob: params.audioBlob,
+  });
+
+  const recording = await createRecording({
+    userId: params.userId,
+    sentenceId: params.question.id,
+    audioUrl: audioPath,
+    durationMs: 0,
+  });
+
   await createFeedback({
     userId: params.userId,
     sentenceId: params.question.id,
-    transcript: "transcript",
+    recordingId: recording.id,
     feedback: feedback.result,
   });
 
-  return {
-    ...feedback,
-    transcript: "transcript",
-  };
+  return feedback;
 }
 
 export function useFeedback() {
