@@ -22,6 +22,7 @@ function ScoreCircle({ label, score }: { label: string; score?: number }) {
 
 export function FeedbackPanel({ feedback }: FeedbackPanelProps) {
   if (!feedback) return null;
+  console.log(feedback);
 
   return (
     <section className="flex flex-col gap-4">

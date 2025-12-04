@@ -1,13 +1,12 @@
 import type { Sentence } from "@entities/sentence";
 
 export type Feedback = {
-  created_at: string;
-  feedback: FeedbackContent;
   id: string;
-  sentence_id: string;
-  transcript: string;
-  user_id: string;
-  sentences: Sentence;
+  createdAt: string;
+  userId: string;
+  sentenceId: Sentence;
+  feedback: FeedbackContent;
+  recordingId: string;
 };
 export type FeedbackContent = {
   pronunciationComment: string;

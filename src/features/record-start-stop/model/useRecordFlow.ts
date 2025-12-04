@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { createRecorder } from "@shared/lib";
-import { createRecording } from "@entities/recording/api/create-recording";
 
 type State = "idle" | "recording" | "preview" | "saving";
 
-export function useRecordFlow(sentenceId?: string, opts?: { maxMs?: number }) {
+export function useRecordFlow(opts?: { maxMs?: number }) {
   const recorderRef = useRef(
     createRecorder({
       autoPauseOnHidden: true,
@@ -20,11 +18,6 @@ export function useRecordFlow(sentenceId?: string, opts?: { maxMs?: number }) {
   } | null>(null);
   const startedAtRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
-
-  const saveMut = useMutation({
-    mutationFn: (p: { blob: Blob; durationMs: number }) =>
-      createRecording({ ...p, sentenceId }),
-  });
 
   const tick = () => {
     if (startedAtRef.current == null) return;
@@ -61,16 +54,6 @@ export function useRecordFlow(sentenceId?: string, opts?: { maxMs?: number }) {
     setState("preview");
   };
 
-  const save = async () => {
-    if (!audioInfo) return;
-    setState("saving");
-
-    await saveMut.mutateAsync(audioInfo);
-
-    setAudioInfo(null);
-    setState("idle");
-  };
-
   const retry = () => {
     setAudioInfo(null);
     setElapsedMs(0);
@@ -90,9 +73,7 @@ export function useRecordFlow(sentenceId?: string, opts?: { maxMs?: number }) {
     state,
     start,
     stop,
-    save,
     retry,
-    isSaving: saveMut.isPending,
     audioInfo,
     elapsedMs,
     progress,
