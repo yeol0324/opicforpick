@@ -43,8 +43,19 @@ function normalizeError(
 }
 
 export function reportAppError(params: ReportAppErrorParams) {
-  const { source, severity = "error", meta } = params;
+  if (import.meta.env.DEV) {
+    const { message, stack } = normalizeError(params);
+    console.error("[AppError][DEV]", {
+      source: params.source,
+      severity: params.severity ?? "error",
+      message,
+      stack,
+      meta: params.meta,
+    });
+    return;
+  }
 
+  const { source, severity = "error", meta } = params;
   const { message, stack } = normalizeError(params);
 
   const payload: ReportErrorPayload = {
