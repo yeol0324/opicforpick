@@ -7,6 +7,7 @@ import { Practice } from "@pages/practice";
 import { ProtectedRoute } from "@app/providers/ProtectedRoute";
 import { DemoLoginRedirect } from "@features/auth-demo/ui/DemoLoginRedirect";
 import { RouteErrorBoundary } from "@pages/error/RouteErrorBoundary";
+import { Word } from "@pages/word/ui/Word";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute children={<Home />} />,
       },
       { path: "/notes", element: <ProtectedRoute children={<Notes />} /> },
+      { path: "/word", element: <ProtectedRoute children={<Word />} /> },
       {
         path: "/practice",
         element: <ProtectedRoute children={<Practice />} />,

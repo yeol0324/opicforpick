@@ -1,1 +1,0 @@
-export { Sentences } from "./ui";
