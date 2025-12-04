@@ -2,7 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { paragraphQueries } from "@entities/paragraph/api";
 import type { Paragraph } from "@entities/paragraph";
-import { Spinner, ErrorMessage, EmptyState, SearchInput } from "@shared/ui";
+import {
+  Spinner,
+  ErrorMessage,
+  EmptyState,
+  SearchInput,
+  Card,
+} from "@shared/ui";
 import { useDebouncedValue, THEME, APP, useInfiniteScroll } from "@shared/lib";
 import { ParagraphSentenceList } from "./ParagraphSentenceList";
 import { ParagraphListItem } from "./ParagraphListItem";
@@ -73,14 +79,6 @@ export function Practice() {
       className="p-6 space-y-4 h-screen flex flex-col overflow-hidden"
       style={{ ["--brand" as string]: THEME.BRAND }}
     >
-      <div className="flex flex-wrap gap-2">
-        <SearchInput
-          value={searchTerm}
-          onChange={handleSearchChange}
-          placeholder="검색어"
-        />
-      </div>
-
       <div className="border p-4 mt-4 rounded-lg bg-gray-50 min-h-[200px]">
         {!selectedParagraphId ? (
           <EmptyState
@@ -91,7 +89,13 @@ export function Practice() {
           <ParagraphSentenceList paragraphId={selectedParagraphId} />
         )}
       </div>
-
+      <div className="flex flex-wrap gap-2">
+        <SearchInput
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder="검색어"
+        />
+      </div>
       <div className="flex flex-col flex-1 overflow-y-auto" ref={containerRef}>
         {isLoading ? (
           <Spinner />
@@ -100,17 +104,19 @@ export function Practice() {
         ) : (
           <>
             <div className="text-sm text-slate-600 mb-2">총 {total}개</div>
-            <ul className="list-disc list-none space-y-1">
-              {paragraphs.map((paragraph) => (
-                <ParagraphListItem
-                  key={paragraph.id}
-                  paragraph={paragraph}
-                  isSelected={paragraph.id === selectedParagraphId}
-                  onClick={() => handleParagraphClick(paragraph.id)}
-                />
-              ))}
-            </ul>
-            {isEmpty && <EmptyState message="단락이 없습니다" />}
+            <Card>
+              <ul className="list-disc list-none space-y-1">
+                {paragraphs.map((paragraph) => (
+                  <ParagraphListItem
+                    key={paragraph.id}
+                    paragraph={paragraph}
+                    isSelected={paragraph.id === selectedParagraphId}
+                    onClick={() => handleParagraphClick(paragraph.id)}
+                  />
+                ))}
+              </ul>
+              {isEmpty && <EmptyState message="단락이 없습니다" />}
+            </Card>
           </>
         )}
       </div>
