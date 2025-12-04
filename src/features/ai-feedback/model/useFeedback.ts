@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { recognizeFromBlob } from "@entities/stt";
 import { useAuthContext } from "@entities/auth";
 import { createFeedback } from "@entities/feedback";
 import type { UseFeedbackParam, FeedbackResponse } from "./types";
@@ -10,9 +9,8 @@ async function feedbackFlow(
 ): Promise<FeedbackResponse> {
   if (!params.userId) throw new Error("로그인이 필요합니다.");
 
-  const transcript = await recognizeFromBlob(params.audioBlob, "en-US");
   const feedback = await requestFeedback({
-    transcript,
+    audio: params.audioBlob,
     question: params.question.sentence_eng,
     level: params.level,
   });
@@ -20,13 +18,13 @@ async function feedbackFlow(
   await createFeedback({
     userId: params.userId,
     sentenceId: params.question.id,
-    transcript: transcript,
+    transcript: "transcript",
     feedback: feedback.result,
   });
 
   return {
     ...feedback,
-    transcript: transcript,
+    transcript: "transcript",
   };
 }
 

@@ -14,14 +14,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).send("Method Not Allowed");
   }
 
-  const { question, transcript, level } = req.body as {
+  const { question, level, audioBase64, mimeType } = req.body as {
     question: string;
-    transcript: string;
-    level: string;
+    level?: string;
+    audioBase64?: string;
+    mimeType?: string;
   };
 
-  if (!transcript) {
-    return res.status(400).json({ error: "Missing transcript" });
+  if (!audioBase64 || !mimeType) {
+    return res.status(400).json({ error: "Missing audio" });
   }
 
   if (!genAI) {
@@ -34,16 +35,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
 
     const prompt = `
-    You are an English-speaking coach specializing in OPIC-style speaking tests.
+You are an English-speaking coach specializing in OPIC-style speaking tests.
 
+You will receive:
+- The original question (in English).
+- An audio answer from the learner (in English).
 Evaluate the learner’s English answer based on the following information:
 
 [Input Information]
 - Question:
 ${question}
-
-- Learner’s Answer (Transcript):
-${transcript}
 
 - Learner Level:
 ${level}
@@ -86,7 +87,23 @@ Important:
 - Do NOT include any text outside the JSON block (no markdown, no explanations).
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            { text: prompt },
+            {
+              inlineData: {
+                data: audioBase64,
+                mimeType: mimeType,
+              },
+            },
+          ],
+        },
+      ],
+    });
+
     const response = result.response;
 
     let text = response.text();
@@ -109,7 +126,6 @@ Important:
 
     return res.status(200).json({
       result: { ...parsed },
-      transcript,
     });
   } catch (e) {
     // TODO: 503 ai 과부하 처리 추가
