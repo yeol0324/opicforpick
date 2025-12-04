@@ -40,7 +40,7 @@ export function Notes() {
                     ].join(" ")}
                     onClick={() => handleOpen(item)}
                   >
-                    <p>{item.sentences.sentence_eng}</p>
+                    <p className="truncate">{item.sentences.sentence_eng}</p>
                     <p>{YYYYMMDDHHmm(item.sentences.created_at)}</p>
                   </li>
                 );
