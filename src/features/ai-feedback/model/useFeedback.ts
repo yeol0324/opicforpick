@@ -8,17 +8,14 @@ import { requestFeedback } from "./requestFeedback";
 async function feedbackFlow(
   params: UseFeedbackParam & { userId: string | null }
 ): Promise<FeedbackResponse> {
-  const transcript = await recognizeFromBlob(params.audioBlob, "en-US");
+  if (!params.userId) throw new Error("로그인이 필요합니다.");
 
+  const transcript = await recognizeFromBlob(params.audioBlob, "en-US");
   const feedback = await requestFeedback({
     transcript,
     question: params.question.sentence_eng,
     level: params.level,
   });
-
-  if (!params.userId) {
-    throw new Error("로그인이 필요합니다.");
-  }
 
   await createFeedback({
     userId: params.userId,
