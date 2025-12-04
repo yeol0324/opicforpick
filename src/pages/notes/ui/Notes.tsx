@@ -1,12 +1,13 @@
-import { feedbackQueries } from "@entities/feedback";
+import { recordingQueries } from "@entities/recording";
+import { YYYYMMDDHHmm } from "@shared/lib/time/formatDateTime";
 import { Card } from "@shared/ui";
 import { useQuery } from "@tanstack/react-query";
 
 export function Notes() {
-  const feedbackQuery = useQuery({
-    ...feedbackQueries.list(),
+  const recordingQuery = useQuery({
+    ...recordingQueries.list(),
   });
-  const feedbackItems = feedbackQuery.data?.items ?? [];
+  const feedbackItems = recordingQuery.data?.items ?? [];
 
   return (
     <div className="flex flex-col items-center gap-6 p-6">
@@ -18,7 +19,8 @@ export function Notes() {
             <ul>
               {feedbackItems.map((item, idx) => (
                 <li key={item.id}>
-                  <p>{item.feedback.contentScore}</p>
+                  <p>{item.sentences.sentence_eng}</p>
+                  <p>{YYYYMMDDHHmm(item.sentences.created_at)}</p>
                 </li>
               ))}
             </ul>

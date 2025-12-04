@@ -17,7 +17,7 @@ export async function getLatestFeedback({
   tomorrow.setDate(today.getDate() + 1);
 
   const { data, error } = await supabase
-    .from("ai_feedback")
+    .from("ai_feedbacks")
     .select("*")
     .eq("user_id", userId)
     .eq("sentence_id", sentenceId)

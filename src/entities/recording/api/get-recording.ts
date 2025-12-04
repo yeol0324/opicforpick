@@ -5,23 +5,23 @@ import {
   createPagedResult,
   type Paged,
 } from "@shared/api";
-import type { Feedback, FeedbackFilter } from "../model/types";
+import type { Recording, RecordingFilter } from "../model/types";
 
-export async function getFeedback(
-  filter?: FeedbackFilter
-): Promise<Paged<Feedback>> {
+export async function getRecording(
+  filter?: RecordingFilter
+): Promise<Paged<Recording>> {
   const { page, pageSize, from, to } = calculatePagination(
     filter?.page,
     filter?.pageSize
   );
 
   let queryBuilder = supabase
-    .from("ai_feedbacks")
-    .select("*, sentences(*)", { count: "exact" })
+    .from("speech_recordings")
+    .select("*, sentences(*), ai_feedbacks(*)", { count: "exact" })
     .order("created_at", { ascending: false });
 
   const response = await queryBuilder.range(from, to);
-  const items = unwrap<Feedback[]>(response);
+  const items = unwrap<Recording[]>(response);
   const total = response.count ?? 0;
 
   return createPagedResult({
