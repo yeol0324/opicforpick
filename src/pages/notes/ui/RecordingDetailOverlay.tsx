@@ -27,7 +27,7 @@ export const RecordingDetailOverlay = ({
         </div>
 
         {feedback ? (
-          <Card mode="scroll" maxHeight="70vh">
+          <Card mode="scroll" maxHeight="70dvh">
             <FeedbackPanel feedback={feedback.feedback} />
           </Card>
         ) : (
