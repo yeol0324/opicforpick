@@ -12,7 +12,7 @@ export async function createFeedback(
   params: CreateFeedbackParam
 ): Promise<Feedback> {
   const { data, error } = await supabase
-    .from("ai_feedback")
+    .from("ai_feedbacks")
     .insert({
       user_id: params.userId,
       sentence_id: params.sentenceId,

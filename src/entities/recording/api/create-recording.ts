@@ -12,7 +12,7 @@ export async function createRecording(
   params: CreateRecordingParam
 ): Promise<Recording> {
   const { data, error } = await supabase
-    .from("speech_recording")
+    .from("speech_recordings")
     .insert({
       user_id: params.userId,
       sentence_id: params.sentenceId,

@@ -4,7 +4,7 @@ import { FeedbackPanel } from "@features/ai-feedback";
 import { BlobPlayer } from "@features/playback";
 import { useRecordFlow, type AudioInfo } from "@features/record-start-stop";
 import { formatMmSs } from "@shared/lib";
-import { Button, RecorderButton, Spinner } from "@shared/ui";
+import { Button, Card, RecorderButton, Spinner } from "@shared/ui";
 
 type RecordingFlowSectionProps = {
   sentence: Sentence | null | undefined;
@@ -63,7 +63,11 @@ export const RecordingFlowSection = ({
           </div>
         )}
 
-        {feedback && <FeedbackPanel feedback={feedback} />}
+        {feedback && (
+          <Card>
+            <FeedbackPanel feedback={feedback} />
+          </Card>
+        )}
       </section>
     );
   }

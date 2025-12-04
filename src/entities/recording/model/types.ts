@@ -1,8 +1,16 @@
+import type { Feedback } from "@entities/feedback";
+import type { Sentence } from "@entities/sentence";
+
 export type Recording = {
   id: string;
   userId: string;
-  themeId?: number | null;
-  url: string;
-  durationMs: number;
   createdAt: string;
+  sentenceId: string;
+  audioUrl: string;
+  sentences: Sentence;
+  ai_feedbacks: Feedback[];
+};
+export type RecordingFilter = {
+  page?: number;
+  pageSize?: number;
 };

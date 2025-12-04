@@ -1,12 +1,26 @@
-import { feedbackQueries } from "@entities/feedback";
+import { overlay } from "overlay-kit";
+import { recordingQueries, type Recording } from "@entities/recording";
+import { YYYYMMDDHHmm } from "@shared/lib";
 import { Card } from "@shared/ui";
 import { useQuery } from "@tanstack/react-query";
+import { RecordingDetailOverlay } from "./RecordingDetailOverlay";
 
 export function Notes() {
-  const feedbackQuery = useQuery({
-    ...feedbackQueries.list(),
+  const recordingQuery = useQuery({
+    ...recordingQueries.list(),
   });
-  const feedbackItems = feedbackQuery.data?.items ?? [];
+  const feedbackItems = recordingQuery.data?.items ?? [];
+  const handleOpen = (item: Recording) => {
+    overlay.open(({ close, unmount }) => (
+      <RecordingDetailOverlay
+        params={item}
+        onClose={() => {
+          close();
+          unmount();
+        }}
+      />
+    ));
+  };
 
   return (
     <div className="flex flex-col items-center gap-6 p-6">
@@ -16,11 +30,21 @@ export function Notes() {
         <Card>
           {feedbackItems && (
             <ul>
-              {feedbackItems.map((item, idx) => (
-                <li key={item.id}>
-                  <p>{item.feedback.contentScore}</p>
-                </li>
-              ))}
+              {feedbackItems.map((item, idx) => {
+                return (
+                  <li
+                    key={item.id}
+                    className={[
+                      "cursor-pointer rounded-md p-2 transition-colors",
+                      "hover:bg-slate-100",
+                    ].join(" ")}
+                    onClick={() => handleOpen(item)}
+                  >
+                    <p className="truncate">{item.sentences.sentence_eng}</p>
+                    <p>{YYYYMMDDHHmm(item.sentences.created_at)}</p>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </Card>
