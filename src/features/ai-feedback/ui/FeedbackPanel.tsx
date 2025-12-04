@@ -1,5 +1,5 @@
 import type { FeedbackContent } from "@entities/feedback";
-import { CircleProgress } from "@shared/ui";
+import { Card, CircleProgress } from "@shared/ui";
 
 interface FeedbackPanelProps {
   feedback: FeedbackContent | null;
@@ -32,24 +32,25 @@ export function FeedbackPanel({ feedback }: FeedbackPanelProps) {
           {transcript}
         </p>
       </div> */}
+      <Card>
+        <div>
+          <span className="font-semibold">총평</span>
+          <p className="text-sm leading-relaxed whitespace-pre-wrap">
+            {feedback.overallComment}
+          </p>
+        </div>
 
-      <div>
-        <span className="font-semibold">총평</span>
-        <p className="text-sm leading-relaxed whitespace-pre-wrap">
-          {feedback.overallComment}
-        </p>
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <ScoreCircle label="발음" score={feedback.pronunciationScore} />
-        <p className="text-sm">{feedback.pronunciationComment}</p>
-        <ScoreCircle label="문법" score={feedback.grammarScore} />
-        <p className="text-sm">{feedback.grammarComment}</p>
-        <ScoreCircle label="단어" score={feedback.vocabularyScore} />
-        <p className="text-sm">{feedback.vocabularyComment}</p>
-        <ScoreCircle label="내용" score={feedback.contentScore} />
-        <p className="text-sm">{feedback.contentComment}</p>
-      </div>
+        <div className="flex flex-col gap-3">
+          <ScoreCircle label="발음" score={feedback.pronunciationScore} />
+          <p className="text-sm">{feedback.pronunciationComment}</p>
+          <ScoreCircle label="문법" score={feedback.grammarScore} />
+          <p className="text-sm">{feedback.grammarComment}</p>
+          <ScoreCircle label="단어" score={feedback.vocabularyScore} />
+          <p className="text-sm">{feedback.vocabularyComment}</p>
+          <ScoreCircle label="내용" score={feedback.contentScore} />
+          <p className="text-sm">{feedback.contentComment}</p>
+        </div>
+      </Card>
     </section>
   );
 }

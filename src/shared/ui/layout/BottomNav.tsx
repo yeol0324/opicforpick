@@ -12,7 +12,7 @@ export function BottomNav() {
   const isActive = (to: string) => pathname === to;
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 bg-white/95 backdrop-blur bottom-nav">
+    <nav className="fixed inset-x-0 bottom-0 z-40 bg-white/95 backdrop-blur bottom-nav">
       <div className="mx-auto max-w-md">
         <ul className="flex justify-between px-4 py-1">
           {NAV_ITEMS.map((item) => {
