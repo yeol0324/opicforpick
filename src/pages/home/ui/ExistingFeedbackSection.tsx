@@ -18,7 +18,7 @@ export const ExistingFeedbackSection = ({
   onRetry,
 }: ExistingFeedbackSectionProps) => {
   return (
-    <div className="flex flex-col items-center gap-4 w-full">
+    <section className="flex flex-col items-center gap-4 w-full">
       <div className="flex gap-2">
         <Button onClick={onRetry} disabled={isBusy}>
           다시하기
@@ -40,6 +40,6 @@ export const ExistingFeedbackSection = ({
       {!isLatestLoading && latestFeedback && (
         <FeedbackPanel feedback={latestFeedback.feedback} />
       )}
-    </div>
+    </section>
   );
 };

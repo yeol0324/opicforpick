@@ -38,7 +38,7 @@ export const RecordingFlowSection = ({
 
   if (recordFlow.audioInfo && sentence) {
     return (
-      <div className="flex flex-col items-center gap-4 w-full">
+      <section className="flex flex-col items-center gap-4 w-full">
         <BlobPlayer blobInfo={recordFlow.audioInfo} />
 
         <div className="flex gap-2">
@@ -64,7 +64,7 @@ export const RecordingFlowSection = ({
         )}
 
         {feedback && <FeedbackPanel feedback={feedback} />}
-      </div>
+      </section>
     );
   }
 
