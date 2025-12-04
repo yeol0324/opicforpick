@@ -1,27 +1,46 @@
-import { useFeedback, FeedbackPanel } from "@features/ai-feedback";
-import { useDailyQuestion } from "@features/daily-question/model/useDailyQuestion";
-import { DailyQuestionSection } from "@features/daily-question/ui/DailyQuestionSection";
-import { BlobPlayer } from "@features/playback/ui/BlobPlayer";
-import { useRecordFlow } from "@features/record-start-stop";
-import { formatMmSs } from "@shared/lib";
-import { RecorderButton, Spinner } from "@shared/ui";
+import { useState } from "react";
+import { useLatestFeedback } from "@entities/feedback";
+import { useFeedback } from "@features/ai-feedback";
+import {
+  useDailyQuestion,
+  DailyQuestionSection,
+} from "@features/daily-question";
+import { type AudioInfo } from "@features/record-start-stop";
+import { Spinner } from "@shared/ui";
+import { RecordingFlowSection } from "./RecordingFlowSection";
+import { ExistingFeedbackSection } from "./ExistingFeedbackSection";
 
 export function Home() {
-  const { state, start, stop, retry, audioInfo, elapsedMs, progress } =
-    useRecordFlow();
-  const isRecording = state === "recording";
-  const isSaving = state === "saving";
-  const displayTime = formatMmSs(isRecording ? elapsedMs : 0);
-  const handleRecordClick = isRecording ? stop : start;
-  const recordIcon = isRecording ? "⏺" : "▶";
+  const [audioInfo, setAudioInfo] = useState<AudioInfo | null>(null);
+  const [ignoreLatest, setIgnoreLatest] = useState(false);
 
-  const { data: sentence, isLoading, error } = useDailyQuestion("Advanced");
+  const onRecordComplete = (info: AudioInfo) => {
+    setAudioInfo(info);
+  };
+
+  const onRecordReset = () => {
+    setIgnoreLatest(true);
+    resetFeedback();
+  };
+
+  const {
+    data: sentence,
+    isLoading: isQuestionLoading,
+    error: questionError,
+  } = useDailyQuestion("Advanced");
+
+  const {
+    data: latestFeedback,
+    isLoading: isLatestLoading,
+    isError: isLatestError,
+  } = useLatestFeedback(sentence?.id);
 
   const {
     feedback,
     isLoading: isFeedbackLoading,
-    isError,
+    isError: isFeedbackError,
     submitFeedback,
+    reset: resetFeedback,
   } = useFeedback();
 
   const handleFeedbackClick = () => {
@@ -33,66 +52,38 @@ export function Home() {
     });
   };
 
+  const hasExistingFeedback = !!latestFeedback && !ignoreLatest;
+  const isFeedbackDecisionPending =
+    sentence && !ignoreLatest && isLatestLoading;
+  const isBusy = isFeedbackLoading;
+
   return (
     <div className="flex flex-col items-center gap-6 p-6">
       <DailyQuestionSection
         sentence={sentence}
-        loading={isLoading}
-        error={error}
+        loading={isQuestionLoading}
+        error={questionError}
       />
-
-      {audioInfo && sentence ? (
-        <div className="flex flex-col items-center gap-4 w-full">
-          <BlobPlayer blobInfo={audioInfo} />
-
-          <div className="flex gap-2">
-            {!feedback ? (
-              <button
-                onClick={handleFeedbackClick}
-                className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isSaving || isFeedbackLoading}
-              >
-                {isFeedbackLoading ? "피드백 요청 중..." : "AI 피드백 받기"}
-              </button>
-            ) : (
-              <button
-                onClick={retry}
-                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isSaving || isFeedbackLoading}
-              >
-                다시하기
-              </button>
-            )}
-          </div>
-
-          {isFeedbackLoading && (
-            <div className="mt-2">
-              <Spinner />
-            </div>
-          )}
-
-          {isError && (
-            <div className="mt-2 text-sm text-red-600">
-              피드백 요청 중 오류가 발생했습니다.
-            </div>
-          )}
-
-          {feedback && <FeedbackPanel feedback={feedback.result} />}
-        </div>
+      {isQuestionLoading || isFeedbackDecisionPending ? (
+        <Spinner />
+      ) : hasExistingFeedback && sentence && latestFeedback ? (
+        <ExistingFeedbackSection
+          isLatestLoading={isLatestLoading}
+          isLatestError={isLatestError}
+          latestFeedback={latestFeedback}
+          isBusy={isBusy}
+          onRetry={onRecordReset}
+        />
       ) : (
-        <div className="grid place-items-center gap-4 py-6">
-          <RecorderButton
-            progress={progress}
-            onClick={handleRecordClick}
-            disabled={isSaving}
-          >
-            <div className="text-4xl">{recordIcon}</div>
-          </RecorderButton>
-
-          <div className="text-3xl tabular-nums tracking-wider text-black">
-            {displayTime}
-          </div>
-        </div>
+        <RecordingFlowSection
+          sentence={sentence}
+          onComplete={onRecordComplete}
+          onReset={onRecordReset}
+          isFeedbackLoading={isFeedbackLoading}
+          isFeedbackError={isFeedbackError}
+          feedback={feedback?.result}
+          onFeedbackClick={handleFeedbackClick}
+        />
       )}
     </div>
   );

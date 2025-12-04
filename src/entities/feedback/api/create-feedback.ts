@@ -1,5 +1,5 @@
 import { supabase } from "@shared/api";
-import type { FeedbackContent } from "../model/types";
+import type { Feedback, FeedbackContent } from "../model/types";
 
 interface CreateFeedbackParam {
   userId: string;
@@ -8,7 +8,9 @@ interface CreateFeedbackParam {
   feedback: FeedbackContent;
 }
 
-export async function createFeedback(params: CreateFeedbackParam) {
+export async function createFeedback(
+  params: CreateFeedbackParam
+): Promise<Feedback> {
   const { data, error } = await supabase
     .from("ai_feedback")
     .insert({

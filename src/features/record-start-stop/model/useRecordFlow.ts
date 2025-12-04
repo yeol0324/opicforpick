@@ -1,30 +1,36 @@
 import { useEffect, useRef, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { createRecorder } from "@shared/lib";
-import { createRecording } from "@entities/recording/api/create-recording";
 
 type State = "idle" | "recording" | "preview" | "saving";
+export type AudioInfo = {
+  blob: Blob;
+  durationMs: number;
+};
+type UseRecordFlowParams = {
+  onComplete: (info: AudioInfo) => void;
+  onReset: () => void;
+  maxMs?: number;
+};
+const DEFAULT_MAX_MS = 2 * 60 * 1000; // 2분
 
-export function useRecordFlow(sentenceId?: string, opts?: { maxMs?: number }) {
+export function useRecordFlow({
+  onComplete,
+  onReset,
+  maxMs = DEFAULT_MAX_MS,
+}: UseRecordFlowParams) {
   const recorderRef = useRef(
     createRecorder({
       autoPauseOnHidden: true,
       timesliceMs: 250,
     })
   );
+
   const [state, setState] = useState<State>("idle");
   const [elapsedMs, setElapsedMs] = useState(0);
-  const [audioInfo, setAudioInfo] = useState<{
-    blob: Blob;
-    durationMs: number;
-  } | null>(null);
+  const [audioInfo, setAudioInfo] = useState<AudioInfo | null>(null);
+
   const startedAtRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
-
-  const saveMut = useMutation({
-    mutationFn: (p: { blob: Blob; durationMs: number }) =>
-      createRecording({ ...p, sentenceId }),
-  });
 
   const tick = () => {
     if (startedAtRef.current == null) return;
@@ -32,7 +38,7 @@ export function useRecordFlow(sentenceId?: string, opts?: { maxMs?: number }) {
     const ms = now - startedAtRef.current;
     setElapsedMs(ms);
 
-    if (opts?.maxMs && ms >= opts.maxMs) {
+    if (maxMs && ms >= maxMs) {
       stop().catch(() => {
         /* swallow */
       });
@@ -55,26 +61,20 @@ export function useRecordFlow(sentenceId?: string, opts?: { maxMs?: number }) {
       rafRef.current = null;
     }
     const { blob, durationMs } = await recorderRef.current.stop();
-    setAudioInfo({ blob, durationMs });
+
+    const result = { blob, durationMs };
+    setAudioInfo(result);
+    onComplete?.(result);
     startedAtRef.current = null;
     setElapsedMs(0);
     setState("preview");
-  };
-
-  const save = async () => {
-    if (!audioInfo) return;
-    setState("saving");
-
-    await saveMut.mutateAsync(audioInfo);
-
-    setAudioInfo(null);
-    setState("idle");
   };
 
   const retry = () => {
     setAudioInfo(null);
     setElapsedMs(0);
     setState("idle");
+    onReset();
   };
 
   useEffect(
@@ -84,18 +84,16 @@ export function useRecordFlow(sentenceId?: string, opts?: { maxMs?: number }) {
     []
   );
 
-  const progress = opts?.maxMs ? Math.min(1, elapsedMs / opts.maxMs) : 0;
+  const progress = maxMs ? Math.min(1, elapsedMs / maxMs) : 0;
 
   return {
     state,
     start,
     stop,
-    save,
     retry,
-    isSaving: saveMut.isPending,
     audioInfo,
     elapsedMs,
     progress,
-    maxMs: opts?.maxMs,
+    maxMs: maxMs,
   };
 }

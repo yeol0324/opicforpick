@@ -1,7 +1,15 @@
 import { supabase } from "@shared/api";
 import type { Feedback } from "../model/types";
 
-export async function getLatestFeedback(userId: string) {
+type LatestFeedbackParams = {
+  userId: string;
+  sentenceId: string;
+};
+
+export async function getLatestFeedback({
+  userId,
+  sentenceId,
+}: LatestFeedbackParams): Promise<Feedback> {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -9,9 +17,10 @@ export async function getLatestFeedback(userId: string) {
   tomorrow.setDate(today.getDate() + 1);
 
   const { data, error } = await supabase
-    .from("feedbacks")
+    .from("ai_feedback")
     .select("*")
     .eq("user_id", userId)
+    .eq("sentence_id", sentenceId)
     .gte("created_at", today.toISOString())
     .lt("created_at", tomorrow.toISOString())
     .order("created_at", { ascending: false })
@@ -19,5 +28,5 @@ export async function getLatestFeedback(userId: string) {
     .maybeSingle();
 
   if (error) throw error;
-  return data as Feedback;
+  return data;
 }
