@@ -3,6 +3,7 @@ import { useAuthContext } from "@entities/auth";
 import { createFeedback } from "@entities/feedback";
 import type { UseFeedbackParam, FeedbackResponse } from "./types";
 import { requestFeedback } from "./requestFeedback";
+import { createRecording, uploadRecording } from "@entities/recording";
 
 async function feedbackFlow(
   params: UseFeedbackParam & { userId: string | null }
@@ -13,6 +14,19 @@ async function feedbackFlow(
     audio: params.audioBlob,
     question: params.question.sentence_eng,
     level: params.level,
+  });
+
+  const audioPath = await uploadRecording({
+    userId: params.userId,
+    sentenceId: params.question.id,
+    blob: params.audioBlob,
+  });
+
+  await createRecording({
+    userId: params.userId,
+    sentenceId: params.question.id,
+    audioUrl: audioPath,
+    durationMs: 0,
   });
 
   await createFeedback({
