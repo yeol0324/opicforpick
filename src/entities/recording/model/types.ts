@@ -8,7 +8,7 @@ export type Recording = {
   sentenceId: string;
   audioUrl: string;
   sentences: Sentence;
-  ai_feedback: Feedback[];
+  ai_feedbacks: Feedback[];
 };
 export type RecordingFilter = {
   page?: number;
