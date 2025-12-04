@@ -15,13 +15,11 @@ export function ParagraphListItem({
     <li
       className={[
         "pb-3 cursor-pointer p-2 rounded transition-colors",
-        "hover:bg-slate-100",
-        isSelected ? "font-bold" : "font-normal",
+        isSelected
+          ? "bg-[rgba(50,182,191,0.1)] hover:bg-[rgba(50,182,191,0.15)] font-bold"
+          : "hover:bg-slate-100 font-normal",
       ].join(" ")}
       onClick={onClick}
-      style={{
-        backgroundColor: isSelected ? "rgba(50, 182, 191, 0.1)" : "transparent",
-      }}
     >
       {paragraph.title}
     </li>

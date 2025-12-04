@@ -1,6 +1,6 @@
 import type { Feedback } from "@entities/feedback";
 import { FeedbackPanel } from "@features/ai-feedback";
-import { Button, Spinner } from "@shared/ui";
+import { Button, Card, Spinner } from "@shared/ui";
 
 type ExistingFeedbackSectionProps = {
   isLatestLoading: boolean;
@@ -38,7 +38,9 @@ export const ExistingFeedbackSection = ({
       )}
 
       {!isLatestLoading && latestFeedback && (
-        <FeedbackPanel feedback={latestFeedback.feedback} />
+        <Card>
+          <FeedbackPanel feedback={latestFeedback.feedback} />
+        </Card>
       )}
     </section>
   );
