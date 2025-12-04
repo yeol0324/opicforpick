@@ -12,6 +12,7 @@ import { ExistingFeedbackSection } from "./ExistingFeedbackSection";
 
 export function Home() {
   const [audioInfo, setAudioInfo] = useState<AudioInfo | null>(null);
+  const [ignoreLatest, setIgnoreLatest] = useState(false);
 
   const onRecordComplete = (info: AudioInfo) => {
     setAudioInfo(info);
@@ -42,8 +43,6 @@ export function Home() {
     reset: resetFeedback,
   } = useFeedback();
 
-  const [ignoreLatest, setIgnoreLatest] = useState(false);
-
   const handleFeedbackClick = () => {
     if (!audioInfo || !sentence) return;
     submitFeedback({
@@ -54,7 +53,9 @@ export function Home() {
   };
 
   const hasExistingFeedback = !!latestFeedback && !ignoreLatest;
-  const isBusy = isFeedbackLoading; //||recordFlow.state === 'isSaving'
+  const isFeedbackDecisionPending =
+    sentence && !ignoreLatest && isLatestLoading;
+  const isBusy = isFeedbackLoading;
 
   return (
     <div className="flex flex-col items-center gap-6 p-6">
@@ -63,7 +64,7 @@ export function Home() {
         loading={isQuestionLoading}
         error={questionError}
       />
-      {isQuestionLoading ? (
+      {isQuestionLoading || isFeedbackDecisionPending ? (
         <Spinner />
       ) : hasExistingFeedback && sentence && latestFeedback ? (
         <ExistingFeedbackSection

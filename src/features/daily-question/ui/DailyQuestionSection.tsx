@@ -9,7 +9,7 @@ interface Props {
 
 export function DailyQuestionSection({ loading, error, sentence }: Props) {
   return (
-    <section className="space-y-4">
+    <section className="space-y-4 w-full">
       <h2 className="text-lg font-semibold text-slate-900">오늘의 질문 💬</h2>
 
       {loading && <Spinner />}
