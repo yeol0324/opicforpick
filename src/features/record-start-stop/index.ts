@@ -1,2 +1,2 @@
-export { RecordController } from "./ui/RecordController";
-export { useRecordFlow } from "./model/useRecordFlow";
+export * from "./ui/RecordController";
+export * from "./model/useRecordFlow";

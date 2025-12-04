@@ -5,19 +5,21 @@ import {
   useDailyQuestion,
   DailyQuestionSection,
 } from "@features/daily-question";
-import { useRecordFlow } from "@features/record-start-stop";
-import { formatMmSs } from "@shared/lib";
+import { type AudioInfo } from "@features/record-start-stop";
 import { Spinner } from "@shared/ui";
 import { RecordingFlowSection } from "./RecordingFlowSection";
 import { ExistingFeedbackSection } from "./ExistingFeedbackSection";
 
 export function Home() {
-  const recordFlow = useRecordFlow();
+  const [audioInfo, setAudioInfo] = useState<AudioInfo | null>(null);
 
-  const retryRecording = () => {
+  const onRecordComplete = (info: AudioInfo) => {
+    setAudioInfo(info);
+  };
+
+  const onRecordReset = () => {
     setIgnoreLatest(true);
     resetFeedback();
-    recordFlow.retry();
   };
 
   const {
@@ -43,9 +45,9 @@ export function Home() {
   const [ignoreLatest, setIgnoreLatest] = useState(false);
 
   const handleFeedbackClick = () => {
-    if (!recordFlow.audioInfo || !sentence) return;
+    if (!audioInfo || !sentence) return;
     submitFeedback({
-      audioBlob: recordFlow.audioInfo.blob,
+      audioBlob: audioInfo.blob,
       question: sentence,
       level: "Intermediate",
     });
@@ -69,17 +71,17 @@ export function Home() {
           isLatestError={isLatestError}
           latestFeedback={latestFeedback}
           isBusy={isBusy}
-          onRetry={retryRecording}
+          onRetry={onRecordReset}
         />
       ) : (
         <RecordingFlowSection
           sentence={sentence}
-          recordFlow={recordFlow}
+          onComplete={onRecordComplete}
+          onReset={onRecordReset}
           isFeedbackLoading={isFeedbackLoading}
           isFeedbackError={isFeedbackError}
           feedback={feedback?.result}
           onFeedbackClick={handleFeedbackClick}
-          onRetry={retryRecording}
         />
       )}
     </div>

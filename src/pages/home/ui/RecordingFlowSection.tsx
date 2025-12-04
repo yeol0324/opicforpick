@@ -2,30 +2,34 @@ import type { FeedbackContent } from "@entities/feedback";
 import type { Sentence } from "@entities/sentence";
 import { FeedbackPanel } from "@features/ai-feedback";
 import { BlobPlayer } from "@features/playback";
-import type { useRecordFlow } from "@features/record-start-stop";
+import { useRecordFlow, type AudioInfo } from "@features/record-start-stop";
 import { formatMmSs } from "@shared/lib";
 import { Button, RecorderButton, Spinner } from "@shared/ui";
 
-type RecordFlow = ReturnType<typeof useRecordFlow>;
 type RecordingFlowSectionProps = {
   sentence: Sentence | null | undefined;
-  recordFlow: RecordFlow;
+  onComplete: (info: AudioInfo) => void;
+  onReset: () => void;
   isFeedbackLoading: boolean;
   isFeedbackError: boolean;
   feedback: FeedbackContent | null | undefined;
   onFeedbackClick: () => void;
-  onRetry: () => void;
 };
 
 export const RecordingFlowSection = ({
   sentence,
-  recordFlow,
+  onComplete,
+  onReset,
   isFeedbackLoading,
   isFeedbackError,
   feedback,
   onFeedbackClick,
-  onRetry,
 }: RecordingFlowSectionProps) => {
+  const recordFlow = useRecordFlow({
+    maxMs: 10_000,
+    onComplete,
+    onReset,
+  });
   const isRecording = recordFlow.state === "recording";
   const isSaving = recordFlow.state === "saving";
   const recordIcon = isRecording ? "⏺" : "▶";
@@ -46,7 +50,7 @@ export const RecordingFlowSection = ({
               {isFeedbackLoading ? "피드백 요청 중..." : "AI 피드백 받기"}
             </Button>
           )}
-          <Button onClick={onRetry} disabled={isSaving || isFeedbackLoading}>
+          <Button onClick={onReset} disabled={isSaving || isFeedbackLoading}>
             다시하기
           </Button>
         </div>
