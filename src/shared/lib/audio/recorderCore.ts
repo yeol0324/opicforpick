@@ -14,9 +14,25 @@ function pickMime(preferred?: RecordingMime): RecordingMime {
     typeof MediaRecorder.isTypeSupported === "function" &&
     MediaRecorder.isTypeSupported(t);
 
-  if (preferred && supported(preferred)) return preferred;
-  if (supported("audio/webm")) return "audio/webm";
-  return "audio/webm";
+  if (preferred && supported(preferred)) {
+    return preferred;
+  }
+
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  if (isIOS) {
+    const iosCandidates = ["audio/mp4", "audio/aac"];
+    for (const t of iosCandidates) {
+      if (supported(t)) return t as RecordingMime;
+    }
+  }
+
+  const webmCandidates = ["audio/webm;codecs=opus", "audio/webm"];
+  for (const t of webmCandidates) {
+    if (supported(t)) return t as RecordingMime;
+  }
+
+  return "" as RecordingMime;
 }
 
 function toError(

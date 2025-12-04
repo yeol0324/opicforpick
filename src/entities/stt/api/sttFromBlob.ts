@@ -13,7 +13,6 @@ export async function recognizeFromBlob(
     region
   );
   speechConfig.speechRecognitionLanguage = lang;
-
   const wavBlob = await convertWebmBlobToWav(blob);
   const wavFile = new File([wavBlob], "audio.wav", { type: "audio/wav" });
 

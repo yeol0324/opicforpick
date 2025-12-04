@@ -8,7 +8,6 @@ type State = "idle" | "recording" | "preview" | "saving";
 export function useRecordFlow(sentenceId?: string, opts?: { maxMs?: number }) {
   const recorderRef = useRef(
     createRecorder({
-      mime: "audio/webm",
       autoPauseOnHidden: true,
       timesliceMs: 250,
     })
