@@ -19,6 +19,7 @@ export type FeedbackContent = {
   vocabularyScore?: number;
   contentScore?: number;
   rawTranscript?: string;
+  recommendedVocabulary: { expression: string; meaning: string }[];
 };
 export type FeedbackFilter = {
   page?: number;
