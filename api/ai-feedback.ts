@@ -31,7 +31,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.5-flash",
     });
 
     const prompt = `
@@ -51,9 +51,8 @@ ${level}
 
 [Your Tasks]
 1. Pronunciation
-   - Since you only have the STT-generated transcript (not the actual audio), estimate pronunciation issues based on textual clues.
-   - Do NOT be overly certain. Give gentle advice such as “There may have been pronunciation issues with...” or “This part might sound unclear.”
-
+   - Listen to your voice audio (in English) and evaluate your pronunciation.
+   
 2. Grammar / Sentence Structure
    - Evaluate tense usage, articles, prepositions, word order, sentence length, and overall structure.
    - Point out both strengths and areas to improve.
@@ -127,9 +126,9 @@ Important:
     return res.status(200).json({
       result: { ...parsed },
     });
-  } catch (e) {
+  } catch (e: any) {
     // TODO: 503 ai 과부하 처리 추가
-    console.error("[ai-feedback] error", e);
+    console.error("[ai-feedback] error raw", JSON.stringify(e, null, 2));
     return res.status(500).json({ error: "AI feedback failed" });
   }
 }

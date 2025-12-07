@@ -20,6 +20,7 @@ export function Home() {
 
   const onRecordReset = () => {
     setIgnoreLatest(true);
+    setAudioInfo(null);
     resetFeedback();
   };
 
