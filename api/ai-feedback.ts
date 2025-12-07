@@ -88,7 +88,7 @@ Write explanations in Korean, but keep English examples or expressions exactly a
   "recommendedVocabulary": [
   {
     "expression": "string",
-    "meaning": "string (Korean explanation or usage note)"
+    "meaning": "string (Korean explanation)"
   }
 ]
 
