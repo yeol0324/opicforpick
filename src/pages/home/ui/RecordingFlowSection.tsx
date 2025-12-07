@@ -26,7 +26,6 @@ export const RecordingFlowSection = ({
   onFeedbackClick,
 }: RecordingFlowSectionProps) => {
   const recordFlow = useRecordFlow({
-    maxMs: 10_000,
     onComplete,
     onReset,
   });
