@@ -68,7 +68,11 @@ ${level}
 5. Topic-related Vocabulary Practice
    - Based on the question topic and learner level, provide 5 useful words or expressions.
    - These should be suitable for OPIC-style speaking answers.
-   - Include brief Korean explanations if necessary.
+   - For recommended vocabulary, provide only:
+     - a natural English word or expression
+     - a concise Korean meaning (noun/verb phrase only)
+   - Do NOT include explanations, comparisons, parentheses, or meta comments.
+
 
 
 [Output Format]
@@ -86,12 +90,12 @@ Write explanations in Korean, but keep English examples or expressions exactly a
   "vocabularyScore": 0-100,
   "contentScore": 0-100,
   "recommendVoca": [
-  {
-    "expression": "string",
-    "meaning": "string (Korean explanation)"
-  }
+    {
+      "expression": "string (English word or phrase only)",
+      "meaning": "string (Korean meaning only, no explanation, no parentheses)"
+    }
+  ]
 ]
-
 }
 
 Important:
