@@ -1,10 +1,14 @@
+import { useAuthContext } from "@entities/auth";
 import type { FeedbackContentType } from "@entities/feedback";
 import type { Sentence } from "@entities/sentence";
 import { FeedbackPanel } from "@features/ai-feedback";
 import { BlobPlayer } from "@features/playback";
 import { useRecordFlow, type AudioInfo } from "@features/record-start-stop";
+import { saveRecommendWords } from "@features/word-from-feedback/api/save-recommend-words";
+import { RecommendVocaPicker } from "@features/word-from-feedback/ui/RecommendedVocabularyPicker";
 import { formatMmSs } from "@shared/lib";
 import { Button, Card, RecorderButton, Spinner } from "@shared/ui";
+import { useState } from "react";
 
 type RecordingFlowSectionProps = {
   sentence: Sentence | null | undefined;
@@ -34,6 +38,27 @@ export const RecordingFlowSection = ({
   const recordIcon = isRecording ? "⏺" : "▶";
   const displayTime = formatMmSs(isRecording ? recordFlow.elapsedMs : 0);
   const handleRecordClick = isRecording ? recordFlow.stop : recordFlow.start;
+
+  const { auth } = useAuthContext();
+  const user = auth.user;
+  const [isWordSaving, setIsWordSaving] = useState(false);
+
+  const handleSaveWords = async (
+    selected: FeedbackContentType["recommendVoca"]
+  ) => {
+    if (!user) return;
+
+    try {
+      setIsWordSaving(true);
+      await saveRecommendWords({
+        userId: user.id,
+        vocabulary: selected,
+      });
+      alert("저장완료");
+    } finally {
+      setIsWordSaving(false);
+    }
+  };
 
   if (recordFlow.audioInfo && sentence) {
     return (
@@ -67,6 +92,15 @@ export const RecordingFlowSection = ({
             <FeedbackPanel feedback={feedback} />
           </Card>
         )}
+        {feedback &&
+          feedback.recommendVoca &&
+          feedback.recommendVoca.length > 0 && (
+            <RecommendVocaPicker
+              items={feedback.recommendVoca}
+              onSave={handleSaveWords}
+              isSaving={isWordSaving}
+            />
+          )}
       </section>
     );
   }
