@@ -5,6 +5,13 @@ type WordBase = {
 
 export type WordCandidate = WordBase;
 
-export type WordItem = WordBase & {
+export type WordType = WordBase & {
   id: number;
+  created_at: string;
+};
+
+export type WordFilter = {
+  q?: string;
+  page?: number;
+  pageSize?: number;
 };
