@@ -19,16 +19,29 @@ export function Word() {
 
   return (
     <>
-      <Card>
-        <ul>
-          {items.map((word, idx) => (
-            <li key={word.id} onClick={() => open(idx)}>
-              {word.expression}
-            </li>
-          ))}
-        </ul>
-      </Card>
+      <div className="flex flex-col items-center gap-6 p-6">
+        <section className="space-y-4 w-full">
+          <h2 className="text-lg font-semibold text-slate-900">단어장 📕</h2>
 
+          <Card>
+            <ul>
+              {items.map((word, idx) => (
+                <li
+                  className={[
+                    "cursor-pointer rounded-md p-2 transition-colors",
+                    "hover:bg-slate-100",
+                  ].join(" ")}
+                  key={word.id}
+                  onClick={() => open(idx)}
+                >
+                  <span> {word.expression}</span>
+                  <span> {word.meaning}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </section>
+      </div>
       {isOpen && (
         <WordDetailOverlay
           word={items[currentIndex]}

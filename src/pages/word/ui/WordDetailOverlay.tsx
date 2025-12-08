@@ -24,7 +24,7 @@ export const WordDetailOverlay = ({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-sm rounded-2xl bg-white p-4"
+        className="w-full h-[80dvh] max-w-sm rounded-2xl bg-white p-4"
         onClick={(e) => e.stopPropagation()}
       >
         <header className="mb-3 flex justify-between">
@@ -34,14 +34,23 @@ export const WordDetailOverlay = ({
           <CloseButton onClick={onClose} />
         </header>
 
-        <Card className="space-y-2">
+        <Card
+          className="space-y-2"
+          mode="scroll"
+          minHeight="70dvh"
+          maxHeight="70dvh"
+        >
           <div className="text-lg font-semibold">{word.expression}</div>
           <div className="text-sm text-slate-600">{word.meaning}</div>
         </Card>
 
-        <div className="mt-4 flex justify-between">
-          <button onClick={onPrev}>←</button>
-          <button onClick={onNext}>→</button>
+        <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2 pointer-events-none">
+          <button className="pointer-events-auto" onClick={onPrev}>
+            ←
+          </button>
+          <button className="pointer-events-auto" onClick={onNext}>
+            →
+          </button>
         </div>
       </div>
     </div>
