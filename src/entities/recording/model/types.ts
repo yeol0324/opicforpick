@@ -1,4 +1,4 @@
-import type { Feedback } from "@entities/feedback";
+import type { FeedbackType } from "@entities/feedback";
 import type { Sentence } from "@entities/sentence";
 
 export type Recording = {
@@ -8,7 +8,7 @@ export type Recording = {
   sentenceId: string;
   audioUrl: string;
   sentences: Sentence;
-  ai_feedbacks: Feedback[];
+  ai_feedbacks: FeedbackType[];
 };
 export type RecordingFilter = {
   page?: number;

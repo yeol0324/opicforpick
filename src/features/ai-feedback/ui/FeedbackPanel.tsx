@@ -1,8 +1,12 @@
-import type { FeedbackContent } from "@entities/feedback";
+import { useAuthContext } from "@entities/auth";
+import type { FeedbackContentType } from "@entities/feedback";
+import { saveRecommendWords } from "@features/word-from-feedback/api/save-recommend-words";
+import { RecommendVocaPicker } from "@features/word-from-feedback/ui/RecommendedVocabularyPicker";
 import { CircleProgress } from "@shared/ui";
+import { useState } from "react";
 
 interface FeedbackPanelProps {
-  feedback: FeedbackContent | null;
+  feedback: FeedbackContentType | null;
 }
 
 function ScoreCircle({ label, score }: { label: string; score?: number }) {
@@ -21,8 +25,29 @@ function ScoreCircle({ label, score }: { label: string; score?: number }) {
 }
 
 export function FeedbackPanel({ feedback }: FeedbackPanelProps) {
+  const { auth } = useAuthContext();
+  const user = auth.user;
+
+  const [isSaving, setIsSaving] = useState(false);
   if (!feedback) return null;
-  console.log(feedback);
+
+  const handleSaveWords = async (
+    selected: FeedbackContentType["recommendVoca"]
+  ) => {
+    if (!user) return;
+    console.log(user);
+
+    try {
+      setIsSaving(true);
+      await saveRecommendWords({
+        userId: user.id,
+        vocabulary: selected,
+      });
+      alert("저장완료");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <>
@@ -49,6 +74,14 @@ export function FeedbackPanel({ feedback }: FeedbackPanelProps) {
         <ScoreCircle label="내용" score={feedback.contentScore} />
         <p className="text-sm">{feedback.contentComment}</p>
       </div>
+
+      {feedback.recommendVoca && feedback.recommendVoca.length > 0 && (
+        <RecommendVocaPicker
+          items={feedback.recommendVoca}
+          onSave={handleSaveWords}
+          isSaving={isSaving}
+        />
+      )}
     </>
   );
 }

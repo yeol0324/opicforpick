@@ -1,5 +1,5 @@
 import { supabase } from "@shared/api";
-import type { Feedback } from "../model/types";
+import type { FeedbackType } from "../model/types";
 
 type LatestFeedbackParams = {
   userId: string;
@@ -9,7 +9,7 @@ type LatestFeedbackParams = {
 export async function getLatestFeedback({
   userId,
   sentenceId,
-}: LatestFeedbackParams): Promise<Feedback> {
+}: LatestFeedbackParams): Promise<FeedbackType> {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 

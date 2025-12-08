@@ -65,6 +65,16 @@ ${level}
    - Evaluate how well the answer addresses the question.
    - Mention missing details or additional points that could strengthen the response.
 
+5. Topic-related Vocabulary Practice
+   - Based on the question topic and learner level, provide 5 useful words or expressions.
+   - These should be suitable for OPIC-style speaking answers.
+   - For recommended vocabulary, provide only:
+     - a natural English word or expression
+     - a concise Korean meaning (noun/verb phrase only)
+   - Do NOT include explanations, comparisons, parentheses, or meta comments.
+
+
+
 [Output Format]
 You MUST respond **only** with valid JSON in the following format.
 Write explanations in Korean, but keep English examples or expressions exactly as they are.
@@ -78,7 +88,14 @@ Write explanations in Korean, but keep English examples or expressions exactly a
   "pronunciationScore": 0-100,
   "grammarScore": 0-100,
   "vocabularyScore": 0-100,
-  "contentScore": 0-100
+  "contentScore": 0-100,
+  "recommendVoca": [
+    {
+      "expression": "string (English word or phrase only)",
+      "meaning": "string (Korean meaning only, no explanation, no parentheses)"
+    }
+  ]
+]
 }
 
 Important:
