@@ -1,16 +1,16 @@
-type WordBase = {
+type WordBaseType = {
   expression: string;
   meaning: string;
 };
 
-export type WordCandidate = WordBase;
+export type WordCandidateType = WordBaseType;
 
-export type WordType = WordBase & {
+export type WordType = WordBaseType & {
   id: number;
   created_at: string;
 };
 
-export type WordFilter = {
+export type WordFilterType = {
   q?: string;
   page?: number;
   pageSize?: number;

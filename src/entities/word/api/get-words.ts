@@ -5,9 +5,11 @@ import {
   createPagedResult,
   type Paged,
 } from "@shared/api";
-import type { WordType, WordFilter } from "../model/types";
+import type { WordType, WordFilterType } from "../model/types";
 
-export async function getWords(filter?: WordFilter): Promise<Paged<WordType>> {
+export async function getWords(
+  filter?: WordFilterType
+): Promise<Paged<WordType>> {
   const { page, pageSize, from, to } = calculatePagination(
     filter?.page,
     filter?.pageSize

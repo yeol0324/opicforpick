@@ -1,15 +1,15 @@
 import { supabase, unwrap } from "@shared/api";
-import type { WordType, WordCandidate } from "../model/types";
+import type { WordType, WordCandidateType } from "../model/types";
 
 export async function createWords(
-  candidates: WordCandidate[]
+  candidates: WordCandidateType[]
 ): Promise<WordType[]> {
   if (candidates.length === 0) {
     return [];
   }
 
   // 중복 expression 제거
-  const uniqueMap = new Map<string, WordCandidate>();
+  const uniqueMap = new Map<string, WordCandidateType>();
   candidates.forEach((item) => {
     const key = item.expression.trim().toLowerCase();
     if (!uniqueMap.has(key)) {
