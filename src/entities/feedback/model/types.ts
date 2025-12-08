@@ -1,15 +1,15 @@
 import type { Sentence } from "@entities/sentence";
-import type { WordCandidate } from "@entities/word";
+import type { WordCandidateType } from "@entities/word";
 
-export type Feedback = {
+export type FeedbackType = {
   id: string;
   createdAt: string;
   userId: string;
   sentenceId: Sentence;
-  feedback: FeedbackContent;
+  feedback: FeedbackContentType;
   recordingId: string;
 };
-export type FeedbackContent = {
+export type FeedbackContentType = {
   pronunciationComment: string;
   grammarComment: string;
   vocabularyComment: string;
@@ -20,7 +20,7 @@ export type FeedbackContent = {
   vocabularyScore?: number;
   contentScore?: number;
   rawTranscript?: string;
-  recommendedVocabulary: WordCandidate[];
+  recommendVoca: WordCandidateType[];
 };
 export type FeedbackFilter = {
   page?: number;
@@ -28,7 +28,7 @@ export type FeedbackFilter = {
 };
 export type CreateFeedback = {
   created_at?: string;
-  feedback: FeedbackContent;
+  feedback: FeedbackContentType;
   id?: string;
   sentence_id: string;
   transcript: string;

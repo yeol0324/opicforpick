@@ -85,7 +85,7 @@ Write explanations in Korean, but keep English examples or expressions exactly a
   "grammarScore": 0-100,
   "vocabularyScore": 0-100,
   "contentScore": 0-100,
-  "recommendedVocabulary": [
+  "recommendVoca": [
   {
     "expression": "string",
     "meaning": "string (Korean explanation)"

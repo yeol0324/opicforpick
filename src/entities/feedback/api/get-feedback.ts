@@ -5,11 +5,11 @@ import {
   createPagedResult,
   type Paged,
 } from "@shared/api";
-import type { Feedback, FeedbackFilter } from "../model/types";
+import type { FeedbackType, FeedbackFilter } from "../model/types";
 
 export async function getFeedback(
   filter?: FeedbackFilter
-): Promise<Paged<Feedback>> {
+): Promise<Paged<FeedbackType>> {
   const { page, pageSize, from, to } = calculatePagination(
     filter?.page,
     filter?.pageSize
@@ -21,7 +21,7 @@ export async function getFeedback(
     .order("created_at", { ascending: false });
 
   const response = await queryBuilder.range(from, to);
-  const items = unwrap<Feedback[]>(response);
+  const items = unwrap<FeedbackType[]>(response);
   const total = response.count ?? 0;
 
   return createPagedResult({

@@ -1,4 +1,4 @@
-import type { FeedbackContent } from "@entities/feedback";
+import type { FeedbackContentType } from "@entities/feedback";
 import type { Sentence } from "@entities/sentence";
 import { FeedbackPanel } from "@features/ai-feedback";
 import { BlobPlayer } from "@features/playback";
@@ -12,7 +12,7 @@ type RecordingFlowSectionProps = {
   onReset: () => void;
   isFeedbackLoading: boolean;
   isFeedbackError: boolean;
-  feedback: FeedbackContent | null | undefined;
+  feedback: FeedbackContentType | null | undefined;
   onFeedbackClick: () => void;
 };
 

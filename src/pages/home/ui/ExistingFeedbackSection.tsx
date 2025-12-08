@@ -1,11 +1,11 @@
-import type { Feedback } from "@entities/feedback";
+import type { FeedbackType } from "@entities/feedback";
 import { FeedbackPanel } from "@features/ai-feedback";
 import { Button, Card, Spinner } from "@shared/ui";
 
 type ExistingFeedbackSectionProps = {
   isLatestLoading: boolean;
   isLatestError: boolean;
-  latestFeedback: Feedback;
+  latestFeedback: FeedbackType;
   isBusy: boolean;
   onRetry: () => void;
 };
