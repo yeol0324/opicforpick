@@ -1,4 +1,5 @@
 import type { Sentence } from "@entities/sentence";
+import type { WordCandidate } from "@entities/word";
 
 export type Feedback = {
   id: string;
@@ -19,7 +20,7 @@ export type FeedbackContent = {
   vocabularyScore?: number;
   contentScore?: number;
   rawTranscript?: string;
-  recommendedVocabulary: { expression: string; meaning: string }[];
+  recommendedVocabulary: WordCandidate[];
 };
 export type FeedbackFilter = {
   page?: number;
