@@ -2,8 +2,8 @@ import { Link, useLocation } from "react-router-dom";
 
 const NAV_ITEMS = [
   { to: "/", label: "홈" },
-  { to: "/notes", label: "기록" },
-  { to: "/word", label: "단어장" },
+  { to: "/my-record", label: "기록" },
+  { to: "/wordbook", label: "단어장" },
   { to: "/practice", label: "연습" },
 ];
 

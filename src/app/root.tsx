@@ -1,11 +1,11 @@
 import { RouterProvider } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { createQueryClient } from "@app/providers/queryClient";
+import { createQueryClient } from "@app/providers/query-client";
 import { router } from "./routes";
 import { useState } from "react";
-import { AuthProvider } from "./providers/authProvider";
-import { ErrorBoundaryProvider } from "./providers/errorProvider";
+import { AuthProvider } from "./providers/auth-provider";
+import { ErrorBoundaryProvider } from "./providers/error-provider";
 import { OverlayProvider } from "overlay-kit";
 
 export function App() {

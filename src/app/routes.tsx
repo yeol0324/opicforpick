@@ -1,13 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Layout } from "./Layout";
 import { Home } from "@pages/home";
 import { Login } from "@pages/login";
-import { Notes } from "@pages/notes";
+import { MyRecords } from "@pages/my-records";
 import { Practice } from "@pages/practice";
-import { ProtectedRoute } from "@app/providers/ProtectedRoute";
+import { ProtectedRoute } from "@app/providers/protected-route";
 import { DemoLoginRedirect } from "@features/auth-demo/ui/DemoLoginRedirect";
-import { RouteErrorBoundary } from "@pages/error/RouteErrorBoundary";
-import { Word } from "@pages/word/ui/Word";
+import { RouteErrorBoundary } from "@pages/error/route-error-boundary";
+import { Wordbook } from "@pages/wordbook/ui/wordbook.page";
+import { Layout } from "./layout";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -20,8 +20,14 @@ export const router = createBrowserRouter([
         path: "/",
         element: <ProtectedRoute children={<Home />} />,
       },
-      { path: "/notes", element: <ProtectedRoute children={<Notes />} /> },
-      { path: "/word", element: <ProtectedRoute children={<Word />} /> },
+      {
+        path: "/my-record",
+        element: <ProtectedRoute children={<MyRecords />} />,
+      },
+      {
+        path: "/wordbook",
+        element: <ProtectedRoute children={<Wordbook />} />,
+      },
       {
         path: "/practice",
         element: <ProtectedRoute children={<Practice />} />,

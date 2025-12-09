@@ -3,9 +3,9 @@ import { recordingQueries, type Recording } from "@entities/recording";
 import { YYYYMMDDHHmm } from "@shared/lib";
 import { Card } from "@shared/ui";
 import { useQuery } from "@tanstack/react-query";
-import { RecordingDetailOverlay } from "./RecordingDetailOverlay";
+import { RecordingDetailOverlay } from "./recording-detail.overlay";
 
-export function Notes() {
+export function MyRecords() {
   const recordingQuery = useQuery({
     ...recordingQueries.list(),
   });

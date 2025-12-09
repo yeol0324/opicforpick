@@ -1,1 +1,1 @@
-export { Practice } from "./ui";
+export { Practice } from "./ui/practice.page";

@@ -7,8 +7,8 @@ import {
 } from "@features/daily-question";
 import { type AudioInfo } from "@features/record-start-stop";
 import { Spinner } from "@shared/ui";
-import { RecordingFlowSection } from "./RecordingFlowSection";
-import { ExistingFeedbackSection } from "./ExistingFeedbackSection";
+import { RecordingFlowSection } from "./recording-flow-section";
+import { ExistingFeedbackSection } from "./existing-feedback-section";
 
 export function Home() {
   const [audioInfo, setAudioInfo] = useState<AudioInfo | null>(null);

@@ -10,8 +10,8 @@ import {
   Card,
 } from "@shared/ui";
 import { useDebouncedValue, THEME, APP, useInfiniteScroll } from "@shared/lib";
-import { ParagraphSentenceList } from "./ParagraphSentenceList";
-import { ParagraphListItem } from "./ParagraphListItem";
+import { ParagraphSentenceList } from "./paragraph-sentence-list";
+import { ParagraphListItem } from "./paragraph-list-item";
 
 export function Practice() {
   const [searchTerm, setSearchTerm] = useState("");
