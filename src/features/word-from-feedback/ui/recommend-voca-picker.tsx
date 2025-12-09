@@ -2,8 +2,7 @@ import { useState } from "react";
 
 import type { FeedbackContentType } from "@entities/feedback";
 
-import { Button } from "@shared/ui";
-
+import { BaseButton } from "@shared/ui";
 
 type RecommendVocaPickerProps = {
   items: FeedbackContentType["recommendVoca"];
@@ -69,12 +68,12 @@ export const RecommendVocaPicker = ({
         })}
       </ul>
 
-      <Button
+      <BaseButton
         onClick={handleSaveClick}
         disabled={isSaving || selectedItems.length === 0}
       >
         {isSaving ? "저장 중..." : "선택한 단어 단어장에 추가"}
-      </Button>
+      </BaseButton>
     </div>
   );
 };

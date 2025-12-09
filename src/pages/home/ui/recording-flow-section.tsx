@@ -12,7 +12,7 @@ import type { FeedbackContentType } from "@entities/feedback";
 import type { SentenceType } from "@entities/sentence";
 
 import { BlobPlayer, formatMmSs } from "@shared/lib";
-import { Button, Card, RecorderButton, Spinner } from "@shared/ui";
+import { BaseButton, Card, RecorderButton, Spinner } from "@shared/ui";
 
 type RecordingFlowSectionProps = {
   sentence: SentenceType | null | undefined;
@@ -71,16 +71,19 @@ export const RecordingFlowSection = ({
 
         <div className="flex gap-2">
           {!feedback && (
-            <Button
+            <BaseButton
               onClick={onFeedbackClick}
               disabled={isSaving || isFeedbackLoading}
             >
               {isFeedbackLoading ? "피드백 요청 중..." : "AI 피드백 받기"}
-            </Button>
+            </BaseButton>
           )}
-          <Button onClick={onReset} disabled={isSaving || isFeedbackLoading}>
+          <BaseButton
+            onClick={onReset}
+            disabled={isSaving || isFeedbackLoading}
+          >
             다시하기
-          </Button>
+          </BaseButton>
         </div>
 
         {isFeedbackLoading && <Spinner />}

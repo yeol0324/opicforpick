@@ -2,9 +2,7 @@ import { FeedbackPanel } from "@features/ai-feedback";
 
 import type { FeedbackType } from "@entities/feedback";
 
-import { Button, Card, Spinner } from "@shared/ui";
-
-
+import { BaseButton, Card, Spinner } from "@shared/ui";
 
 type ExistingFeedbackSectionProps = {
   isLatestLoading: boolean;
@@ -24,9 +22,9 @@ export const ExistingFeedbackSection = ({
   return (
     <section className="flex flex-col items-center gap-4 w-full">
       <div className="flex gap-2">
-        <Button onClick={onRetry} disabled={isBusy}>
+        <BaseButton onClick={onRetry} disabled={isBusy}>
           다시하기
-        </Button>
+        </BaseButton>
       </div>
 
       {isLatestLoading && (
@@ -49,4 +47,3 @@ export const ExistingFeedbackSection = ({
     </section>
   );
 };
-
