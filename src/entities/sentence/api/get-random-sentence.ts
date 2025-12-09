@@ -1,4 +1,5 @@
 import { supabase, unwrap } from "@shared/api";
+
 import type { SentenceType, SentenceKindType } from "../model/sentence.type";
 
 export async function getRandomSentence(

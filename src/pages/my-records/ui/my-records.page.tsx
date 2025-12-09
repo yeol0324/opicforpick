@@ -1,8 +1,12 @@
+import { useQuery } from "@tanstack/react-query";
 import { overlay } from "overlay-kit";
+
 import { recordingQueries, type RecordingType } from "@entities/recording";
+
 import { YYYYMMDDHHmm } from "@shared/lib";
 import { Card } from "@shared/ui";
-import { useQuery } from "@tanstack/react-query";
+
+
 import { RecordingDetailOverlay } from "./recording-detail.overlay";
 
 export function MyRecords() {
@@ -30,7 +34,7 @@ export function MyRecords() {
         <Card>
           {feedbackItems && (
             <ul>
-              {feedbackItems.map((item, idx) => {
+              {feedbackItems.map((item) => {
                 return (
                   <li
                     key={item.id}

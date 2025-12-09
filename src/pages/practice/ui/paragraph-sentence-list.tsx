@@ -1,7 +1,11 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { paragraphSentencesQueries } from "@entities/paragraph-sentences/api";
-import { Spinner, ErrorMessage, EmptyState } from "@shared/ui";
+
+import { useInfiniteQuery } from "@tanstack/react-query";
+
+import { sentenceApi } from "@entities/paragraph-sentences";
+
+import { EmptyState, ErrorMessage, Spinner } from "@shared/ui";
+
 
 type ParagraphSentenceListProps = {
   paragraphId: string | null;
@@ -11,19 +15,12 @@ export function ParagraphSentenceList({
   paragraphId,
 }: ParagraphSentenceListProps) {
   const pageSize = 20;
+  const hasParagraph = !!paragraphId;
 
-  if (!paragraphId) {
-    return (
-      <EmptyState
-        message="단락이 선택되지 않았습니다"
-        className="text-sm text-gray-500"
-      />
-    );
-  }
-
+  // ✅ 항상 한 번만 호출, paragraphId 없을 땐 더미 값("") 넣기
   const { queryKey, queryFn, getNextPageParam, initialPageParam } =
-    paragraphSentencesQueries.infiniteList({
-      paragraphId,
+    sentenceApi.paragraphSentencesQueries.infiniteList({
+      paragraphId: paragraphId ?? "", // enabled: false일 땐 실제로 안 쓰임
       pageSize,
     });
 
@@ -32,7 +29,7 @@ export function ParagraphSentenceList({
     queryFn,
     getNextPageParam,
     initialPageParam,
-    enabled: !!paragraphId,
+    enabled: hasParagraph, // paragraphId 없으면 아예 쿼리 안 돔
   });
 
   const items = useMemo(
@@ -52,6 +49,16 @@ export function ParagraphSentenceList({
 
   const isLoadingFirstPage = isLoading && sentences.length === 0;
   const isEmpty = !isLoading && sentences.length === 0;
+
+  // ✅ 훅 호출 다 끝난 다음에 조건부 렌더
+  if (!hasParagraph) {
+    return (
+      <EmptyState
+        message="단락이 선택되지 않았습니다"
+        className="text-sm text-gray-500"
+      />
+    );
+  }
 
   if (isLoadingFirstPage) {
     return <Spinner />;
@@ -92,4 +99,3 @@ export function ParagraphSentenceList({
     </div>
   );
 }
-

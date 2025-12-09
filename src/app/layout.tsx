@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+
 import { AppHeader, BottomNav } from "@shared/ui";
 
 export function Layout() {

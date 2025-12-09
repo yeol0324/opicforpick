@@ -1,6 +1,9 @@
 import { forwardRef } from "react";
+
 import type { SentenceType } from "@entities/sentence";
+
 import { THEME } from "@shared/lib";
+
 
 type SentenceTypeSelectProps = Omit<
   React.SelectHTMLAttributes<HTMLSelectElement>,

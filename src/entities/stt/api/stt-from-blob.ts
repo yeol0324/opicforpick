@@ -1,6 +1,8 @@
 import * as speechsdk from "microsoft-cognitiveservices-speech-sdk";
-import { requestAzureToken } from "./request-azure-token";
+
 import { convertWebmBlobToWav } from "@shared/lib";
+
+import { requestAzureToken } from "./request-azure-token";
 
 export async function recognizeFromBlob(
   blob: Blob,

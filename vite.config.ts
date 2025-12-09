@@ -1,9 +1,13 @@
 /// <reference types="vitest/config" />
-import { defineConfig, type PluginOption } from "vite";
-import react from "@vitejs/plugin-react";
-import tsconfigPaths from "vite-tsconfig-paths";
-import path from "node:path";
+
 import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
+import { defineConfig, type PluginOption } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+
+import path from "node:path";
+
+
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths(), tailwindcss() as PluginOption],

@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+
 import { THEME } from "@shared/lib";
 
 type SearchInputProps = Omit<

@@ -1,7 +1,10 @@
 import { keepPreviousData, queryOptions } from "@tanstack/react-query";
+
+import { buildListKey } from "@shared/lib";
+
 import { getParagraphs } from "./get-paragraphs";
 import type { ParagraphFilterType, ParagraphType } from "../model/paragraph.type";
-import { buildListKey } from "@shared/lib";
+
 
 const paragraphKeys = {
   all: () => ["paragraphs"] as const,

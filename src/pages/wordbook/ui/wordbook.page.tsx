@@ -1,8 +1,14 @@
-import { Card } from "@shared/ui";
-import { WordDetailOverlay } from "./wordbook.overlay";
-import { useQuery } from "@tanstack/react-query";
-import { wordQueries } from "@entities/word/api/word.queries";
 import { useState } from "react";
+
+import { useQuery } from "@tanstack/react-query";
+
+import { wordQueries } from "@entities/word/api/word.queries";
+
+import { Card } from "@shared/ui";
+
+
+import { WordDetailOverlay } from "./wordbook.overlay";
+
 
 export function Wordbook() {
   const { data } = useQuery(wordQueries.list());

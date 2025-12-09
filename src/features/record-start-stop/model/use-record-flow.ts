@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { createRecorder } from "@shared/lib";
+
+import { createRecorder, getNow } from "@shared/lib";
 
 type State = "idle" | "recording" | "preview" | "saving";
 export type AudioInfo = {
@@ -34,7 +35,7 @@ export function useRecordFlow({
 
   const tick = () => {
     if (startedAtRef.current == null) return;
-    const now = performance.now();
+    const now = getNow();
     const ms = now - startedAtRef.current;
     setElapsedMs(ms);
 
@@ -49,7 +50,7 @@ export function useRecordFlow({
 
   const start = async () => {
     await recorderRef.current.start();
-    startedAtRef.current = performance.now();
+    startedAtRef.current = getNow();
     setElapsedMs(0);
     setState("recording");
     rafRef.current = requestAnimationFrame(tick);

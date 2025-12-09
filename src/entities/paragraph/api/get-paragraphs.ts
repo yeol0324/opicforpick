@@ -5,6 +5,7 @@ import {
   createPagedResult,
   type Paged,
 } from "@shared/api";
+
 import type { ParagraphType, ParagraphFilterType } from "../model/paragraph.type";
 
 export async function getParagraphs(

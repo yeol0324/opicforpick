@@ -1,5 +1,5 @@
-export * from "./model/requestFeedback";
-export * from "./model/useFeedback";
-export * from "./model/types";
+export * from "./model/request-feedback";
+export * from "./model/use-feedback";
+export * from "./model/ai-feedback.type";
 
-export * from "./ui/FeedbackPanel";
+export * from "./ui/feedback-panel";

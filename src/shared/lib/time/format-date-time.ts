@@ -5,7 +5,7 @@
  */
 export function YYYYMMDDHHmm(raw: string): string {
   const safe = raw.replace(
-    /(\.\d+)(\+|\-)/,
+    /(\.\d+)(\+|-)/,
     (_m, frac, sign) => frac.slice(0, 4) + sign
   );
 

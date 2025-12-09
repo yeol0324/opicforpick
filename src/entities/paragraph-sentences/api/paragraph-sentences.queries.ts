@@ -1,11 +1,15 @@
 import { keepPreviousData, queryOptions } from "@tanstack/react-query";
-import { buildListKey } from "@shared/lib";
+
 import type { Paged } from "@shared/api";
+import { buildListKey } from "@shared/lib";
+
 import { getParagraphsSentences } from "./get-paragraphs-sentences";
 import type {
   ParagraphSentenceFilterType,
   ParagraphSentenceWithSentenceType,
 } from "../model/paragraph-sentences.type";
+
+
 
 const paragraphSentencesKeys = {
   all: () => ["paragraphsSentence"] as const,

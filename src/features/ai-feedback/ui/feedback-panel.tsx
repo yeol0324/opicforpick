@@ -1,5 +1,7 @@
 import type { FeedbackContentType } from "@entities/feedback";
+
 import { CircleProgress } from "@shared/ui";
+
 
 interface FeedbackPanelProps {
   feedback: FeedbackContentType | null;

@@ -1,4 +1,5 @@
 import { supabase } from "@shared/api";
+
 import type { FeedbackType, FeedbackContentType } from "../model/feedback.type";
 
 interface CreateFeedbackParam {

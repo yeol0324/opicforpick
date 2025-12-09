@@ -1,5 +1,7 @@
 import type { SentenceType } from "@entities/sentence/model/sentence.type";
+
 import { Card, Spinner } from "@shared/ui";
+
 
 interface Props {
   loading: boolean;

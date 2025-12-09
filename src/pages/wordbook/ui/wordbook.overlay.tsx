@@ -1,5 +1,7 @@
-import { Card, CloseButton } from "@shared/ui";
 import type { WordType } from "@entities/word";
+
+import { Card, CloseButton } from "@shared/ui";
+
 
 type WordDetailOverlayProps = {
   word: WordType;

@@ -1,4 +1,5 @@
 import { supabase } from "@shared/api";
+
 import type { RecordingType } from "../model/recording.type";
 
 export type CreateRecordingParam = {

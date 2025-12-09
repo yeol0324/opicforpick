@@ -1,4 +1,5 @@
 import { fixWebmDuration } from "@fix-webm-duration/fix";
+
 import type {
   Recorder,
   RecorderOptions,

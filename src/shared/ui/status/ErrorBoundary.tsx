@@ -1,7 +1,9 @@
 // src/shared/ui/error-boundary/ErrorBoundary.tsx
 import type { ReactNode, ErrorInfo } from "react";
 import { Component } from "react";
+
 import { reportAppError } from "@shared/lib/error-report";
+
 import { ErrorFallback } from "./ErrorFallBack";
 
 type Props = {

@@ -1,4 +1,5 @@
 import * as speechsdk from "microsoft-cognitiveservices-speech-sdk";
+
 import { requestAzureToken } from "./request-azure-token";
 
 export async function sttFromMic(lang = "ko-KR") {

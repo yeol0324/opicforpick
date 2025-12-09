@@ -1,8 +1,14 @@
 import { useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
+
+
+
+import { DemoLoginButton } from "@features/auth-demo/ui/demo-login-button";
+import { EmailLoginForm } from "@features/auth-email/ui/email-login-form";
+
 import { useAuthContext } from "@entities/auth/model/auth-context";
-import { EmailLoginForm } from "@features/auth-email/ui/EmailLoginForm";
-import { DemoLoginButton } from "@features/auth-demo/ui/DemoLoginButton";
+
 import { CenterColumn, Card } from "@shared/ui";
 
 export function Login() {

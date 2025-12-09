@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import logo from "@shared/logo.png";
+
 import { THEME } from "@shared/lib";
+import logo from "@shared/logo.png";
 
 export function AppHeader() {
   return (

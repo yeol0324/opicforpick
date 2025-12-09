@@ -1,7 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { paragraphQueries } from "@entities/paragraph/api";
+
+import { useQuery } from "@tanstack/react-query";
+
 import type { ParagraphType } from "@entities/paragraph";
+import { paragraphQueries } from "@entities/paragraph/api";
+
+import { useDebouncedValue, THEME, APP, useInfiniteScroll } from "@shared/lib";
 import {
   Spinner,
   ErrorMessage,
@@ -9,9 +13,11 @@ import {
   SearchInput,
   Card,
 } from "@shared/ui";
-import { useDebouncedValue, THEME, APP, useInfiniteScroll } from "@shared/lib";
-import { ParagraphSentenceList } from "./paragraph-sentence-list";
+
+
+
 import { ParagraphListItem } from "./paragraph-list-item";
+import { ParagraphSentenceList } from "./paragraph-sentence-list";
 
 export function Practice() {
   const [searchTerm, setSearchTerm] = useState("");

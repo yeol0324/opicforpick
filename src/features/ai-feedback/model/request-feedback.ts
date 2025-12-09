@@ -1,5 +1,6 @@
 import { blobToBase64 } from "@shared/lib";
-import type { FeedbackResponse } from "./types";
+
+import type { FeedbackResponse } from "./ai-feedback.type";
 
 export type GetFeedbackParams = {
   question: string;

@@ -1,12 +1,16 @@
+import { ProtectedRoute } from "@app/providers/protected-route";
 import { createBrowserRouter } from "react-router-dom";
+
+
+import { RouteErrorBoundary } from "@pages/error/route-error-boundary";
 import { Home } from "@pages/home";
 import { Login } from "@pages/login";
 import { MyRecords } from "@pages/my-records";
 import { Practice } from "@pages/practice";
-import { ProtectedRoute } from "@app/providers/protected-route";
-import { DemoLoginRedirect } from "@features/auth-demo/ui/DemoLoginRedirect";
-import { RouteErrorBoundary } from "@pages/error/route-error-boundary";
 import { Wordbook } from "@pages/wordbook/ui/wordbook.page";
+
+import { DemoLoginRedirect } from "@features/auth-demo/ui/demo-login-redirect";
+
 import { Layout } from "./layout";
 
 export const router = createBrowserRouter([

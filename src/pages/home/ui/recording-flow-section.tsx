@@ -1,14 +1,18 @@
+import { useState } from "react";
+
+import { FeedbackPanel } from "@features/ai-feedback";
+import { useRecordFlow, type AudioInfo } from "@features/record-start-stop";
+import {
+  saveRecommendWords,
+  RecommendVocaPicker,
+} from "@features/word-from-feedback";
+
 import { useAuthContext } from "@entities/auth";
 import type { FeedbackContentType } from "@entities/feedback";
 import type { SentenceType } from "@entities/sentence";
-import { FeedbackPanel } from "@features/ai-feedback";
-import { BlobPlayer } from "@features/playback";
-import { useRecordFlow, type AudioInfo } from "@features/record-start-stop";
-import { saveRecommendWords } from "@features/word-from-feedback/api/save-recommend-words";
-import { RecommendVocaPicker } from "@features/word-from-feedback/ui/RecommendedVocabularyPicker";
-import { formatMmSs } from "@shared/lib";
+
+import { BlobPlayer, formatMmSs } from "@shared/lib";
 import { Button, Card, RecorderButton, Spinner } from "@shared/ui";
-import { useState } from "react";
 
 type RecordingFlowSectionProps = {
   sentence: SentenceType | null | undefined;
@@ -63,7 +67,7 @@ export const RecordingFlowSection = ({
   if (recordFlow.audioInfo && sentence) {
     return (
       <section className="flex flex-col items-center gap-4 w-full">
-        <BlobPlayer blobInfo={recordFlow.audioInfo} />
+        <BlobPlayer blob={recordFlow.audioInfo.blob} />
 
         <div className="flex gap-2">
           {!feedback && (
@@ -122,4 +126,3 @@ export const RecordingFlowSection = ({
     </div>
   );
 };
-

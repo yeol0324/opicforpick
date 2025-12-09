@@ -5,6 +5,7 @@ import {
   createPagedResult,
   type Paged,
 } from "@shared/api";
+
 import type { RecordingType, RecordingFilterType } from "../model/recording.type";
 
 export async function getRecording(
@@ -15,7 +16,7 @@ export async function getRecording(
     filter?.pageSize
   );
 
-  let queryBuilder = supabase
+  const queryBuilder = supabase
     .from("speech_recordings")
     .select("*, sentences(*), ai_feedbacks(*)", { count: "exact" })
     .order("created_at", { ascending: false });

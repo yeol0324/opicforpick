@@ -1,9 +1,11 @@
 import { useEffect, useRef } from "react";
+
 import {
   isRouteErrorResponse,
   useLocation,
   useRouteError,
 } from "react-router-dom";
+
 import { reportAppError } from "@shared/lib/error-report";
 import { ErrorFallback } from "@shared/ui/status";
 

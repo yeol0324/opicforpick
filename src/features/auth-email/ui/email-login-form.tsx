@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useEmailAuth } from "../model/useEmailAuth";
+
 import {
   SegmentedControl,
   TextField,
@@ -7,6 +7,8 @@ import {
   TextButton,
   ErrorMessage,
 } from "@shared/ui";
+
+import { useEmailAuth } from "../model/use-email-auth";
 
 export function EmailLoginForm() {
   const { login, register, loading, error } = useEmailAuth();

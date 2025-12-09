@@ -1,7 +1,11 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { supabase } from "@shared/api";
-import { AuthContext, type AuthStateType } from "@entities/auth";
+
 import type { Session } from "@supabase/supabase-js";
+
+import { AuthContext, type AuthStateType } from "@entities/auth";
+
+import { supabase } from "@shared/api";
+
 
 const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
 const demoPassword = import.meta.env.VITE_DEMO_PASSWORD;
@@ -12,6 +16,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user: null,
   });
   const [loading, setLoading] = useState(true);
+
+  const applySession = (session: Session) => {
+    setAuth({
+      mode: "member",
+      user: session.user,
+    });
+  };
 
   useEffect(() => {
     const init = async () => {
@@ -51,13 +62,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       data.subscription.unsubscribe();
     };
   }, []);
-
-  const applySession = (session: Session) => {
-    setAuth({
-      mode: "member",
-      user: session.user,
-    });
-  };
 
   const signInWithEmail = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({

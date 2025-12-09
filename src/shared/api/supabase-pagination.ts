@@ -1,4 +1,5 @@
 import { APP } from "@shared/lib";
+
 import type { Paged } from "./supabase-types";
 
 export function calculatePagination(page?: number, pageSize?: number) {

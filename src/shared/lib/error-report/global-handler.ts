@@ -1,8 +1,8 @@
 import { reportAppError } from "@shared/lib/error-report";
 
 export function initGlobalErrorHandler() {
-  if ((window as any).__GLOBAL_ERROR_HANDLER_INITED__) return;
-  (window as any).__GLOBAL_ERROR_HANDLER_INITED__ = true;
+  if (window.__GLOBAL_ERROR_HANDLER_INITED__) return;
+  window.__GLOBAL_ERROR_HANDLER_INITED__ = true;
 
   window.addEventListener("error", (event) => {
     const err = event.error as Error | undefined;
@@ -13,9 +13,9 @@ export function initGlobalErrorHandler() {
       severity: "fatal",
       meta: {
         type: "window.error",
-        filename: (event as any).filename,
-        lineno: (event as any).lineno,
-        colno: (event as any).colno,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
       },
     });
   });

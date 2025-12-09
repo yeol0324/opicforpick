@@ -1,6 +1,10 @@
-import type { RecordingType } from "@entities/recording";
 import { FeedbackPanel } from "@features/ai-feedback";
+
+import type { RecordingType } from "@entities/recording";
+
 import { Card, CloseButton } from "@shared/ui";
+
+
 
 type RecordingDetailOverlayProps = {
   params: RecordingType;

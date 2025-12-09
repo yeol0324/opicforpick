@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 import { useNavigate } from "react-router-dom";
+
 import { useAuthContext } from "@entities/auth/model/auth-context";
 
 export function DemoLoginRedirect() {
@@ -13,8 +15,14 @@ export function DemoLoginRedirect() {
         setError(null);
         await loginAsDemo();
         navigate("/", { replace: true });
-      } catch (e: any) {
-        setError(e?.message ?? "임시 로그인에 실패했습니다.");
+      } catch (error) {
+        let message = "임시로그인 실패";
+
+        if (error instanceof Error && error.message) {
+          message = error.message;
+        }
+
+        setError(message);
       }
     };
 

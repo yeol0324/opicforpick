@@ -1,5 +1,6 @@
-import { TextButton } from "@shared/ui";
 import { useNavigate } from "react-router-dom";
+
+import { TextButton } from "@shared/ui";
 
 export function DemoLoginButton() {
   const navigate = useNavigate();

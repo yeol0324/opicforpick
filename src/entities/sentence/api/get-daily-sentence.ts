@@ -1,6 +1,8 @@
-import { supabase } from "@shared/api/supabase-client";
 import type { SentenceType } from "@entities/sentence/model/sentence.type";
+
+import { supabase } from "@shared/api/supabase-client";
 import type { ProficiencyLevel } from "@shared/lib";
+
 
 /**
  * @param data - 변환할 원본 데이터 객체

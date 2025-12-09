@@ -5,6 +5,7 @@ import {
   createPagedResult,
   type Paged,
 } from "@shared/api";
+
 import type { FeedbackType, FeedbackFilterType } from "../model/feedback.type";
 
 export async function getFeedback(
@@ -15,7 +16,7 @@ export async function getFeedback(
     filter?.pageSize
   );
 
-  let queryBuilder = supabase
+  const queryBuilder = supabase
     .from("ai_feedbacks")
     .select("*, sentences(*)", { count: "exact" })
     .order("created_at", { ascending: false });
