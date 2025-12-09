@@ -1,5 +1,5 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const apiKey = process.env.GEMINI_API_KEY;
 
@@ -132,8 +132,9 @@ Important:
     let parsed;
     try {
       parsed = JSON.parse(text);
-    } catch (e) {
-      console.error("[ai-feedback] JSON parse error", text);
+    } catch (error) {
+      console.error("[ai-feedback] JSON parse error : ", text);
+      console.error("[ai-feedback] error : ", error);
       return res.status(500).json({
         error: "Gemini did not return valid JSON",
         raw: text,
@@ -143,9 +144,9 @@ Important:
     return res.status(200).json({
       result: { ...parsed },
     });
-  } catch (e: any) {
+  } catch (error) {
     // TODO: 503 ai 과부하 처리 추가
-    console.error("[ai-feedback] error raw", JSON.stringify(e, null, 2));
+    console.error("[ai-feedback] error raw", JSON.stringify(error, null, 2));
     return res.status(500).json({ error: "AI feedback failed" });
   }
 }

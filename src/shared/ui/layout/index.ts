@@ -1,3 +1,3 @@
-export * from "./AppHeader";
-export * from "./BottomNav";
-export * from "./CenterColumn";
+export * from "./app-header";
+export * from "./bottom-nav";
+export * from "./center-column";

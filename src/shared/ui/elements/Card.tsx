@@ -1,38 +1,43 @@
-import { useState, type ReactNode } from "react";
+import { useState, type ReactNode, forwardRef } from "react";
+
+import { twMerge } from "tailwind-merge";
+
 type CardMode = "default" | "scroll" | "expand";
 
-interface CardProps {
+export interface CardProps {
   children: ReactNode;
   className?: string;
 
   mode?: CardMode;
 
   // scroll / expand 공통
-  minHeight?: string; // ex: "200px", "30vh"
+  minHeight?: string;
 
   // scroll
-  maxHeight?: string; // ex: "60vh"
+  maxHeight?: string;
 
   // expand
   expandLabel?: string;
   collapseLabel?: string;
 }
-export function Card({
-  children,
-  className = "",
-  mode = "default",
-  minHeight,
-  maxHeight,
-  expandLabel = "더보기",
-  collapseLabel = "접기",
-}: CardProps) {
-  const [expanded, setExpanded] = useState<boolean>(false);
 
-  // 기본 클래스
+export const Card = forwardRef<HTMLElement, CardProps>(function Card(
+  {
+    children,
+    className,
+    mode = "default",
+    minHeight,
+    maxHeight,
+    expandLabel = "더보기",
+    collapseLabel = "접기",
+  },
+  ref
+) {
+  const [expanded, setExpanded] = useState(false);
+
   const baseClass =
     "rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.08)]";
 
-  // mode별 스타일
   const modeStyle =
     mode === "scroll"
       ? {
@@ -49,7 +54,11 @@ export function Card({
       : undefined;
 
   return (
-    <section className={`${baseClass} ${className}`} style={modeStyle}>
+    <section
+      ref={ref}
+      className={twMerge(baseClass, className)}
+      style={modeStyle}
+    >
       {children}
 
       {mode === "expand" && (
@@ -65,4 +74,4 @@ export function Card({
       )}
     </section>
   );
-}
+});

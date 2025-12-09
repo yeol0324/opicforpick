@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { CircleProgress } from "../elements/CircleProgress";
+
+import { CircleProgress } from "../elements/circle-progress";
 
 type RecordingCircleButtonProps = {
   progress: number;

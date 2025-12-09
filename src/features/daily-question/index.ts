@@ -1,2 +1,2 @@
-export * from "./model/useDailyQuestion";
-export * from "./ui/DailyQuestionSection";
+export * from "./model/use-daily-question";
+export * from "./ui/daily-question-section";

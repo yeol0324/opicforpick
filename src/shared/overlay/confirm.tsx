@@ -1,5 +1,6 @@
 import { overlay } from "overlay-kit";
-import { Button } from "@shared/ui";
+
+import { BaseButton } from "@shared/ui";
 
 type ConfirmOptions = {
   title?: string;
@@ -35,8 +36,12 @@ export function openConfirm(options: ConfirmOptions = {}): Promise<boolean> {
           )}
 
           <div className="flex justify-end gap-2">
-            <Button onClick={() => handleClose(false)}>{cancelText}</Button>
-            <Button onClick={() => handleClose(true)}>{confirmText}</Button>
+            <BaseButton onClick={() => handleClose(false)}>
+              {cancelText}
+            </BaseButton>
+            <BaseButton onClick={() => handleClose(true)}>
+              {confirmText}
+            </BaseButton>
           </div>
         </div>
       </div>

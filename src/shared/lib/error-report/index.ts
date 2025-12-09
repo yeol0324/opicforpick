@@ -1,3 +1,3 @@
-export * from "./globalHandler";
-export * from "./reportAppError";
-export * from "./types";
+export * from "./global-handler";
+export * from "./report-app-error";
+export * from "./error-report.type";

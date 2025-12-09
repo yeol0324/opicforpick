@@ -1,5 +1,6 @@
 import { supabase, unwrap } from "@shared/api";
-import type { WordType, WordCandidateType } from "../model/types";
+
+import type { WordType, WordCandidateType } from "../model/word.type";
 
 export async function createWords(
   candidates: WordCandidateType[]

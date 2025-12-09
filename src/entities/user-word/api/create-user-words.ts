@@ -1,6 +1,7 @@
 // src/entities/user-word/api/create-user-words.ts
 import { supabase, unwrap } from "@shared/api";
-import type { UserWordType } from "../model/types";
+
+import type { UserWordType } from "../model/user-word.type";
 
 export async function createUserWords(
   userId: string,

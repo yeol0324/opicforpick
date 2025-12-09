@@ -1,4 +1,3 @@
-export * from "./SearchInput";
-export * from "./SegmentedControl";
-export * from "./SentenceTypeSelect";
-export * from "./TextField";
+export * from "./search-input";
+export * from "./segmented-control";
+export * from "./text-field";

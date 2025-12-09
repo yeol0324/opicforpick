@@ -1,12 +1,14 @@
+import type { SentenceType } from "@entities/sentence/model/sentence.type";
+
 import { supabase } from "@shared/api/supabase-client";
-import type { Sentence } from "@entities/sentence/model/types";
 import type { ProficiencyLevel } from "@shared/lib";
+
 
 /**
  * @param data - 변환할 원본 데이터 객체
  * @returns 표준화된 Sentence 객체 또는 null
  */
-function mapToSentence(data: unknown): Sentence | null {
+function mapToSentence(data: unknown): SentenceType | null {
   if (!data || typeof data !== "object") {
     return null;
   }
@@ -52,7 +54,7 @@ function mapToSentence(data: unknown): Sentence | null {
  */
 export async function fetchDailySentence(
   level: ProficiencyLevel = "Advanced"
-): Promise<Sentence | null> {
+): Promise<SentenceType | null> {
   try {
     const { data, error } = await supabase.rpc("get_daily_sentence", {
       level_input: level,

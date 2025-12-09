@@ -1,3 +1,3 @@
-export { ErrorMessage } from "./ErrorMessage";
-export { ErrorFallback } from "./ErrorFallBack";
-export { ErrorBoundary } from "./ErrorBoundary";
+export { ErrorMessage } from "./error-message";
+export { ErrorFallback } from "./error-fallBack";
+export { ErrorBoundary } from "./error-boundary";

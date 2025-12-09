@@ -1,3 +1,3 @@
-export * from "./model/context";
-export * from "./model/types";
-export * from "./ui/UserBadge";
+export * from "./model/auth-context";
+export * from "./model/auth.type";
+export * from "./ui/user-badge";

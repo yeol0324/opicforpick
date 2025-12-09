@@ -1,2 +1,2 @@
-export * from "./types";
-export * from "./useLatestFeedback";
+export * from "./feedback.type";
+export * from "./use-latest-feedback";

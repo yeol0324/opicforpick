@@ -1,1 +1,1 @@
-export * from "./SentenceItem";
+export * from "./sentence-item";

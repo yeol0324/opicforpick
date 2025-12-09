@@ -5,7 +5,8 @@ import {
   createPagedResult,
   type Paged,
 } from "@shared/api";
-import type { WordType, WordFilterType } from "../model/types";
+
+import type { WordType, WordFilterType } from "../model/word.type";
 
 export async function getWords(
   filter?: WordFilterType
