@@ -27,6 +27,7 @@ export function useRecordFlow({
   );
 
   const [state, setState] = useState<State>("idle");
+  const [error, setError] = useState<string | null>(null);
   const [elapsedMs, setElapsedMs] = useState(0);
   const [audioInfo, setAudioInfo] = useState<AudioInfo | null>(null);
 
@@ -49,7 +50,19 @@ export function useRecordFlow({
   };
 
   const start = async () => {
-    await recorderRef.current.start();
+    setError(null); // 이전 에러 초기화
+
+    try {
+      await recorderRef.current.start();
+    } catch (error: unknown) {
+      let message = "녹음을 실패했습니다.";
+      if (error instanceof Error && error.message) {
+        message = error.message;
+      }
+      setError(message);
+      return;
+    }
+
     startedAtRef.current = getNow();
     setElapsedMs(0);
     setState("recording");
@@ -96,5 +109,6 @@ export function useRecordFlow({
     elapsedMs,
     progress,
     maxMs: maxMs,
+    error,
   };
 }

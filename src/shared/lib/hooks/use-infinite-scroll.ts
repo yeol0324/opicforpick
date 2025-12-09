@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect } from "react";
+import { useCallback, useRef } from "react";
 
 type UseInfiniteScrollOptions = {
   onLoadMore: () => void;
@@ -11,30 +11,41 @@ export function useInfiniteScroll({
   threshold = 200,
   enabled = true,
 }: UseInfiniteScrollOptions) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const handleScroll = useCallback(() => {
-    if (!enabled || !containerRef.current) return;
+  const handleScroll = useCallback(
+    (event: Event) => {
+      if (!enabled) return;
 
-    const container = containerRef.current;
-    const isAtBottom =
-      container.scrollTop + container.clientHeight >=
-      container.scrollHeight - threshold;
+      const target = event.target as HTMLDivElement | null;
+      const container = target ?? containerRef.current;
+      if (!container) return;
 
-    if (isAtBottom) {
-      onLoadMore();
-    }
-  }, [enabled, threshold, onLoadMore]);
+      const isAtBottom =
+        container.scrollTop + container.clientHeight >=
+        container.scrollHeight - threshold;
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+      if (isAtBottom) {
+        onLoadMore();
+      }
+    },
+    [enabled, threshold, onLoadMore]
+  );
 
-    container.addEventListener("scroll", handleScroll);
-    return () => {
-      container.removeEventListener("scroll", handleScroll);
-    };
-  }, [handleScroll]);
+  const setRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (containerRef.current) {
+        containerRef.current.removeEventListener("scroll", handleScroll);
+      }
 
-  return containerRef;
+      containerRef.current = node;
+
+      if (node && enabled) {
+        node.addEventListener("scroll", handleScroll);
+      }
+    },
+    [enabled, handleScroll]
+  );
+
+  return setRef;
 }

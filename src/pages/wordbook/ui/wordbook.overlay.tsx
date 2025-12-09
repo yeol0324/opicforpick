@@ -1,6 +1,7 @@
 import type { WordType } from "@entities/word";
 
 import { Card, CloseButton } from "@shared/ui";
+import { CircleButton } from "@shared/ui/elements/circle-button";
 
 type WordbookOverlayProps = {
   word: WordType;
@@ -46,12 +47,12 @@ export const WordbookOverlay = ({
         </Card>
 
         <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2 pointer-events-none">
-          <button className="pointer-events-auto" onClick={onPrev}>
+          <CircleButton className="pointer-events-auto" onClick={onPrev}>
             ←
-          </button>
-          <button className="pointer-events-auto" onClick={onNext}>
+          </CircleButton>
+          <CircleButton className="pointer-events-auto" onClick={onNext}>
             →
-          </button>
+          </CircleButton>
         </div>
       </div>
     </div>

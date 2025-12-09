@@ -46,6 +46,7 @@ function toError(
 
 export function createRecorder(opts: RecorderOptions = {}): Recorder {
   let mediaRecorder: MediaRecorder | null = null;
+  let stream: MediaStream | null = null;
   let chunks: Blob[] = [];
   let startedAt = 0;
   let _state: RecorderState = "idle";
@@ -63,10 +64,17 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
 
   function cleanupStream() {
     try {
-      mediaRecorder?.stream.getTracks().forEach((t) => t.stop());
+      stream?.getTracks().forEach((t) => t.stop());
     } catch {
       /* noop */
+    } finally {
+      stream = null;
     }
+  }
+
+  function resetRecordingBuffer() {
+    chunks = [];
+    startedAt = 0;
   }
 
   async function start(): Promise<void> {
@@ -90,10 +98,10 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
       },
     };
 
-    let stream: MediaStream;
     try {
       stream = await navigator.mediaDevices.getUserMedia(constraints);
     } catch (e: unknown) {
+      stream = null;
       if (e instanceof DOMException) {
         if (e.name === "NotAllowedError" || e.name === "SecurityError") {
           const err = toError(
@@ -120,19 +128,22 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
     }
 
     try {
-      mediaRecorder = new MediaRecorder(stream, { mimeType: mime });
+      mediaRecorder =
+        mime && mime.length > 0
+          ? new MediaRecorder(stream, { mimeType: mime })
+          : new MediaRecorder(stream);
     } catch (e: unknown) {
       cleanupStream();
       const err = toError(
         "TYPE_UNSUPPORTED",
         e,
-        `MediaRecorder type not supported: ${mime}`
+        `MediaRecorder type not supported: ${mime || "(default)"}`
       );
       fireError(err);
       throw err;
     }
 
-    chunks = [];
+    resetRecordingBuffer();
     startedAt = performance.now();
 
     mediaRecorder.ondataavailable = (e: BlobEvent) => {
@@ -147,26 +158,14 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
       fireError(err);
     };
 
-    // TODO: 탭 숨김 시 자동 일시정지 추가
-    // if (opts.autoPauseOnHidden && !visibilityHandlerAttached) {
-    //   const onVis = () => {
-    //     if (document.hidden && _state === "recording") {
-    //       pause();
-    //     }
-    //   };
-    //   document.addEventListener("visibilitychange", onVis);
-    //   visibilityHandlerAttached = true;
+    const slice =
+      Number.isFinite(opts.timesliceMs) &&
+      opts.timesliceMs &&
+      opts.timesliceMs > 0
+        ? opts.timesliceMs
+        : undefined;
 
-    //   const prevStop = stop;
-    //   stop = async function stopWithDetach(): Promise<RecordingBlob> {
-    //     document.removeEventListener("visibilitychange", onVis);
-    //     visibilityHandlerAttached = false;
-    //     return prevStop();
-    //   };
-    // }
-
-    const slice = Number.isFinite(opts.timesliceMs) ? opts.timesliceMs! : 0;
-    mediaRecorder.start(slice > 0 ? slice : undefined);
+    mediaRecorder.start(slice);
     _state = "recording";
   }
 
@@ -177,14 +176,19 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
       throw err;
     }
 
+    const mr = mediaRecorder;
+
     await new Promise<void>((resolve) => {
-      const mr = mediaRecorder!;
       const finish = () => {
         mr.onstop = null;
         resolve();
       };
 
-      if (mr.state === "inactive") return finish();
+      if (mr.state === "inactive") {
+        finish();
+        return;
+      }
+
       mr.onstop = finish;
       try {
         mr.stop();
@@ -193,10 +197,11 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
       }
     });
 
-    const rawBlob = new Blob(chunks, { type: mime });
+    const rawBlob = new Blob(chunks, { type: mime || mr.mimeType });
     const durationMs = Math.max(0, performance.now() - startedAt);
 
-    // 🔥 여기서 duration 메타데이터를 패치해준다
+    resetRecordingBuffer();
+
     let fixedBlob: Blob = rawBlob;
     try {
       fixedBlob = await fixWebmDuration(rawBlob, durationMs);
@@ -208,7 +213,11 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
     mediaRecorder = null;
     _state = "idle";
 
-    return { blob: fixedBlob, mime, durationMs };
+    return {
+      blob: fixedBlob,
+      mime: (mime || mr.mimeType) as RecordingMime,
+      durationMs,
+    };
   }
 
   function pause() {
@@ -240,5 +249,6 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
     ondata: undefined,
     onerror: undefined,
   };
+
   return recorder;
 }
