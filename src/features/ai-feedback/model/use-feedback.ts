@@ -4,8 +4,8 @@ import { useAuthContext } from "@entities/auth";
 import { createFeedback } from "@entities/feedback";
 import { createRecording, uploadRecording } from "@entities/recording";
 
-import { requestFeedback } from "./request-feedback";
 import type { UseFeedbackParam, FeedbackResponse } from "./ai-feedback.type";
+import { requestFeedback } from "./request-feedback";
 
 async function feedbackFlow(
   params: UseFeedbackParam & { userId: string | null }

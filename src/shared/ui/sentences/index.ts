@@ -1,1 +1,1 @@
-export * from "./SentenceList";
+export * from "./sentence-list";

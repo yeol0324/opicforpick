@@ -1,9 +1,9 @@
-import { reportErrorToServer } from "./report-error";
 import type {
   ErrorSource,
   ErrorSeverity,
   ReportErrorPayload,
 } from "./error-report.type";
+import { reportErrorToServer } from "./report-error";
 
 type ReportAppErrorParams =
   | {
