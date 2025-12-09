@@ -7,7 +7,7 @@ import type {
   RecordingMime,
   RecorderError,
   RecorderState,
-} from "./types";
+} from "./audio.type";
 
 function pickMime(preferred?: RecordingMime): RecordingMime {
   const supported = (t: string) =>

@@ -1,4 +1,4 @@
-import type { ReportErrorPayload } from "./types";
+import type { ReportErrorPayload } from "./error-report.type";
 
 export async function reportErrorToServer(payload: ReportErrorPayload) {
   try {
