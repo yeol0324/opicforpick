@@ -2,8 +2,7 @@ import type { WordType } from "@entities/word";
 
 import { Card, CloseButton } from "@shared/ui";
 
-
-type WordDetailOverlayProps = {
+type WordbookOverlayProps = {
   word: WordType;
   index: number;
   total: number;
@@ -12,14 +11,14 @@ type WordDetailOverlayProps = {
   onClose: () => void;
 };
 
-export const WordDetailOverlay = ({
+export const WordbookOverlay = ({
   word,
   index,
   total,
   onPrev,
   onNext,
   onClose,
-}: WordDetailOverlayProps) => {
+}: WordbookOverlayProps) => {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"

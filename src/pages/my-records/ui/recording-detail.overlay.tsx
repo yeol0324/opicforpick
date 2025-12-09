@@ -2,9 +2,7 @@ import { FeedbackPanel } from "@features/ai-feedback";
 
 import type { RecordingType } from "@entities/recording";
 
-import { Card, CloseButton } from "@shared/ui";
-
-
+import { Card, CloseButton, EmptyState } from "@shared/ui";
 
 type RecordingDetailOverlayProps = {
   params: RecordingType;
@@ -35,7 +33,7 @@ export const RecordingDetailOverlay = ({
             <FeedbackPanel feedback={feedback.feedback} />
           </Card>
         ) : (
-          <p className="text-sm text-slate-500">피드백이 없습니다.</p>
+          <EmptyState message="피드백이 없습니다." />
         )}
       </div>
     </div>

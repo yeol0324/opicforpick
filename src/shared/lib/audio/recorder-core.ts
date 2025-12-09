@@ -22,14 +22,14 @@ function pickMime(preferred?: RecordingMime): RecordingMime {
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
   if (isIOS) {
-    const iosCandidates = ["audio/mp4", "audio/aac"];
-    for (const t of iosCandidates) {
+    const iosCandidateList = ["audio/mp4", "audio/aac"];
+    for (const t of iosCandidateList) {
       if (supported(t)) return t as RecordingMime;
     }
   }
 
-  const webmCandidates = ["audio/webm;codecs=opus", "audio/webm"];
-  for (const t of webmCandidates) {
+  const webmCandidateList = ["audio/webm;codecs=opus", "audio/webm"];
+  for (const t of webmCandidateList) {
     if (supported(t)) return t as RecordingMime;
   }
 

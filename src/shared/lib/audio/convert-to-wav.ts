@@ -53,14 +53,14 @@ function audioBufferToWav(audioBuffer: AudioBuffer): ArrayBuffer {
   offset += 4;
 
   // PCM 데이터 interleave
-  const channelData: Float32Array[] = [];
+  const channelDataList: Float32Array[] = [];
   for (let ch = 0; ch < numChannels; ch++) {
-    channelData.push(audioBuffer.getChannelData(ch));
+    channelDataList.push(audioBuffer.getChannelData(ch));
   }
 
   for (let i = 0; i < numFrames; i++) {
     for (let ch = 0; ch < numChannels; ch++) {
-      let sample = channelData[ch][i];
+      let sample = channelDataList[ch][i];
       sample = Math.max(-1, Math.min(1, sample));
       const intSample = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
       view.setInt16(offset, intSample, true);

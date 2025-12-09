@@ -6,9 +6,7 @@ import { wordQueries } from "@entities/word/api/word.queries";
 
 import { Card } from "@shared/ui";
 
-
-import { WordDetailOverlay } from "./wordbook.overlay";
-
+import { WordbookOverlay } from "./wordbook.overlay";
 
 export function Wordbook() {
   const { data } = useQuery(wordQueries.list());
@@ -49,7 +47,7 @@ export function Wordbook() {
         </section>
       </div>
       {isOpen && (
-        <WordDetailOverlay
+        <WordbookOverlay
           word={items[currentIndex]}
           index={currentIndex}
           total={items.length}

@@ -4,7 +4,7 @@ import { Component } from "react";
 
 import { reportAppError } from "@shared/lib/error-report";
 
-import { ErrorFallback } from "./ErrorFallBack";
+import { ErrorFallback } from "./error-fallBack";
 
 type Props = {
   children: ReactNode;
