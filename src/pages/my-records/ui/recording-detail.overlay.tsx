@@ -1,9 +1,9 @@
-import type { Recording } from "@entities/recording";
+import type { RecordingType } from "@entities/recording";
 import { FeedbackPanel } from "@features/ai-feedback";
 import { Card, CloseButton } from "@shared/ui";
 
 type RecordingDetailOverlayProps = {
-  params: Recording;
+  params: RecordingType;
   onClose: () => void;
 };
 export const RecordingDetailOverlay = ({

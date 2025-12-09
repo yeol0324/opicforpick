@@ -1,11 +1,11 @@
-import type { Sentence } from "@entities/sentence";
+import type { SentenceType } from "@entities/sentence/model/sentence.type";
 import type { WordCandidateType } from "@entities/word";
 
 export type FeedbackType = {
   id: string;
   createdAt: string;
   userId: string;
-  sentenceId: Sentence;
+  sentenceId: SentenceType;
   feedback: FeedbackContentType;
   recordingId: string;
 };
@@ -22,11 +22,11 @@ export type FeedbackContentType = {
   rawTranscript?: string;
   recommendVoca: WordCandidateType[];
 };
-export type FeedbackFilter = {
+export type FeedbackFilterType = {
   page?: number;
   pageSize?: number;
 };
-export type CreateFeedback = {
+export type CreateFeedbackType = {
   created_at?: string;
   feedback: FeedbackContentType;
   id?: string;
@@ -34,7 +34,7 @@ export type CreateFeedback = {
   transcript: string;
   user_id: string;
 };
-export type UpdateFeedback = {
+export type UpdateFeedbackType = {
   created_at?: string;
   feedback?: JSON;
   id?: string;
@@ -42,3 +42,4 @@ export type UpdateFeedback = {
   transcript?: string;
   user_id?: string;
 };
+

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { paragraphQueries } from "@entities/paragraph/api";
-import type { Paragraph } from "@entities/paragraph";
+import type { ParagraphType } from "@entities/paragraph";
 import {
   Spinner,
   ErrorMessage,
@@ -20,7 +20,7 @@ export function Practice() {
     null
   );
 
-  const [paragraphs, setParagraphs] = useState<Paragraph[]>([]);
+  const [paragraphs, setParagraphs] = useState<ParagraphType[]>([]);
 
   const pageSize = APP.DEFAULT_PAGE_SIZE;
   const debouncedSearchTerm = useDebouncedValue(
@@ -43,8 +43,8 @@ export function Practice() {
     if (!items) return;
 
     setParagraphs((prev) => {
-      if (page === 1) return items as Paragraph[];
-      return [...prev, ...(items as Paragraph[])];
+      if (page === 1) return items as ParagraphType[];
+      return [...prev, ...(items as ParagraphType[])];
     });
   }, [items, page]);
 

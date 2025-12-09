@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuthContext } from "@entities/auth/model/context";
+import { useAuthContext } from "@entities/auth/model/auth-context";
 
 export function useEmailAuth() {
   const { signInWithEmail, signUpWithEmail } = useAuthContext();

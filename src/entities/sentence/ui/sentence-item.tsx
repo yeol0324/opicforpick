@@ -1,10 +1,11 @@
-import type { Sentence } from "../model/types";
+import type { SentenceType } from "../model/sentence.type";
 
 type Props = {
-  sentence: Sentence;
+  sentence: SentenceType;
 };
 
 export const SentenceItem = ({ sentence }: Props) => {
   if (!sentence) return <div>x</div>;
   return <div>{sentence.sentence_eng}</div>;
 };
+

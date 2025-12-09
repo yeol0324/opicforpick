@@ -1,4 +1,4 @@
-export type Paragraph = {
+export type ParagraphType = {
   id: string;
   created_at: string;
   title: string;
@@ -6,8 +6,9 @@ export type Paragraph = {
   theme_id: number;
 };
 
-export type ParagraphFilter = {
+export type ParagraphFilterType = {
   q?: string;
   page?: number;
   pageSize?: number;
 };
+

@@ -1,8 +1,8 @@
 import { createContext, useContext } from "react";
-import type { AuthState } from "./types";
+import type { AuthStateType } from "./auth.type";
 
 export type AuthContextValue = {
-  auth: AuthState;
+  auth: AuthStateType;
   loading: boolean;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string) => Promise<void>;

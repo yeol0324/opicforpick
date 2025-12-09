@@ -56,3 +56,4 @@ export async function requestTranscribe(audioBlob: Blob): Promise<string> {
 
   return data.transcript as string;
 }
+

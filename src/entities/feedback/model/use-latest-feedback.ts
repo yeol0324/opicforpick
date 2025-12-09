@@ -8,3 +8,4 @@ export function useLatestFeedback(sentenceId?: string) {
 
   return useQuery(feedbackQueries.latest(userId, sentenceId));
 }
+

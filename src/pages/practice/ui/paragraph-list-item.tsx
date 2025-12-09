@@ -1,7 +1,7 @@
-import type { Paragraph } from "@entities/paragraph";
+import type { ParagraphType } from "@entities/paragraph";
 
 type ParagraphListItemProps = {
-  paragraph: Paragraph;
+  paragraph: ParagraphType;
   isSelected: boolean;
   onClick: () => void;
 };

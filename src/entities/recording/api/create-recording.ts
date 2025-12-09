@@ -1,5 +1,5 @@
 import { supabase } from "@shared/api";
-import type { Recording } from "../model/types";
+import type { RecordingType } from "../model/recording.type";
 
 export type CreateRecordingParam = {
   userId: string;
@@ -10,7 +10,7 @@ export type CreateRecordingParam = {
 
 export async function createRecording(
   params: CreateRecordingParam
-): Promise<Recording> {
+): Promise<RecordingType> {
   const { data, error } = await supabase
     .from("speech_recordings")
     .insert({

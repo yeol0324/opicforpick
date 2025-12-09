@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { useAuthContext } from "@entities/auth/model/context";
+import { useAuthContext } from "@entities/auth/model/auth-context";
 import type { JSX } from "react";
 
 type Props = {

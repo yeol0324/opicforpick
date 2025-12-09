@@ -5,11 +5,11 @@ import {
   createPagedResult,
   type Paged,
 } from "@shared/api";
-import type { Paragraph, ParagraphFilter } from "../model/types";
+import type { ParagraphType, ParagraphFilterType } from "../model/paragraph.type";
 
 export async function getParagraphs(
-  filter?: ParagraphFilter
-): Promise<Paged<Paragraph>> {
+  filter?: ParagraphFilterType
+): Promise<Paged<ParagraphType>> {
   const { page, pageSize, from, to } = calculatePagination(
     filter?.page,
     filter?.pageSize
@@ -26,7 +26,7 @@ export async function getParagraphs(
   }
 
   const response = await queryBuilder.range(from, to);
-  const items = unwrap<Paragraph[]>(response);
+  const items = unwrap<ParagraphType[]>(response);
   const total = response.count ?? 0;
 
   return createPagedResult({

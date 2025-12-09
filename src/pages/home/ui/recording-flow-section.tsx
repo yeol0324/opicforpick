@@ -1,6 +1,6 @@
 import { useAuthContext } from "@entities/auth";
 import type { FeedbackContentType } from "@entities/feedback";
-import type { Sentence } from "@entities/sentence";
+import type { SentenceType } from "@entities/sentence";
 import { FeedbackPanel } from "@features/ai-feedback";
 import { BlobPlayer } from "@features/playback";
 import { useRecordFlow, type AudioInfo } from "@features/record-start-stop";
@@ -11,7 +11,7 @@ import { Button, Card, RecorderButton, Spinner } from "@shared/ui";
 import { useState } from "react";
 
 type RecordingFlowSectionProps = {
-  sentence: Sentence | null | undefined;
+  sentence: SentenceType | null | undefined;
   onComplete: (info: AudioInfo) => void;
   onReset: () => void;
   isFeedbackLoading: boolean;

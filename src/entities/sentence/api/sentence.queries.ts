@@ -2,23 +2,23 @@ import { keepPreviousData, queryOptions } from "@tanstack/react-query";
 import { getSentences } from "./get-sentences";
 import { getRandomSentence } from "./get-random-sentence";
 import { fetchDailySentence } from "./get-daily-sentence";
-import type { Sentence, SentenceFilter, SentenceType } from "../model/types";
+import type { SentenceType, SentenceFilterType, SentenceKindType } from "../model/sentence.type";
 import type { Paged } from "@shared/api";
 import { buildListKey, type ProficiencyLevel } from "@shared/lib";
 
 const sentenceKeys = {
   all: () => ["sentences"] as const,
-  list: (filter?: SentenceFilter) => buildListKey(sentenceKeys.all(), filter),
+  list: (filter?: SentenceFilterType) => buildListKey(sentenceKeys.all(), filter),
   byId: (id: string) => [...sentenceKeys.all(), "detail", id] as const,
   daily: () => ["daily-sentence"] as const,
   byLevel: (level: ProficiencyLevel) =>
     [...sentenceKeys.daily(), level] as const,
-  random: (type?: SentenceType) =>
+  random: (type?: SentenceKindType) =>
     ["sentences", "random", type ?? "any"] as const,
 };
 
 export const sentenceQueries = {
-  list: (filter?: SentenceFilter) =>
+  list: (filter?: SentenceFilterType) =>
     queryOptions({
       queryKey: sentenceKeys.list(filter),
       queryFn: () => getSentences(filter),
@@ -26,13 +26,13 @@ export const sentenceQueries = {
       placeholderData: keepPreviousData,
     }),
 
-  infiniteList: (filter: Omit<SentenceFilter, "page">) => ({
+  infiniteList: (filter: Omit<SentenceFilterType, "page">) => ({
     queryKey: sentenceKeys.list({ ...filter, page: 1 }),
     queryFn: ({ pageParam = 1 }: { pageParam?: number }) => {
       return getSentences({ ...filter, page: pageParam });
     },
     initialPageParam: 1,
-    getNextPageParam: (lastPage: Paged<Sentence>) => {
+    getNextPageParam: (lastPage: Paged<SentenceType>) => {
       const nextPage = (lastPage.page ?? 1) + 1;
       return nextPage <= lastPage.pageCount ? nextPage : undefined;
     },
@@ -58,7 +58,7 @@ export const sentenceQueries = {
       staleTime: 24 * 60 * 60 * 1000,
       refetchOnWindowFocus: false,
     }),
-  random: (type?: SentenceType) =>
+  random: (type?: SentenceKindType) =>
     queryOptions({
       queryKey: sentenceKeys.random(type),
       queryFn: () => getRandomSentence(type),

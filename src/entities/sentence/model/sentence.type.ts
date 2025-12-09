@@ -1,7 +1,7 @@
 /**0 전체 |1 question |2 answer */
-export type SentenceType = 0 | 1 | 2;
+export type SentenceKindType = 0 | 1 | 2;
 
-export type Sentence = {
+export type SentenceType = {
   id: string;
   created_at: string;
   sentence_eng: string;
@@ -11,10 +11,11 @@ export type Sentence = {
   theme_id: number;
 };
 
-export type SentenceFilter = {
-  type?: SentenceType;
+export type SentenceFilterType = {
+  type?: SentenceKindType;
   id?: string;
   q?: string;
   page?: number;
   pageSize?: number;
 };
+

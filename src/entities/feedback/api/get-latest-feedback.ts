@@ -1,5 +1,5 @@
 import { supabase } from "@shared/api";
-import type { FeedbackType } from "../model/types";
+import type { FeedbackType } from "../model/feedback.type";
 
 type LatestFeedbackParams = {
   userId: string;

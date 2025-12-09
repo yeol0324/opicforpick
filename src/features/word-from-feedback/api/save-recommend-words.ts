@@ -1,5 +1,5 @@
 import type { FeedbackContentType } from "@entities/feedback";
-import type { WordCandidateType } from "@entities/word/model/types";
+import type { WordCandidateType } from "@entities/word/model/word.type";
 import { createWords } from "@entities/word/api/create-words";
 import { createUserWords } from "@entities/user-word/api/create-user-words";
 

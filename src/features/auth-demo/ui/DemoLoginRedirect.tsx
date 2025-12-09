@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "@entities/auth/model/context";
+import { useAuthContext } from "@entities/auth/model/auth-context";
 
 export function DemoLoginRedirect() {
   const { loginAsDemo } = useAuthContext();

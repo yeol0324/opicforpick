@@ -5,10 +5,10 @@ import {
   createPagedResult,
   type Paged,
 } from "@shared/api";
-import type { FeedbackType, FeedbackFilter } from "../model/types";
+import type { FeedbackType, FeedbackFilterType } from "../model/feedback.type";
 
 export async function getFeedback(
-  filter?: FeedbackFilter
+  filter?: FeedbackFilterType
 ): Promise<Paged<FeedbackType>> {
   const { page, pageSize, from, to } = calculatePagination(
     filter?.page,

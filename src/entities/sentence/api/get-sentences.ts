@@ -5,11 +5,11 @@ import {
   createPagedResult,
   type Paged,
 } from "@shared/api";
-import type { Sentence, SentenceFilter } from "../model/types";
+import type { SentenceType, SentenceFilterType } from "../model/sentence.type";
 
 export async function getSentences(
-  filter?: SentenceFilter
-): Promise<Paged<Sentence>> {
+  filter?: SentenceFilterType
+): Promise<Paged<SentenceType>> {
   const { page, pageSize, from, to } = calculatePagination(
     filter?.page,
     filter?.pageSize
@@ -32,7 +32,7 @@ export async function getSentences(
   }
 
   const response = await queryBuilder.range(from, to);
-  const items = unwrap<Sentence[]>(response);
+  const items = unwrap<SentenceType[]>(response);
   const total = response.count ?? 0;
 
   return createPagedResult({

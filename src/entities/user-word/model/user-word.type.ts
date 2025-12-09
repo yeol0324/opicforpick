@@ -7,3 +7,4 @@ export type UserWordType = {
   created_at: string;
   word?: WordType;
 };
+

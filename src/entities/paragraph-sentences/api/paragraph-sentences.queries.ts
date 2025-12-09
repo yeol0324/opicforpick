@@ -3,9 +3,9 @@ import { buildListKey } from "@shared/lib";
 import type { Paged } from "@shared/api";
 import { getParagraphsSentences } from "./get-paragraphs-sentences";
 import type {
-  ParagraphSentenceFilter,
-  ParagraphSentenceWithSentence,
-} from "../model/types";
+  ParagraphSentenceFilterType,
+  ParagraphSentenceWithSentenceType,
+} from "../model/paragraph-sentences.type";
 
 const paragraphSentencesKeys = {
   all: () => ["paragraphsSentence"] as const,
@@ -21,12 +21,12 @@ export const paragraphSentencesQueries = {
       staleTime: 60_000,
       placeholderData: keepPreviousData,
     }),
-  infiniteList: (filter: Omit<ParagraphSentenceFilter, "page">) => ({
+  infiniteList: (filter: Omit<ParagraphSentenceFilterType, "page">) => ({
     queryKey: paragraphSentencesKeys.list({ ...filter, page: 1 }),
     queryFn: ({ pageParam = 1 }: { pageParam?: number }) =>
       getParagraphsSentences({ ...filter, page: pageParam }),
     initialPageParam: 1,
-    getNextPageParam: (lastPage: Paged<ParagraphSentenceWithSentence>) => {
+    getNextPageParam: (lastPage: Paged<ParagraphSentenceWithSentenceType>) => {
       const nextPage = (lastPage.page ?? 1) + 1;
       return nextPage <= lastPage.pageCount ? nextPage : undefined;
     },

@@ -1,5 +1,5 @@
 import { overlay } from "overlay-kit";
-import { recordingQueries, type Recording } from "@entities/recording";
+import { recordingQueries, type RecordingType } from "@entities/recording";
 import { YYYYMMDDHHmm } from "@shared/lib";
 import { Card } from "@shared/ui";
 import { useQuery } from "@tanstack/react-query";
@@ -10,7 +10,7 @@ export function MyRecords() {
     ...recordingQueries.list(),
   });
   const feedbackItems = recordingQuery.data?.items ?? [];
-  const handleOpen = (item: Recording) => {
+  const handleOpen = (item: RecordingType) => {
     overlay.open(({ close, unmount }) => (
       <RecordingDetailOverlay
         params={item}

@@ -1,13 +1,13 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@shared/api";
-import { AuthContext, type AuthState } from "@entities/auth";
+import { AuthContext, type AuthStateType } from "@entities/auth";
 import type { Session } from "@supabase/supabase-js";
 
 const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
 const demoPassword = import.meta.env.VITE_DEMO_PASSWORD;
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [auth, setAuth] = useState<AuthState>({
+  const [auth, setAuth] = useState<AuthStateType>({
     mode: "none",
     user: null,
   });

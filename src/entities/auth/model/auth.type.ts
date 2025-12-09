@@ -1,5 +1,6 @@
 import type { User } from "@supabase/supabase-js";
 
-export type AuthState =
+export type AuthStateType =
   | { mode: "none"; user: null }
   | { mode: "member"; user: User };
+

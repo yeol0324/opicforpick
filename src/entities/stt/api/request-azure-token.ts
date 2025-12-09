@@ -3,3 +3,4 @@ export async function requestAzureToken() {
   if (!res.ok) throw new Error("Token request failed");
   return res.json() as Promise<{ authToken: string; region: string }>;
 }
+
