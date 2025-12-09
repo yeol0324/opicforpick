@@ -40,7 +40,7 @@ src/
 │  ├─ login/
 │  ├─ home/
 │  ├─ practice/
-│  └─ notes/
+│  └─ my-records/
 │
 ├─ shared/              # 공통 유틸, API, 스타일, 컴포넌트
 │  ├─ api/              # Supabase 클라이언트, HTTP utils
@@ -79,77 +79,76 @@ src/
 
 ## Naming
 
-### 1. 전체 구조 용어
+### 1. 변수 / 함수 네이밍 규칙
 
-- `segments`: `app`, `entities`, `features`, `pages`, `shared` 등 최상위/도메인 단위 폴더를 통칭.
-- 이 규칙은 `src` 이하 전체에 적용한다.
+- **변수/함수**: camelCase (`helloWorld`, `getData`)
+- **배열**: 이름 끝에 `List` 접미사 (`userList`)
+- **boolean**: `is`, `has`, `can` 접두사 (`isLoading`, `hasPermission`, `canSubmit`)
+- **클래스/생성자**: PascalCase (`Book`, `UserService`)
+- **상수**: SNAKE_CASE (`MAX_COUNT`, `API_URL`)
+- **Enum**: 이름과 내부 값 모두 PascalCase
 
-### 2. 폴더 / 파일 / 컴포넌트 네이밍
+---
 
-#### 2.1 폴더 이름
+### 2. 함수 접두사 규칙 (의미 기반)
 
-- **모든 폴더 이름은 kebab-case**
-  - 예시:
-    - `src/entities/daily-question`
-    - `src/features/ai-feedback`
-    - `src/shared/ui`
-    - `src/pages/home`
+의도를 **이름에서 바로 알 수 있도록** 접두사를 강제한다.
 
-#### 2.2 파일 이름
+- **boolean 반환**: `is`, `has`, `can` (`isClient`, `hasPermission`)
+- **생성**: `create` (`createUser`)
+- **변환**: `convert` (`convertToJson`)
+- **조회**: `get` (`getUser`, `getDataList`)
+- **열기**: `open` (`openModal`)
+- **더하기/빼기**: `add`, `minus` (`addItem`, `minusCount`)
+- **배열 필터링**: `filter` (`filterActiveUsers`)
+- **배열 탐색**: `find` (`findUserById`)
+- **기타**: 동사 접두사 필수 (`parseData`, `handleClick`)
+- **관행 예외**: 업계 관행 함수는 예외 허용 (`throttle`, `debounce`)
 
-- **TS/TSX 파일 : camelCase**
-- 예시:
-  - `useTodaySentence.ts`
-  - `sentenceQueries.ts`
-  - `recordFlow.ts`
+---
 
-#### 2.3 컴포넌트 이름
+### 3. React 규칙
 
-- **React 컴포넌트 : PascalCase**
-  - 예시:
-    - `HomePage.tsx` → `export function HomePage() { ... }`
-    - `FeedbackPanel.tsx` → `export function FeedbackPanel() { ... }`
+- **Custom Hook**: `use` 접두사 (`useAuth`, `useFetch`)
+- **HOC**: `with` 접두사 (`withAuth`)
+- **이벤트 핸들러**: `handle` + 이벤트 타입 (`handleButtonClick`, `handleSubmit`) ⚠️ `onClick`, `onChange` 형태 사용 금지
+- **Context**: 이름 끝에 `Context` (`AuthContext`)
+- **Context Hook**: `use` + `Context` (`useAuthContext`)
+- **Provider 컴포넌트**: 이름 끝에 `Provider` (`AuthContextProvider`)
+- **Provider 래퍼**: 항상 `Providers` (`Providers`)
 
-#### 2.4 Hook 이름
+---
 
-- **Hook 함수 이름 : `use` + PascalCase **
-  - 예: `useTodaySentence`, `useAiFeedbackFlow`, `useRecordFlow`
-- 파일 이름은 **hook 함수명을 그대로 camelCase로 사용**
-  - 예:
-    - `useTodaySentence.ts`
-    - `useAiFeedbackFlow.ts`
-    - `useRecordFlow.ts`
+### 4. 파일 / 폴더 네이밍 규칙
 
-### 3. API 함수 네이밍 규칙
+- **파일명/폴더명**: 무조건 kebab-case (`hello-world.tsx`, `user-profile.ts`) ⚠️ 예외 없음
+- **허용된 subpath** (1단계만): `*.model.ts`, `*.schema.ts`, `*.factory.ts`, `*.query.ts`, `*.mutation.ts`, `*.test.ts`, `*.page.tsx`, `*.overlay.tsx`, `*.constant.ts`, `*.util.ts`, `*.container.tsx`, `*.present.tsx`, `*.loading.tsx`, `*.type.ts`
+- **Subpath 중첩 금지**: ❌ `hello.util.test.ts` → ✅ `hello-util.test.ts`
 
-> API 호출 함수는 **역할 + 명사** 조합으로 통일.
+---
 
-#### 3.1 CRUD 기본 규칙
+### 5. 폴더 구조 (Feature-Sliced Design)
 
-- **조회 (GET)**: `get명사`
-  - 단일 조회: `getSentence`, `getFeedback`, `getUserProfile`
-  - 리스트/페이지네이션: `getSentences`, `getFeedbackHistory`
-- **생성 (CREATE)**: `create명사`
-  - 예: `createFeedbackRecord`, `createUser`, `createFavorite`
-- **수정 (UPDATE)**: `update명사`
-  - 예: `updateSentence`, `updateUserProfile`
-- **삭제 (DELETE)**: `delete명사`
-  - 예: `deleteFavorite`, `deleteFeedback`
+자세한 구조는 [프로젝트 구조](#프로젝트-구조) 섹션 참조.
 
-#### 3.2 도메인 확장 규칙 (상세 행동이 필요한 경우)
+- **shared**: 전역 유틸, 공통 UI, 모든 계층에서 사용 가능한 코드
+- **entities**: `model | api | ui | lib` - 도메인 모델 단위, query/mutation은 api에 포함
+- **features**: 가급적 사용 최소화, entities로 해결 우선
+- **widgets**: features와 동일하게 사용 자제
+- **pages**: 라우팅 전용, 재사용 금지 (필요 시 shared로 이동)
+- **app**: 앱 초기화, provider, router, 전역 설정
 
-- 의미가 명확해지도록 **도메인 + 동작** 조합 사용
-  - 외부 AI 호출: `requestFeedbackExternal`,`requestTranscribe`
-  - STT: `sttFromBlob`, `sttFromMic`,
-  - 특수 조회: `getDailySentence`, `getRandomSentence`
+---
 
-> 원칙:
->
-> - **DB를 읽어오는 것** → `get*`
-> - **DB에 새로 저장** → `create*`
-> - **DB 레코드를 수정** → `update*`
-> - **DB 레코드를 삭제** → `delete*`
-> - **외부 서비스 호출** (AI, STT 등) → `request*`, 도메인 붙여서 명확히
+### 6. API 함수 네이밍 규칙
+
+**역할 + 명사** 조합으로 통일. (일반 함수 접두사 규칙의 확장 적용)
+
+- **조회 (GET)**: `get명사` (`getSentence`, `getSentences`, `getDailySentence`, `getRandomSentence`, `getUserProfile`)
+- **생성 (CREATE)**: `create명사` (`createUser`, `createFeedbackRecord`)
+- **수정 (UPDATE)**: `update명사` (`updateSentence`, `updateUserProfile`)
+- **삭제 (DELETE)**: `delete명사` (`deleteFavorite`, `deleteFeedback`)
+- **외부 서비스 호출**: `request*` + 도메인 (`requestFeedbackExternal`, `requestTranscribe`, `sttFromBlob`, `sttFromMic`)
 
 ## TanStack Query
 
@@ -232,12 +231,6 @@ export function useAiFeedbackFlow() {
 - 리스트: **30초 ~ 1분**
 - 즉시성 데이터(STT): **0**
 
-### 5. 요약
-
-- **entities = query 정의 / data source**
-- **features/pages = useQuery / useMutation 실행 + 비즈니스 흐름**
-- **queryKey는 도메인 단위**, **queryOptions는 entities로 모으기**
-
 ## 🤖 AI 피드백 기능 (Serverless)
 
 Vercel Serverless + Google Gemini 2.0 Flash 사용
@@ -287,7 +280,7 @@ POST /api/ai-feedback
 ### 즐겨찾기 / 노트 기능
 
 - 문장 & 문단 즐겨찾기
-- notes 페이지에서 전체 확인
+- my-records 페이지에서 전체 확인
 
 ## 🚀 실행
 
