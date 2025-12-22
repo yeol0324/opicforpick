@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-
-
 import { useFeedback } from "@features/ai-feedback";
 import {
   useDailyQuestion,

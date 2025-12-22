@@ -1,20 +1,11 @@
-<<<<<<< HEAD
-import type { SentenceType } from "@entities/sentence/model/sentence.type";
-=======
 import type { SentenceRow } from "@entities/sentence/model/sentence.type";
->>>>>>> origin/main
 
 import { Card, Spinner } from "@shared/ui";
-
 
 interface Props {
   loading: boolean;
   error: unknown;
-<<<<<<< HEAD
-  sentence?: SentenceType | null;
-=======
   sentence?: SentenceRow | null;
->>>>>>> origin/main
 }
 
 export function DailyQuestionSection({ loading, error, sentence }: Props) {
