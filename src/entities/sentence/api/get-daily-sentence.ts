@@ -1,8 +1,10 @@
-import type { SentenceType } from "@entities/sentence/model/sentence.type";
+import type {
+  SentenceRow,
+  SentenceType,
+} from "@entities/sentence/model/sentence.type";
 
 import { supabase } from "@shared/api/supabase-client";
 import type { ProficiencyLevel } from "@shared/lib";
-
 
 /**
  * @param data - 변환할 원본 데이터 객체
@@ -54,7 +56,7 @@ function mapToSentence(data: unknown): SentenceType | null {
  */
 export async function fetchDailySentence(
   level: ProficiencyLevel = "Advanced"
-): Promise<SentenceType | null> {
+): Promise<SentenceRow | null> {
   try {
     const { data, error } = await supabase.rpc("get_daily_sentence", {
       level_input: level,

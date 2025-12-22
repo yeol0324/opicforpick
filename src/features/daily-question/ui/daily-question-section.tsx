@@ -1,12 +1,11 @@
-import type { SentenceType } from "@entities/sentence/model/sentence.type";
+import type { SentenceRow } from "@entities/sentence/model/sentence.type";
 
 import { Card, Spinner } from "@shared/ui";
-
 
 interface Props {
   loading: boolean;
   error: unknown;
-  sentence?: SentenceType | null;
+  sentence?: SentenceRow | null;
 }
 
 export function DailyQuestionSection({ loading, error, sentence }: Props) {

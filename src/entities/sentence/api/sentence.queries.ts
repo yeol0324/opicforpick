@@ -3,15 +3,19 @@ import { keepPreviousData, queryOptions } from "@tanstack/react-query";
 import type { Paged } from "@shared/api";
 import { buildListKey, type ProficiencyLevel } from "@shared/lib";
 
-
 import { fetchDailySentence } from "./get-daily-sentence";
 import { getRandomSentence } from "./get-random-sentence";
 import { getSentences } from "./get-sentences";
-import type { SentenceType, SentenceFilterType, SentenceKindType } from "../model/sentence.type";
+import type {
+  SentenceFilterType,
+  SentenceKindType,
+  SentenceRow,
+} from "../model/sentence.type";
 
 const sentenceKeys = {
   all: () => ["sentences"] as const,
-  list: (filter?: SentenceFilterType) => buildListKey(sentenceKeys.all(), filter),
+  list: (filter?: SentenceFilterType) =>
+    buildListKey(sentenceKeys.all(), filter),
   byId: (id: string) => [...sentenceKeys.all(), "detail", id] as const,
   daily: () => ["daily-sentence"] as const,
   byLevel: (level: ProficiencyLevel) =>
@@ -35,7 +39,7 @@ export const sentenceQueries = {
       return getSentences({ ...filter, page: pageParam });
     },
     initialPageParam: 1,
-    getNextPageParam: (lastPage: Paged<SentenceType>) => {
+    getNextPageParam: (lastPage: Paged<SentenceRow>) => {
       const nextPage = (lastPage.page ?? 1) + 1;
       return nextPage <= lastPage.pageCount ? nextPage : undefined;
     },

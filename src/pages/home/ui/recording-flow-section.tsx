@@ -9,13 +9,13 @@ import {
 
 import { useAuthContext } from "@entities/auth";
 import type { FeedbackContentType } from "@entities/feedback";
-import type { SentenceType } from "@entities/sentence";
+import type { SentenceRow } from "@entities/sentence";
 
 import { BlobPlayer, formatMmSs } from "@shared/lib";
 import { BaseButton, Card, RecorderButton, Spinner } from "@shared/ui";
 
 type RecordingFlowSectionProps = {
-  sentence: SentenceType | null | undefined;
+  sentence: SentenceRow | null | undefined;
   onComplete: (info: AudioInfo) => void;
   onReset: () => void;
   isFeedbackLoading: boolean;
