@@ -1,2 +1,2 @@
-export * from "./CircleProgressButton";
-export * from "./RecorderButton";
+export * from "./circle-progress-button";
+export * from "./recorder-button";

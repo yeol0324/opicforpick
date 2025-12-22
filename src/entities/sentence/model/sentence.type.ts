@@ -1,8 +1,11 @@
 /**0 전체 |1 question |2 answer */
+<<<<<<< HEAD
+=======
 import type { Database } from "@shared/api/generated/database";
 
 export type SentenceRow = Database["public"]["Tables"]["sentences"]["Row"];
 
+>>>>>>> origin/main
 export type SentenceKindType = 0 | 1 | 2;
 
 export type SentenceType = {
@@ -22,3 +25,7 @@ export type SentenceFilterType = {
   page?: number;
   pageSize?: number;
 };
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/main

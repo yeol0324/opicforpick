@@ -1,11 +1,15 @@
 
 import type { FeedbackContentType } from "@entities/feedback";
+<<<<<<< HEAD
+import type { SentenceType } from "@entities/sentence";
+=======
 import type { Sentence } from "@entities/sentence";
+>>>>>>> origin/main
 
 import type { ProficiencyLevel } from "@shared/lib";
 
 export interface UseFeedbackParam {
-  question: Sentence;
+  question: SentenceType;
   // userId: string;
   level?: ProficiencyLevel;
   audioBlob: Blob;
