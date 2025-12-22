@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "type-check": "tsc -b --pretty"
+    "type-check": "tsc -b --pretty",
+    "generate-types": "supabase gen types typescript --project-id dtkwqpndelbmvgynkcjd --schema public > src/shared/api/generated/database.ts"
   },
   "dependencies": {
     "@fix-webm-duration/fix": "^1.0.1",
@@ -23,7 +24,8 @@
     "react-dom": "^19.2.1",
     "react-hook-form": "^7.62.0",
     "react-router-dom": "^7.8.2",
-    "yup": "^1.7.0"
+    "yup": "^1.7.0",
+    "zod": "^4.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
