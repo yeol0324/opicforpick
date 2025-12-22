@@ -1,5 +1,10 @@
+
 import type { FeedbackContentType } from "@entities/feedback";
+<<<<<<< HEAD
 import type { SentenceType } from "@entities/sentence";
+=======
+import type { Sentence } from "@entities/sentence";
+>>>>>>> origin/main
 
 import type { ProficiencyLevel } from "@shared/lib";
 

@@ -87,7 +87,14 @@ export function Practice() {
           placeholder="검색어"
         />
       </div>
+<<<<<<< HEAD
       <div className="flex flex-col flex-1 overflow-y-auto" ref={containerRef}>
+=======
+      <div
+        className="flex flex-col flex-1 overflow-y-auto w-full"
+        ref={containerRef}
+      >
+>>>>>>> origin/main
         {isLoading ? (
           <Spinner />
         ) : hasError ? (
