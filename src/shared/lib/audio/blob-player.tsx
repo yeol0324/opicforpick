@@ -1,11 +1,11 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 type BlobPlayerProps = {
   blob: Blob;
 };
 
 export const BlobPlayer = ({ blob }: BlobPlayerProps) => {
-  const src = useMemo(() => URL.createObjectURL(blob), [blob]);
+  const src = URL.createObjectURL(blob);
 
   useEffect(() => {
     return () => {

@@ -7,10 +7,16 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 import path from "node:path";
 
-
-
 export default defineConfig({
-  plugins: [react(), tsconfigPaths(), tailwindcss() as PluginOption],
+  plugins: [
+    react({
+      babel: {
+        plugins: [["babel-plugin-react-compiler", {}]],
+      },
+    }),
+    tsconfigPaths(),
+    tailwindcss() as PluginOption,
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

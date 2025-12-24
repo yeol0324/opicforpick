@@ -16,6 +16,7 @@ export function useInfiniteScroll({
   const handleScroll = useCallback(
     (event: Event) => {
       if (!enabled) return;
+      console.log("handleScroll");
 
       const target = event.target as HTMLDivElement | null;
       const container = target ?? containerRef.current;
