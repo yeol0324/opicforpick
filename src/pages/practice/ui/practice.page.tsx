@@ -67,7 +67,6 @@ export function Practice() {
     ...paragraphQueries.sentences(selectedParagraphId!),
     enabled: !!selectedParagraphId,
   });
-  console.log(paragraphSentencesQuery.data);
 
   return (
     <div className="flex flex-col items-center gap-6 p-6 overflow-hidden">
