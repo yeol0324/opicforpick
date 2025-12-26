@@ -14,6 +14,7 @@ export function YYYYMMDDHHmm(raw: string): string {
   if (Number.isNaN(date.getTime())) {
     return "";
   }
+  console.log(raw);
 
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");

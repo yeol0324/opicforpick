@@ -9,6 +9,7 @@ export type FeedbackType = {
   feedback: FeedbackContentType;
   recordingId: string;
 };
+
 export type FeedbackContentType = {
   pronunciationComment: string;
   grammarComment: string;
@@ -42,4 +43,3 @@ export type UpdateFeedbackType = {
   transcript?: string;
   user_id?: string;
 };
-

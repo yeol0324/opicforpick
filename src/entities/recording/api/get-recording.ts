@@ -6,11 +6,14 @@ import {
   type Paged,
 } from "@shared/api";
 
-import type { RecordingType, RecordingFilterType } from "../model/recording.type";
+import type {
+  RecordingFilterType,
+  SpeechRecordingWithRelations,
+} from "../model/recording.type";
 
 export async function getRecording(
   filter?: RecordingFilterType
-): Promise<Paged<RecordingType>> {
+): Promise<Paged<SpeechRecordingWithRelations>> {
   const { page, pageSize, from, to } = calculatePagination(
     filter?.page,
     filter?.pageSize
@@ -22,7 +25,7 @@ export async function getRecording(
     .order("created_at", { ascending: false });
 
   const response = await queryBuilder.range(from, to);
-  const items = unwrap<RecordingType[]>(response);
+  const items = unwrap<SpeechRecordingWithRelations[]>(response);
   const total = response.count ?? 0;
 
   return createPagedResult({

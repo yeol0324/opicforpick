@@ -1,6 +1,22 @@
 import type { FeedbackType } from "@entities/feedback/model/feedback.type";
 import type { SentenceType } from "@entities/sentence/model/sentence.type";
 
+import type { Database } from "@shared/api/generated/database";
+
+export type RecordingRow =
+  Database["public"]["Tables"]["speech_recordings"]["Row"];
+
+type SpeechRecordingRow =
+  Database["public"]["Tables"]["speech_recordings"]["Row"];
+
+type SentenceRow = Database["public"]["Tables"]["sentences"]["Row"];
+
+type AiFeedbackRow = Database["public"]["Tables"]["ai_feedbacks"]["Row"];
+
+export type SpeechRecordingWithRelations = SpeechRecordingRow & {
+  sentences: SentenceRow | null; // 1:1 이면
+  ai_feedbacks: AiFeedbackRow[] | null; // 1:N 이면
+};
 export type RecordingType = {
   id: string;
   userId: string;
@@ -14,4 +30,3 @@ export type RecordingFilterType = {
   page?: number;
   pageSize?: number;
 };
-

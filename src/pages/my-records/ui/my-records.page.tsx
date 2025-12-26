@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { overlay } from "overlay-kit";
 
-import { recordingQueries, type RecordingType } from "@entities/recording";
+import {
+  recordingQueries,
+  type SpeechRecordingWithRelations,
+} from "@entities/recording";
 
 import { YYYYMMDDHHmm } from "@shared/lib";
 import { Card } from "@shared/ui";
-
 
 import { RecordingDetailOverlay } from "./recording-detail.overlay";
 
@@ -14,7 +16,7 @@ export function MyRecords() {
     ...recordingQueries.list(),
   });
   const feedbackItems = recordingQuery.data?.items ?? [];
-  const handleOpen = (item: RecordingType) => {
+  const handleOpen = (item: SpeechRecordingWithRelations) => {
     overlay.open(({ close, unmount }) => (
       <RecordingDetailOverlay
         params={item}
@@ -44,8 +46,8 @@ export function MyRecords() {
                     ].join(" ")}
                     onClick={() => handleOpen(item)}
                   >
-                    <p className="truncate">{item.sentences.sentence_eng}</p>
-                    <p>{YYYYMMDDHHmm(item.sentences.created_at)}</p>
+                    <p className="truncate">{item.sentences?.sentence_eng}</p>
+                    <p>{YYYYMMDDHHmm(item.created_at)}</p>
                   </li>
                 );
               })}

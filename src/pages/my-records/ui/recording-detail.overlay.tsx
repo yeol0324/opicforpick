@@ -1,11 +1,12 @@
 import { FeedbackPanel } from "@features/ai-feedback";
 
-import type { RecordingType } from "@entities/recording";
+import type { FeedbackContentType } from "@entities/feedback";
+import type { SpeechRecordingWithRelations } from "@entities/recording";
 
 import { Card, CloseButton, EmptyState } from "@shared/ui";
 
 type RecordingDetailOverlayProps = {
-  params: RecordingType;
+  params: SpeechRecordingWithRelations;
   onClose: () => void;
 };
 export const RecordingDetailOverlay = ({
@@ -30,7 +31,9 @@ export const RecordingDetailOverlay = ({
 
         {feedback ? (
           <Card mode="scroll" maxHeight="70dvh">
-            <FeedbackPanel feedback={feedback.feedback} />
+            <FeedbackPanel
+              feedback={feedback.feedback as FeedbackContentType}
+            />
           </Card>
         ) : (
           <EmptyState message="피드백이 없습니다." />
