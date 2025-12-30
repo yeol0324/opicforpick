@@ -5,6 +5,8 @@ const NAV_ITEM_LIST = [
   { to: "/my-record", label: "기록" },
   { to: "/wordbook", label: "단어장" },
   { to: "/practice", label: "연습" },
+  { to: "/profile", label: "프로필" },
+  { to: "/admin", label: "관리" },
 ];
 
 export function BottomNav() {

@@ -31,7 +31,16 @@ const WordbookPage = lazy(() =>
     default: m.Wordbook,
   }))
 );
-
+const ProfilePage = lazy(() =>
+  import("@pages/profile").then((m) => ({
+    default: m.ProfilePage,
+  }))
+);
+const AdminPage = lazy(() =>
+  import("@pages/admin").then((m) => ({
+    default: m.AdminPage,
+  }))
+);
 const DemoLoginRedirectPage = lazy(() =>
   import("@features/auth-demo/ui/demo-login-redirect").then((m) => ({
     default: m.DemoLoginRedirect,
@@ -60,6 +69,8 @@ export const router = createBrowserRouter([
           { path: "/my-record", element: <MyRecordsPage /> },
           { path: "/wordbook", element: <WordbookPage /> },
           { path: "/practice", element: <PracticePage /> },
+          { path: "/profile", element: <ProfilePage /> },
+          { path: "/admin", element: <AdminPage /> },
         ],
       },
     ],
