@@ -1,14 +1,8 @@
-import type { SentenceType } from "@entities/sentence/model/sentence.type";
 import type { WordCandidateType } from "@entities/word";
 
-export type FeedbackType = {
-  id: string;
-  createdAt: string;
-  userId: string;
-  sentenceId: SentenceType;
-  feedback: FeedbackContentType;
-  recordingId: string;
-};
+import type { Database } from "@shared/api/generated/database";
+
+export type FeedbackType = Database["public"]["Tables"]["ai_feedbacks"]["Row"];
 
 export type FeedbackContentType = {
   pronunciationComment: string;

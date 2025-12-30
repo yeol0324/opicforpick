@@ -14,7 +14,7 @@ async function feedbackFlow(
 
   const feedback = await requestFeedback({
     audio: params.audioBlob,
-    question: params.question.sentence_eng,
+    question: params.question.sentence_eng ?? "",
     level: params.level,
   });
 
