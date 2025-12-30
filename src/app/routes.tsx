@@ -27,10 +27,11 @@ const PracticePage = lazy(() =>
   import("@pages/practice").then((m) => ({ default: m.Practice }))
 );
 const WordbookPage = lazy(() =>
-  import("@pages/wordbook/ui/wordbook.page").then((m) => ({
+  import("@pages/wordbook").then((m) => ({
     default: m.Wordbook,
   }))
 );
+
 const DemoLoginRedirectPage = lazy(() =>
   import("@features/auth-demo/ui/demo-login-redirect").then((m) => ({
     default: m.DemoLoginRedirect,
@@ -53,7 +54,7 @@ export const router = createBrowserRouter([
       { path: "/login", element: <LoginPage /> },
       { path: "/demo-login", element: <DemoLoginRedirectPage /> },
       {
-        element: <AuthGuard isAuthed={true} />,
+        element: <AuthGuard />,
         children: [
           { index: true, path: "/", element: <HomePage /> },
           { path: "/my-record", element: <MyRecordsPage /> },

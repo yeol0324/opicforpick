@@ -1,10 +1,27 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
+import { useAuthContext } from "@entities/auth";
+
+import { Spinner } from "@shared/ui";
 type AuthGuardProps = {
-  isAuthed: boolean;
+  redirectTo?: string;
 };
 
-export const AuthGuard = ({ isAuthed }: AuthGuardProps) => {
-  if (!isAuthed) return <Navigate to="/login" replace />;
+export const AuthGuard = ({ redirectTo = "/login" }: AuthGuardProps) => {
+  const { isAuthed, isLoading } = useAuthContext();
+  const location = useLocation();
+
+  if (isLoading) return <Spinner />;
+
+  if (!isAuthed) {
+    return (
+      <Navigate
+        to={redirectTo}
+        replace
+        state={{ from: location.pathname + location.search }}
+      />
+    );
+  }
+
   return <Outlet />;
 };

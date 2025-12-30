@@ -4,7 +4,8 @@ import type { AuthStateType } from "./auth.type";
 
 export type AuthContextValue = {
   auth: AuthStateType;
-  loading: boolean;
+  isLoading: boolean;
+  isAuthed: boolean;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;

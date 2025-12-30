@@ -2,8 +2,6 @@ import { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-
-
 import { DemoLoginButton } from "@features/auth-demo/ui/demo-login-button";
 import { EmailLoginForm } from "@features/auth-email/ui/email-login-form";
 
@@ -12,14 +10,14 @@ import { useAuthContext } from "@entities/auth/model/auth-context";
 import { CenterColumn, Card } from "@shared/ui";
 
 export function Login() {
-  const { auth, loading } = useAuthContext();
+  const { auth, isLoading } = useAuthContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && auth.mode !== "none") {
+    if (!isLoading && auth.mode !== "none") {
       navigate("/", { replace: true });
     }
-  }, [auth.mode, loading, navigate]);
+  }, [auth.mode, isLoading, navigate]);
 
   return (
     <CenterColumn>

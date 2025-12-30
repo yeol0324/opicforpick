@@ -8,9 +8,9 @@ type Props = {
   children: JSX.Element;
 };
 export function ProtectedRoute({ children }: Props) {
-  const { auth, loading } = useAuthContext();
+  const { auth, isLoading } = useAuthContext();
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 

@@ -6,7 +6,6 @@ import { AuthContext, type AuthStateType } from "@entities/auth";
 
 import { supabase } from "@shared/api";
 
-
 const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
 const demoPassword = import.meta.env.VITE_DEMO_PASSWORD;
 
@@ -15,7 +14,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     mode: "none",
     user: null,
   });
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const isAuthed = auth.mode === "member";
 
   const applySession = (session: Session) => {
     setAuth({
@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
       }
 
-      setLoading(false);
+      setIsLoading(false);
     };
 
     init();
@@ -99,7 +99,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         auth,
-        loading,
+        isLoading,
+        isAuthed,
         signInWithEmail,
         signUpWithEmail,
         signOut,
