@@ -36,13 +36,19 @@ Given a topic parameter: "${topic}", generate a complete OPIC-style speaking set
 
 Follow these rules strictly:
 
+0. Generate a short, natural English TITLE that summarizes the situation.
+   - The title should sound like a speaking-topic headline.
+   - Example style: "Overcoming Difficulties During Travel"
+   - Do NOT make it a full sentence.
+   - Use Title Case.
+   
 1. Generate exactly ONE question related to the topic.
    - The question must be natural, commonly used in OPIC-style exams.
    - The question must be suitable for intermediate-level learners.
 
 2. Generate a coherent spoken answer to the question.
    - The answer should sound natural and conversational.
-   - Length: about 10–14 sentences total (including short reactions).
+   - Length: about 8–12 sentences total (including short reactions).
    - Avoid overly formal or written language.
    - Do NOT include bullet points or lists in the content itself.
 
@@ -68,6 +74,7 @@ Follow these rules strictly:
 7. Use the following JSON schema EXACTLY:
 
 {
+  "title": "Short English title here",
   "topic": "${topic}",
   "sentences": [
     {
@@ -124,11 +131,28 @@ Follow these rules strictly:
       result: { ...parsed },
     });
   } catch (error) {
-    // TODO: 503 ai 과부하 처리 추가
-    console.error(
-      "[ai-generate-sentence] error raw",
-      JSON.stringify(error, null, 2)
-    );
-    return res.status(500).json({ error: "AI feedback failed" });
+    const err = error as unknown as {
+      message?: string;
+      status?: number;
+      statusText?: string;
+      response?: unknown;
+      cause?: unknown;
+    };
+
+    console.error("[ai-generate-sentence] error", {
+      message: err?.message,
+      status: err?.status,
+      statusText: err?.statusText,
+      response: err?.response,
+      cause: err?.cause,
+    });
+
+    const status = typeof err?.status === "number" ? err.status : 500;
+
+    return res.status(status === 503 ? 503 : 500).json({
+      error: err?.message ?? "Unknown error",
+      status: err?.status ?? null,
+      statusText: err?.statusText ?? null,
+    });
   }
 }
