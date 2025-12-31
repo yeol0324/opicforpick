@@ -8,6 +8,7 @@ export type GenerateSentenceRequest = {
 export type GenerateSentenceResponse = {
   result: {
     topic: string;
+    title: string;
     sentences: {
       position: number;
       type: number;
