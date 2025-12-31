@@ -145,8 +145,28 @@ Important:
       result: { ...parsed },
     });
   } catch (error) {
-    // TODO: 503 ai 과부하 처리 추가
-    console.error("[ai-feedback] error raw", JSON.stringify(error, null, 2));
-    return res.status(500).json({ error: "AI feedback failed" });
+    const err = error as unknown as {
+      message?: string;
+      status?: number;
+      statusText?: string;
+      response?: unknown;
+      cause?: unknown;
+    };
+
+    console.error("[ai-feedback] error", {
+      message: err?.message,
+      status: err?.status,
+      statusText: err?.statusText,
+      response: err?.response,
+      cause: err?.cause,
+    });
+
+    const status = typeof err?.status === "number" ? err.status : 500;
+
+    return res.status(status === 503 ? 503 : 500).json({
+      error: err?.message ?? "Unknown error",
+      status: err?.status ?? null,
+      statusText: err?.statusText ?? null,
+    });
   }
 }
