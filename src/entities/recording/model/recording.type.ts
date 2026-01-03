@@ -1,5 +1,5 @@
 import type { FeedbackType } from "@entities/feedback/model/feedback.type";
-import type { SentenceType } from "@entities/sentence/model/sentence.type";
+import type { SentenceRow } from "@entities/sentence/model/sentence.type";
 
 import type { Database } from "@shared/api/generated/database";
 
@@ -8,8 +8,6 @@ export type RecordingRow =
 
 type SpeechRecordingRow =
   Database["public"]["Tables"]["speech_recordings"]["Row"];
-
-type SentenceRow = Database["public"]["Tables"]["sentences"]["Row"];
 
 type AiFeedbackRow = Database["public"]["Tables"]["ai_feedbacks"]["Row"];
 
@@ -23,7 +21,7 @@ export type RecordingType = {
   createdAt: string;
   sentenceId: string;
   audioUrl: string;
-  sentences: SentenceType;
+  sentences: SentenceRow;
   ai_feedbacks: FeedbackType[];
 };
 export type RecordingFilterType = {

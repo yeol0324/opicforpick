@@ -1,11 +1,10 @@
-import type { SentenceType } from "@entities/sentence";
+import type { SentenceRow } from "@entities/sentence";
 
 type Props = {
-  sentence: SentenceType;
+  sentence: SentenceRow;
 };
 
 export const SentenceItem = ({ sentence }: Props) => {
   if (!sentence) return <div>x</div>;
   return <div>{sentence.sentence_eng}</div>;
 };
-

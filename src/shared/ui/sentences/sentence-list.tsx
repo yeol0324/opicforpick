@@ -1,7 +1,7 @@
-import { SentenceItem, type SentenceType } from "@entities/sentence";
+import { SentenceItem, type SentenceRow } from "@entities/sentence";
 
 type Props = {
-  sentences?: SentenceType[];
+  sentences?: SentenceRow[];
 };
 
 export const SentenceList = ({ sentences }: Props) => {
