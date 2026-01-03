@@ -7,4 +7,3 @@ export const APP = {
   /** 디바운스 기본 지연 시간 (ms) */
   DEFAULT_DEBOUNCE_DELAY: 300,
 } as const;
-

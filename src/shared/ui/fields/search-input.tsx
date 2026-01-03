@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 
-import { THEME } from "@shared/lib";
+import { Style } from "@shared/lib";
 
 type SearchInputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -21,7 +21,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        style={{ ["--brand" as string]: THEME.BRAND }}
+        style={{ ["--brand" as string]: Style.BRAND }}
         {...props}
       />
     );

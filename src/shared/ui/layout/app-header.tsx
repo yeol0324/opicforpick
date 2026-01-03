@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 
-import { THEME } from "@shared/lib";
+import { Style } from "@shared/lib";
 import logo from "@shared/logo.png";
 
 export function AppHeader() {
   return (
     <header
       className="fixed inset-x-0 top-0 z-40 bg-white/95 backdrop-blur"
-      style={{ ["--brand" as string]: THEME.BRAND }}
+      style={{ ["--brand" as string]: Style.BRAND }}
     >
       <div className="mx-auto flex h-14 max-w-md items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2 shrink-0">
