@@ -12,7 +12,9 @@ export const ProfilePage = () => {
     <div className="flex flex-col items-center gap-6 p-6 overflow-hidden">
       <Card className="w-full">
         <h2>{auth.auth.user?.email}</h2>
-        <BaseButton onClick={handleLogout}>로그아웃</BaseButton>
+        <BaseButton onClick={handleLogout} style={{ margin: "10px 0" }}>
+          로그아웃
+        </BaseButton>
       </Card>
       <Card className="w-full">
         <ul>

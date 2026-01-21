@@ -1,26 +1,15 @@
-import type { SentenceType } from "@entities/sentence/model/sentence.type";
+import type { SentenceRow } from "@entities/sentence";
 
-export type ParagraphType = {
-  id: string;
-  created_at: string;
-  title: string;
-  note: string;
-  theme_id: number;
-};
+import type { Database } from "@shared/api/generated/database";
+
+export type ParagraphRow = Database["public"]["Tables"]["paragraphs"]["Row"];
+export type ParagraphSentencesRow =
+  Database["public"]["Tables"]["paragraph_sentences"]["Row"];
 
 export type ParagraphFilterType = {
   q?: string;
   page?: number;
   pageSize?: number;
-};
-
-export type ParagraphSentenceType = {
-  created_at: string;
-  id: number;
-  override_kor: string;
-  paragraph_id: string;
-  position: number;
-  sentence_id: string;
 };
 
 export type ParagraphSentenceFilterType = {
@@ -31,6 +20,6 @@ export type ParagraphSentenceFilterType = {
 };
 
 export type ParagraphWithSentenceType = {
-  paragraph: ParagraphType;
-  sentenceList: SentenceType[];
+  paragraph: ParagraphRow;
+  sentenceList: SentenceRow[];
 };

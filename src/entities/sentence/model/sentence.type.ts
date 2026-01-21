@@ -1,8 +1,8 @@
-/**0 전체 |1 question |2 answer */
 import type { Database } from "@shared/api/generated/database";
 
 export type SentenceRow = Database["public"]["Tables"]["sentences"]["Row"];
 
+/**0 전체 |1 question |2 answer */
 export type SentenceKindType = 0 | 1 | 2;
 
 export type SentenceType = {

@@ -86,25 +86,25 @@ export type Database = {
           created_at: string
           id: number
           override_kor: string | null
-          paragraph_id: string | null
-          position: number | null
-          sentence_id: string | null
+          paragraph_id: string
+          position: number
+          sentence_id: string
         }
         Insert: {
           created_at?: string
           id?: number
           override_kor?: string | null
-          paragraph_id?: string | null
-          position?: number | null
-          sentence_id?: string | null
+          paragraph_id: string
+          position: number
+          sentence_id: string
         }
         Update: {
           created_at?: string
           id?: number
           override_kor?: string | null
-          paragraph_id?: string | null
-          position?: number | null
-          sentence_id?: string | null
+          paragraph_id?: string
+          position?: number
+          sentence_id?: string
         }
         Relationships: [
           {
@@ -199,28 +199,28 @@ export type Database = {
           created_at: string
           id: string
           level: string | null
-          sentence_eng: string | null
-          sentence_kor: string | null
-          theme_id: number | null
-          type: number | null
+          sentence_eng: string
+          sentence_kor: string
+          theme_id: number
+          type: number
         }
         Insert: {
           created_at?: string
           id?: string
           level?: string | null
-          sentence_eng?: string | null
-          sentence_kor?: string | null
-          theme_id?: number | null
-          type?: number | null
+          sentence_eng: string
+          sentence_kor: string
+          theme_id?: number
+          type?: number
         }
         Update: {
           created_at?: string
           id?: string
           level?: string | null
-          sentence_eng?: string | null
-          sentence_kor?: string | null
-          theme_id?: number | null
-          type?: number | null
+          sentence_eng?: string
+          sentence_kor?: string
+          theme_id?: number
+          type?: number
         }
         Relationships: [
           {
@@ -363,10 +363,10 @@ export type Database = {
           created_at: string
           id: string
           level: string | null
-          sentence_eng: string | null
-          sentence_kor: string | null
-          theme_id: number | null
-          type: number | null
+          sentence_eng: string
+          sentence_kor: string
+          theme_id: number
+          type: number
         }
         SetofOptions: {
           from: "*"
@@ -381,10 +381,10 @@ export type Database = {
           created_at: string
           id: string
           level: string | null
-          sentence_eng: string | null
-          sentence_kor: string | null
-          theme_id: number | null
-          type: number | null
+          sentence_eng: string
+          sentence_kor: string
+          theme_id: number
+          type: number
         }[]
         SetofOptions: {
           from: "*"
@@ -392,6 +392,17 @@ export type Database = {
           isOneToOne: false
           isSetofReturn: true
         }
+      }
+      save_paragraph_with_sentence: {
+        Args: {
+          p_level: string
+          p_sentences: Json
+          p_theme_id: number
+          p_title: string
+        }
+        Returns: {
+          paragraph_id: string
+        }[]
       }
     }
     Enums: {

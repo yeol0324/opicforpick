@@ -1,7 +1,4 @@
-import type {
-  SentenceRow,
-  SentenceType,
-} from "@entities/sentence/model/sentence.type";
+import type { SentenceRow } from "@entities/sentence/model/sentence.type";
 
 import { supabase } from "@shared/api/supabase-client";
 import type { ProficiencyLevel } from "@shared/lib";
@@ -10,7 +7,7 @@ import type { ProficiencyLevel } from "@shared/lib";
  * @param data - 변환할 원본 데이터 객체
  * @returns 표준화된 Sentence 객체 또는 null
  */
-function mapToSentence(data: unknown): SentenceType | null {
+function mapToSentence(data: unknown): SentenceRow | null {
   if (!data || typeof data !== "object") {
     return null;
   }

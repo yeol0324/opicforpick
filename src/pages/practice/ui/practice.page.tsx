@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
-import type { ParagraphType } from "@entities/paragraph";
+import type { ParagraphRow } from "@entities/paragraph";
 import { paragraphQueries } from "@entities/paragraph/api";
 
 import { useDebouncedValue, APP, useInfiniteScroll } from "@shared/lib";
@@ -34,7 +34,7 @@ export function Practice() {
   });
   const paragraphs =
     paragraphsQuery.data?.pages
-      .flatMap((page) => page.items as ParagraphType[])
+      .flatMap((page) => page.items as ParagraphRow[])
       .filter(
         (item, index, self) => index === self.findIndex((t) => t.id === item.id)
       ) ?? [];

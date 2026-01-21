@@ -4,13 +4,8 @@ import type { Paged } from "@shared/api";
 import { buildListKey, type ProficiencyLevel } from "@shared/lib";
 
 import { fetchDailySentence } from "./get-daily-sentence";
-import { getRandomSentence } from "./get-random-sentence";
 import { getSentences } from "./get-sentences";
-import type {
-  SentenceFilterType,
-  SentenceKindType,
-  SentenceRow,
-} from "../model/sentence.type";
+import type { SentenceFilterType, SentenceRow } from "../model/sentence.type";
 
 const sentenceKeys = {
   all: () => ["sentences"] as const,
@@ -20,8 +15,6 @@ const sentenceKeys = {
   daily: () => ["daily-sentence"] as const,
   byLevel: (level: ProficiencyLevel) =>
     [...sentenceKeys.daily(), level] as const,
-  random: (type?: SentenceKindType) =>
-    ["sentences", "random", type ?? "any"] as const,
 };
 
 export const sentenceQueries = {
@@ -64,10 +57,5 @@ export const sentenceQueries = {
       queryFn: () => fetchDailySentence(level),
       staleTime: 24 * 60 * 60 * 1000,
       refetchOnWindowFocus: false,
-    }),
-  random: (type?: SentenceKindType) =>
-    queryOptions({
-      queryKey: sentenceKeys.random(type),
-      queryFn: () => getRandomSentence(type),
     }),
 };

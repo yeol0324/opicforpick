@@ -8,14 +8,14 @@ import { buildListKey } from "@shared/lib";
 import { getParagraphs } from "./get-paragraphs";
 import type {
   ParagraphFilterType,
-  ParagraphType,
+  ParagraphRow,
 } from "../model/paragraph.type";
 
 const paragraphKeys = {
   all: () => ["paragraphs"] as const,
   list: (filter?: ParagraphFilterType) =>
     buildListKey(paragraphKeys.all(), filter),
-  random: (type?: ParagraphType) =>
+  random: (type?: ParagraphRow) =>
     [...paragraphKeys.all(), "random", type ?? "any"] as const,
   detail: (paragraphId: string) =>
     [...paragraphKeys.all(), paragraphId] as const,
@@ -36,8 +36,8 @@ export const paragraphQueries = {
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getParagraphs({ ...filter, page: pageParam }),
     getNextPageParam: (
-      lastPage: Paged<ParagraphType>,
-      allPages: Paged<ParagraphType>[]
+      lastPage: Paged<ParagraphRow>,
+      allPages: Paged<ParagraphRow>[]
     ) => {
       const pageSize = filter?.pageSize ?? 20;
       const currentTotal = allPages.length * pageSize;
