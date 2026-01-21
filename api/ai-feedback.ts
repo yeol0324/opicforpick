@@ -9,6 +9,24 @@ if (!apiKey) {
 
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 
+/**
+ * Handle POST requests containing a question and learner audio, generate OPIC-style spoken-answer feedback via Gemini, and send the parsed JSON feedback in the HTTP response.
+ *
+ * Expects req.body to include:
+ * - `question` (string): the original prompt/question in English
+ * - `level` (string, optional): learner proficiency hint
+ * - `audioBase64` (string): base64-encoded audio data of the learner's answer
+ * - `mimeType` (string): MIME type of the audio data (e.g., "audio/wav")
+ *
+ * Sends:
+ * - 200 with JSON `{ result: <parsed AI feedback> }` where the AI feedback follows the handler's required schema (pronunciationComment, grammarComment, vocabularyComment, contentComment, overallComment, pronunciationScore, grammarScore, vocabularyScore, contentScore, recommendVoca).
+ * - 400 when audio is missing.
+ * - 405 for non-POST methods.
+ * - 500/503 when the Gemini client is not available or the generation/parse fails; error responses include `error`, `status`, and `statusText` fields when available.
+ *
+ * @param req - Vercel request; body must contain the fields described above.
+ * @param res - Vercel response used to send the JSON result or error response.
+ */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     return res.status(405).send("Method Not Allowed");

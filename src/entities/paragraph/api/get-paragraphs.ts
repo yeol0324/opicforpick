@@ -11,6 +11,15 @@ import type {
   ParagraphRow,
 } from "../model/paragraph.type";
 
+/**
+ * Fetches a paginated list of paragraph rows with optional title text filtering.
+ *
+ * The returned page is ordered by `created_at` descending. If `filter.q` is provided,
+ * it is used as a case-insensitive partial match against the `title` column.
+ *
+ * @param filter - Optional filters: `page` and `pageSize` control pagination, `q` is a search term for title matching
+ * @returns A paged result containing the matching `ParagraphRow` items, the total match count, and pagination info
+ */
 export async function getParagraphs(
   filter?: ParagraphFilterType
 ): Promise<Paged<ParagraphRow>> {

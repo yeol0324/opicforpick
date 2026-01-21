@@ -17,6 +17,13 @@ import {
 import { ParagraphListItem } from "./paragraph-list-item";
 import { PracticeOverlay } from "./practice.overlay";
 
+/**
+ * Render the Practice page that lists paragraphs with search, infinite scroll, and a selectable detail overlay.
+ *
+ * Displays the total count and handles loading, error, and empty states. Provides a debounced search input to filter results, infinite scrolling to load more pages, and opens a practice overlay showing sentences for the selected paragraph.
+ *
+ * @returns The React element for the Practice page.
+ */
 export function Practice() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedParagraphId, setSelectedParagraphId] = useState<string | null>(

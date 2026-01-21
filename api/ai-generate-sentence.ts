@@ -9,6 +9,14 @@ if (!apiKey) {
 
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 
+/**
+ * Handle POST requests to generate an OPIC-style bilingual (English/Korean) sentence set for a given topic using the Gemini generative model and respond with the parsed JSON result.
+ *
+ * This endpoint requires a POST request with a JSON body containing `topic` (string) and an optional `level` (string). If the Gemini client is not initialized the handler responds with 500. On success it returns 200 with a `result` object containing the model-produced JSON parsed from the model output. If the model returns non-JSON output the handler responds with 500 and includes the raw text. Unsupported HTTP methods receive 405. Upstream errors from the model may result in 503 or 500 depending on the reported status.
+ *
+ * @param req - VercelRequest; body must include `topic: string` and may include `level?: string`
+ * @param res - VercelResponse used to send HTTP responses (status codes: 200, 405, 500, 503)
+ */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     return res.status(405).send("Method Not Allowed");

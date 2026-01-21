@@ -4,8 +4,14 @@ import { supabase } from "@shared/api/supabase-client";
 import type { ProficiencyLevel } from "@shared/lib";
 
 /**
- * @param data - 변환할 원본 데이터 객체
- * @returns 표준화된 Sentence 객체 또는 null
+ * Normalize raw sentence data into a standardized SentenceRow.
+ *
+ * Converts an unknown input into a SentenceRow when required identifiers are present.
+ * Accepts multiple source field variants for English text (`sentence_eng`, `sentenceEng`, `text`, `content`)
+ * and uses `sentence_kor` for Korean text. Numeric and string fields are coerced or defaulted when missing.
+ *
+ * @param data - Raw source object to convert; must include `id` and `created_at`. May include `sentence_eng`/`sentenceEng`/`text`/`content`, `sentence_kor`, `type`, `level`, and `theme_id`.
+ * @returns A SentenceRow with normalized properties if `id` and `created_at` exist; `null` otherwise. Defaults: `sentence_eng` and `sentence_kor` to `""`, `type` and `theme_id` to `0`, and `level` to `"Beginner"`.
  */
 function mapToSentence(data: unknown): SentenceRow | null {
   if (!data || typeof data !== "object") {

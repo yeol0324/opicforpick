@@ -3,6 +3,14 @@ import { Link } from "react-router-dom";
 import { Style } from "@shared/lib";
 import logo from "@shared/logo.png";
 
+/**
+ * Renders the application's fixed top header containing the brand logo and name.
+ *
+ * The header applies a semi-transparent white background with backdrop blur and exposes a CSS
+ * custom property `--brand` set from `Style.BRAND` for the brand accent color.
+ *
+ * @returns The header JSX element with a link to the root, the logo image, and the brand text.
+ */
 export function AppHeader() {
   return (
     <header

@@ -6,6 +6,12 @@ import type { SentenceRow } from "@entities/sentence";
 
 import { supabase, unwrap } from "@shared/api";
 
+/**
+ * Fetches a paragraph and its sentences for a given paragraph ID.
+ *
+ * @param paragraphId - The paragraph's unique identifier
+ * @returns An object with `paragraph` (the paragraph row) and `sentenceList` (an array of sentence rows ordered by `position` ascending)
+ */
 export async function getParagraphWithSentences(
   paragraphId: string
 ): Promise<ParagraphWithSentenceType> {

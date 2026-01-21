@@ -7,6 +7,15 @@ import { createRecording, uploadRecording } from "@entities/recording";
 import type { UseFeedbackParam, FeedbackResponse } from "./ai-feedback.type";
 import { requestFeedback } from "./request-feedback";
 
+/**
+ * Execute the full feedback flow for an audio submission, persist the recording, and store the resulting feedback.
+ *
+ * Sends the audio and question to the feedback service, uploads the recording, creates a recording record, creates a feedback record referencing that recording, and returns the AI feedback response.
+ *
+ * @param params - Parameters for the feedback flow; must include `userId` (non-null) along with `audioBlob`, `question`, and `level`.
+ * @returns The AI feedback response as a `FeedbackResponse`.
+ * @throws Error with message "로그인이 필요합니다." if `params.userId` is falsy.
+ */
 async function feedbackFlow(
   params: UseFeedbackParam & { userId: string | null }
 ): Promise<FeedbackResponse> {

@@ -1,7 +1,8 @@
 /**
- * yyyy-mm-dd HH:mm format functions
- * @param string "2025-11-10T03:50:50.819332+00:00"
- * @returns "2025-11-10 12:50" (KST 기준, example)
+ * Format an ISO-like timestamp string into "YYYY-MM-DD HH:mm".
+ *
+ * @param raw - An ISO-like timestamp (may include fractional seconds and a timezone), e.g. "2025-11-10T03:50:50.819332+00:00"
+ * @returns The timestamp formatted as "YYYY-MM-DD HH:mm", or an empty string if `raw` is not a valid date
  */
 export function YYYYMMDDHHmm(raw: string): string {
   const safe = raw.replace(
