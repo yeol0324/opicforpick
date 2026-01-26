@@ -6,7 +6,7 @@ import { GEMINI_MODEL } from '@shared/lib';
 const apiKey = process.env.GEMINI_API_KEY;
 
 if (!apiKey) {
-  console.warn('[ai-generate-sentence] GEMINI_API_KEY is not set');
+  console.warn('[ai-generate-sub-topic] GEMINI_API_KEY is not set');
 }
 
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
@@ -20,6 +20,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     topic: string;
   };
 
+  if (!topic) {
+    return res.status(400).json({ error: 'topic is undefined' });
+  }
+
   if (!genAI) {
     return res.status(500).json({ error: 'Gemini client not initialized' });
   }
@@ -30,74 +34,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
 
     const prompt = `
-    You are a content generator for an English speaking practice platform.
+    You are a subtopic recommender for an OPIC-style English speaking practice platform.
 
-Given a topic parameter: "${topic}", generate a complete OPIC-style speaking set.
+    INPUT:
+    - topic_slug: "${topic}"
 
-Follow these rules strictly:
+    GOAL:
+    Recommend diverse subtopics for the given topic slug so that generated OPIC questions are varied and not repetitive.
 
-0. Generate a short, natural English TITLE that summarizes the situation.
-   - Make the title vary each time even for the same topic.
-   - Choose ONE angle randomly from: memory, problem-solving, comparison, advice, unexpected event, preference shift, habit change.
-   - Avoid generic titles like "Describing Your Daily Routine".
-   - Internally brainstorm 3 distinct title candidates, then output only the best one.
-   - Candidates must be meaningfully different.
-   - Output only the chosen title.
-   
-1. Generate exactly ONE question related to the topic.
-   - The question must be natural, commonly used in OPIC-style exams.
-   - The question must be suitable for intermediate-level learners.
+    RULES (follow strictly):
+    1) Output ONLY valid JSON. No markdown, no explanations, no extra text.
+    2) Recommend exactly 10 subtopics.
+    3) Each subtopic must be short, in snake_case.
+    4) Subtopics must be diverse and cover multiple angles:
+      - experience / memory
+      - problem & solution
+      - comparison
+      - preference
+      - unexpected event
+      - habit change
+      - advice/tips
+      - planning/future
+    5) If topic_slug is "daily", DO NOT include generic routine prompts.
+      - Avoid subtopics that lead to "describe your typical day" or "daily routine".
+    6) Subtopics must be appropriate for intermediate learners.
 
-2. Generate a coherent spoken answer to the question.
-   - The answer should sound natural and conversational.
-   - Length: about 8–12 sentences total (including short reactions).
-   - Avoid overly formal or written language.
-   - Do NOT include bullet points or lists in the content itself.
-
-3. Split the content into individual sentences.
-   - Each sentence must be a complete spoken sentence.
-   - Do NOT merge multiple ideas into one sentence.
-   - Short reaction sentences (e.g., “That’s a good question.”) are allowed.
-
-4. Provide BOTH English and Korean for every sentence.
-   - The Korean translation must be natural and fluent.
-   - Do NOT translate word-for-word if it sounds unnatural in Korean.
-
-5. Assign a position number starting from 1.
-   - position 1 MUST be the question.
-   - position 2 and onward are answer sentences in order.
-
-6. Output ONLY valid JSON.
-   - No explanations.
-   - No markdown.
-   - No comments.
-   - No extra text.
-
-7. Use the following JSON schema EXACTLY:
-
-{
-  "title": "Short English title here",
-  "topic": "${topic}",
-  "sentences": [
+    OUTPUT JSON SCHEMA (exactly):
     {
-      "position": 1,
-      "type": 2,
-      "eng": "Question sentence in English",
-      "kor": "Question sentence in Korean"
-    },
-    {
-      "position": 2,
-      "type": 2,
-      "eng": "Answer sentence in English",
-      "kor": "Answer sentence in Korean"
+      "topic": "${topic}",
+      "subtopics": [
+        "subtopic_1",
+        "subtopic_2",
+        "subtopic_3",
+        "subtopic_4",
+        "subtopic_5",
+        "subtopic_6",
+        "subtopic_7",
+        "subtopic_8",
+        "subtopic_9",
+        "subtopic_10"
+      ]
     }
-  ]
-}
-
-8. The first sentence (position 1) MUST have type = 1.
-9. All other sentences (position 2 and onward) MUST have type = 2.
-10. Do not include IDs, timestamps, or database-related fields.
-`;
+    `;
 
     const result = await model.generateContent({
       contents: [
@@ -126,8 +104,8 @@ Follow these rules strictly:
     try {
       parsed = JSON.parse(text);
     } catch (error) {
-      console.error('[ai-generate-sentence] JSON parse error : ', text);
-      console.error('[ai-generate-sentence] error : ', error);
+      console.error('[ai-generate-sub-topic] JSON parse error : ', text);
+      console.error('[ai-generate-sub-topic] error : ', error);
       return res.status(500).json({
         error: 'Gemini did not return valid JSON',
         raw: text,
@@ -146,7 +124,7 @@ Follow these rules strictly:
       cause?: unknown;
     };
 
-    console.error('[ai-generate-sentence] error', {
+    console.error('[ai-generate-sub-topic] error', {
       message: err?.message,
       status: err?.status,
       statusText: err?.statusText,

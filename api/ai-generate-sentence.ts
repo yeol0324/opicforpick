@@ -83,7 +83,7 @@ Follow these rules strictly:
   "sentences": [
     {
       "position": 1,
-      "type": 2,
+      "type": 1,
       "eng": "Question sentence in English",
       "kor": "Question sentence in Korean"
     },
@@ -96,7 +96,7 @@ Follow these rules strictly:
   ]
 }
 
-8. The first sentence (position 1) MUST have type = 1.
+8. The first sentence (Question sentence, position 1) MUST have type = 1.
 9. All other sentences (position 2 and onward) MUST have type = 2.
 10. Do not include IDs, timestamps, or database-related fields.
 `;
