@@ -16,11 +16,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).send('Method Not Allowed');
   }
 
-  const { level, topic } = req.body as {
+  const { topic } = req.body as {
     topic: string;
-    level?: string;
   };
-  console.log(level);
 
   if (!genAI) {
     return res.status(500).json({ error: 'Gemini client not initialized' });
