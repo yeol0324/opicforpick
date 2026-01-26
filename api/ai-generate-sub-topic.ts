@@ -1,9 +1,8 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-import { GEMINI_MODEL } from '@shared/lib';
-
 const apiKey = process.env.GEMINI_API_KEY;
+const GEMINI_MODEL = process.env.GEMINI_MODEL ?? 'gemini-2.5-flash';
 
 if (!apiKey) {
   console.warn('[ai-generate-sub-topic] GEMINI_API_KEY is not set');
@@ -11,14 +10,38 @@ if (!apiKey) {
 
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 
+/**
+ * Gemini API를 사용해 OPIC 영어 문장 subTopic 리스트를 생성하는 Vercel Serverless API
+ *
+ * 요청 body로 전달받은 topic(topic_slug)을 기반으로
+ * 질문을 다양하게 생성할 수 있도록 subTopic 10개를 추천합니다.
+ *
+ * - 10개의 subTopic을 생성합니다.
+ * - subTopic은 snake_case의 짧은 문자열로만 구성됩니다.
+ *
+ * @param {VercelRequest} req - Vercel Serverless Function Request
+ * @param {VercelResponse} res - Vercel Serverless Function Response
+ *
+ * @returns {Promise<void>} HTTP Response로 결과를 반환합니다.
+ * - 200: 정상 생성 성공
+ * - 400: topic 누락 (topic is undefined)
+ * - 405: POST가 아닌 요청
+ * - 500: Gemini 초기화 실패 / JSON 파싱 실패 / 기타 서버 오류
+ * - 503: Gemini 서비스 일시 오류 (가능한 경우)
+ */
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).send('Method Not Allowed');
   }
 
-  const { topic } = req.body as {
+  const { topic, level } = req.body as {
     topic: string;
+    level?: string;
   };
+
+  // ✅ level 기본값 intermediate
+  const fixedLevel = level ?? 'intermediate';
 
   if (!topic) {
     return res.status(400).json({ error: 'topic is undefined' });
@@ -38,6 +61,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     INPUT:
     - topic_slug: "${topic}"
+    - level: "${fixedLevel}"
 
     GOAL:
     Recommend diverse subtopics for the given topic slug so that generated OPIC questions are varied and not repetitive.
@@ -55,13 +79,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       - habit change
       - advice/tips
       - planning/future
-    5) If topic_slug is "daily", DO NOT include generic routine prompts.
-      - Avoid subtopics that lead to "describe your typical day" or "daily routine".
-    6) Subtopics must be appropriate for intermediate learners.
+    5) Subtopics must be appropriate for the given level: "${fixedLevel}".
 
     OUTPUT JSON SCHEMA (exactly):
     {
       "topic": "${topic}",
+      "level": "${fixedLevel}",
       "subtopics": [
         "subtopic_1",
         "subtopic_2",

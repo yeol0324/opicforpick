@@ -1,9 +1,8 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-import { GEMINI_MODEL } from '@shared/lib';
-
 const apiKey = process.env.GEMINI_API_KEY;
+const GEMINI_MODEL = process.env.GEMINI_MODEL ?? 'gemini-2.5-flash';
 
 if (!apiKey) {
   console.warn('[ai-generate-sentence] GEMINI_API_KEY is not set');
@@ -11,16 +10,37 @@ if (!apiKey) {
 
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 
+/**
+ * Gemini API를 사용해 OPIC 스타일 영어 말하기 세트를 생성하는 Vercel Serverless API
+ *
+ * 전달받은 topic/subTopic/level을 기반으로
+ * 1) 제목(title)
+ * 2) 질문 1개(type=1)
+ * 3) 답변 8~12문장(type=2)
+ * 을 생성한 뒤 JSON 형태로 반환합니다.
+ *
+ * @param {VercelRequest} req - Vercel Serverless Function Request
+ * @param {VercelResponse} res - Vercel Serverless Function Response
+ *
+ * @returns {Promise<void>} HTTP Response로 결과를 반환합니다.
+ * - 200: 정상 생성 성공
+ * - 405: POST가 아닌 요청
+ * - 500: Gemini 초기화 실패 / JSON 파싱 실패 / 기타 서버 오류
+ * - 503: Gemini 서비스 일시 오류 (가능한 경우)
+ */
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).send('Method Not Allowed');
   }
 
-  const { level, topic } = req.body as {
+  const { topic, subTopic, level } = req.body as {
     topic: string;
+    subTopic: string;
     level?: string;
   };
-  console.log(level);
+
+  const fixedLevel = level ?? 'intermediate';
 
   if (!genAI) {
     return res.status(500).json({ error: 'Gemini client not initialized' });
@@ -32,9 +52,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
 
     const prompt = `
-    You are a content generator for an English speaking practice platform.
+You are a content generator for an English speaking practice platform.
 
-Given a topic parameter: "${topic}", generate a complete OPIC-style speaking set.
+Given parameters:
+- topic: "${topic}"
+- subTopic: "${subTopic}"
+- level: "${fixedLevel}"
+
+Generate a complete OPIC-style speaking set mainly focused on the subTopic.
 
 Follow these rules strictly:
 
@@ -46,9 +71,10 @@ Follow these rules strictly:
    - Candidates must be meaningfully different.
    - Output only the chosen title.
    
-1. Generate exactly ONE question related to the topic.
+1. Generate exactly ONE question related to the topic and subTopic.
    - The question must be natural, commonly used in OPIC-style exams.
-   - The question must be suitable for intermediate-level learners.
+   - The question must match the level: "${fixedLevel}".
+   - The question must be suitable for intermediate-level learners if level is intermediate.
 
 2. Generate a coherent spoken answer to the question.
    - The answer should sound natural and conversational.
@@ -80,6 +106,8 @@ Follow these rules strictly:
 {
   "title": "Short English title here",
   "topic": "${topic}",
+  "subTopic": "${subTopic}",
+  "level": "${fixedLevel}",
   "sentences": [
     {
       "position": 1,
