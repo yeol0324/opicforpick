@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 import type {
   GenerateSentenceRequest,
   GenerateSentenceResponse,
-} from "./ai-generate-sentence.type";
-import { requestGenerateSentence } from "./request-generate-sentence";
+} from './ai-generate-sentence.type';
+import { requestGenerateSentence } from './request-generate-sentence';
 
 type UseGenerateSentenceParam = GenerateSentenceRequest;
 type UseGenerateSentenceResult = {
@@ -13,13 +13,13 @@ type UseGenerateSentenceResult = {
 };
 
 export function useGenerateSentence(
-  params: UseGenerateSentenceParam & { userId: string | null }
+  params: UseGenerateSentenceParam & { userId: string | null },
 ): UseGenerateSentenceResult {
   const [isLoading, setIsLoading] = useState(false);
 
   const generate = async () => {
     if (!params.userId) {
-      throw new Error("로그인이 필요합니다.");
+      throw new Error('로그인이 필요합니다.');
     }
 
     try {
@@ -27,6 +27,7 @@ export function useGenerateSentence(
 
       const generatedSentence = await requestGenerateSentence({
         topic: params.topic,
+        subTopic: params.subTopic,
         level: params.level,
       });
 

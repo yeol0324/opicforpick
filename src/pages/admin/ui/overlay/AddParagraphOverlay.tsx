@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import {
-  useGenerateSentence,
-  type GenerateSentenceResponse,
-} from "@features/ai-generate-sentence";
+import { useGenerateSentence } from '@features/ai-generate-sentence';
+import { useGenerateSubTopic } from '@features/ai-generate-sub-topic';
 
-import { getThemeIdBySlug } from "@entities/theme";
+import { useParagraphStore } from '@entities/paragraph';
+import { getThemeIdBySlug } from '@entities/theme';
+import { useThemes } from '@entities/theme/model/use-themes';
 
-import { supabase } from "@shared/api";
-import type { Database } from "@shared/api/generated/database";
-import { BaseButton, Card } from "@shared/ui";
+import { supabase } from '@shared/api';
+import type { Database } from '@shared/api/generated/database';
+import { BaseButton, Card } from '@shared/ui';
 
 type SentenceInputType = {
   position: number;
@@ -19,9 +19,9 @@ type SentenceInputType = {
 };
 
 type SaveArgs =
-  Database["public"]["Functions"]["save_paragraph_with_sentence"]["Args"];
+  Database['public']['Functions']['save_paragraph_with_sentence']['Args'];
 
-type SaveArgsWithTypedSentences = Omit<SaveArgs, "p_sentences"> & {
+type SaveArgsWithTypedSentences = Omit<SaveArgs, 'p_sentences'> & {
   p_sentences: SentenceInputType[];
 };
 
@@ -33,23 +33,75 @@ export const AddParagraphOverlay = ({
   userId,
   onClose,
 }: AddParagraphlOverlayProps) => {
-  const [generated, setGenerated] = useState<GenerateSentenceResponse>();
-  const { generate, isLoading } = useGenerateSentence({
-    topic: "daily",
-    level: "Intermediate",
-    userId,
-  });
-  const HandleGetGenerateSentence = async () => {
-    const result = await generate();
-    setGenerated(result);
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [generatedSubTopics, setGeneratedSubTopics] = useState<string[]>([]);
+  const [selectedSubTopic, setSelectedSubTopic] = useState<string | null>(null);
+
+  const { data: themes } = useThemes();
+  const paragraphStore = useParagraphStore();
+
+  const paragraphThemeId = useParagraphStore((s) => s.paragraph?.theme_id);
+
+  const derivedTopic =
+    selectedTopic ?? themes?.find((t) => t.id === paragraphThemeId)?.slug ?? '';
+
+  const { generate: generateSubTopics, isLoading: isSubTopicLoading } =
+    useGenerateSubTopic({
+      topic: derivedTopic,
+      level: 'Intermediate', // Assuming a fixed level for sub-topic generation
+    });
+
+  const { generate: generateSentence, isLoading: isSentenceLoading } =
+    useGenerateSentence({
+      topic: derivedTopic,
+      subTopic: selectedSubTopic ?? '', // Use selectedSubTopic if available, otherwise derivedTopic
+      level: 'Intermediate',
+      userId,
+    });
+
+  const HandleGenerateSubTopics = async () => {
+    if (!derivedTopic) return;
+    try {
+      const { result } = await generateSubTopics();
+      setGeneratedSubTopics(result.subtopics);
+      setSelectedSubTopic(result.subtopics[0] || null); // Select the first subtopic by default
+    } catch (error) {
+      console.error('Failed to generate sub-topics:', error);
+    }
   };
+
+  const HandleGetGenerateSentence = async () => {
+    try {
+      const { result } = await generateSentence();
+      const themeId = await getThemeIdBySlug(result.topic);
+      paragraphStore.setParagraph({
+        theme_id: themeId,
+        title: result.title,
+      });
+      setSelectedTopic(result.topic); // Update selectedTopic state
+      const sentencesToStore = result.sentences.map((sentence) => ({
+        sentence_eng: sentence.eng,
+        sentence_kor: sentence.kor,
+      }));
+      paragraphStore.setSentences(sentencesToStore);
+    } catch (error) {
+      console.error('Failed to generate sentence:', error);
+    }
+  };
+
   const HandleUpdateSentence = async () => {
-    if (!generated) return;
+    if (!paragraphStore.paragraph) return;
+    const themeId = await getThemeIdBySlug(selectedTopic ?? derivedTopic);
     const payload = {
-      p_theme_id: await getThemeIdBySlug(generated.result.topic),
-      p_title: generated.result.title,
-      p_level: "Intermediate",
-      p_sentences: generated?.result.sentences,
+      p_theme_id: themeId,
+      p_title: paragraphStore.paragraph.title ?? '',
+      p_level: 'Intermediate',
+      p_sentences: paragraphStore.sentences.map((sentence, index) => ({
+        eng: sentence.sentence_eng,
+        kor: sentence.sentence_kor,
+        type: sentence.type ?? 0,
+        position: index + 1,
+      })),
     } satisfies SaveArgsWithTypedSentences;
 
     /**
@@ -68,10 +120,11 @@ export const AddParagraphOverlay = ({
     paragraph_id
     sentence_id
     position
+    TODO: insert 할 때 type error 있음!
       */
     const { data, error } = await supabase.rpc(
-      "save_paragraph_with_sentence",
-      payload
+      'save_paragraph_with_sentence',
+      payload,
     );
     if (error) console.error(error);
     else console.log(data);
@@ -87,22 +140,89 @@ export const AddParagraphOverlay = ({
       >
         <h1>문단 추가</h1>
         <Card>
-          <BaseButton onClick={HandleGetGenerateSentence} disabled={isLoading}>
-            AI로 문단 생성하기
-          </BaseButton>
-          {generated && (
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <p>주제:</p>
+              <select
+                value={derivedTopic}
+                onChange={(e) => {
+                  const slug = e.target.value;
+                  setSelectedTopic(slug);
+                  setGeneratedSubTopics([]); // Reset subtopics
+                  setSelectedSubTopic(null); // Reset selected subtopic
+
+                  const selectedTheme = themes?.find((t) => t.slug === slug);
+
+                  if (selectedTheme) {
+                    const current = paragraphStore.paragraph;
+                    paragraphStore.setParagraph(
+                      current
+                        ? { ...current, theme_id: selectedTheme.id }
+                        : { theme_id: selectedTheme.id, title: '' },
+                    );
+                  }
+                }}
+              >
+                <option value="">주제를 선택하세요</option>
+                {themes?.map((theme) => (
+                  <option key={theme.id} value={theme.slug}>
+                    {theme.slug}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {derivedTopic && (
+              <>
+                <BaseButton
+                  onClick={HandleGenerateSubTopics}
+                  disabled={isSubTopicLoading || !derivedTopic}
+                >
+                  AI로 세부 주제 생성하기
+                </BaseButton>
+
+                {generatedSubTopics.length > 0 && (
+                  <div className="flex items-center gap-2">
+                    <p>세부 주제:</p>
+                    <select
+                      value={selectedSubTopic || ''}
+                      onChange={(e) => setSelectedSubTopic(e.target.value)}
+                    >
+                      {generatedSubTopics.map((subtopic) => (
+                        <option key={subtopic} value={subtopic}>
+                          {subtopic}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </>
+            )}
+
+            <BaseButton
+              onClick={HandleGetGenerateSentence}
+              disabled={isSentenceLoading || !selectedSubTopic}
+            >
+              AI로 문단 생성하기
+            </BaseButton>
+          </div>
+
+          {paragraphStore.paragraph && (
             <>
               <article className="h-100 m-2 overflow-scroll">
-                <p>{generated?.result.topic}</p>
+                <p>제목: {paragraphStore.paragraph.title}</p>
                 <ul>
-                  {generated?.result.sentences.map((sentence) => (
-                    <li>
-                      <span>{sentence.eng}</span>
+                  {paragraphStore.sentences.map((sentence, index) => (
+                    <li key={index}>
+                      <span>{sentence.sentence_eng}</span>
                     </li>
                   ))}
                 </ul>
               </article>
-              <BaseButton onClick={HandleUpdateSentence} disabled={isLoading}>
+              <BaseButton
+                onClick={HandleUpdateSentence}
+                disabled={isSentenceLoading}
+              >
                 문단 세트 저장하기
               </BaseButton>
             </>

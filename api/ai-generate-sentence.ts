@@ -1,50 +1,84 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const apiKey = process.env.GEMINI_API_KEY;
+const GEMINI_MODEL = process.env.GEMINI_MODEL ?? 'gemini-2.5-flash';
 
 if (!apiKey) {
-  console.warn("[ai-generate-sentence] GEMINI_API_KEY is not set");
+  console.warn('[ai-generate-sentence] GEMINI_API_KEY is not set');
 }
 
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 
+/**
+ * Gemini API를 사용해 OPIC 스타일 영어 말하기 세트를 생성하는 Vercel Serverless API
+ *
+ * 전달받은 topic/subTopic/level을 기반으로
+ * 1) 제목(title)
+ * 2) 질문 1개(type=1)
+ * 3) 답변 8~12문장(type=2)
+ * 을 생성한 뒤 JSON 형태로 반환합니다.
+ *
+ * @param {VercelRequest} req - Vercel Serverless Function Request
+ * @param {VercelResponse} res - Vercel Serverless Function Response
+ *
+ * @returns {Promise<void>} HTTP Response로 결과를 반환합니다.
+ * - 200: 정상 생성 성공
+ * - 405: POST가 아닌 요청
+ * - 500: Gemini 초기화 실패 / JSON 파싱 실패 / 기타 서버 오류
+ * - 503: Gemini 서비스 일시 오류 (가능한 경우)
+ */
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== "POST") {
-    return res.status(405).send("Method Not Allowed");
+  if (req.method !== 'POST') {
+    return res.status(405).send('Method Not Allowed');
   }
 
-  const { level, topic } = req.body as {
+  const { topic, subTopic, level } = req.body as {
     topic: string;
+    subTopic: string;
     level?: string;
   };
-  console.log(level);
+
+  const fixedLevel = level ?? 'intermediate';
+
+  if (!topic || !subTopic) {
+    return res.status(400).json({ error: 'topic and subTopic are required' });
+  }
 
   if (!genAI) {
-    return res.status(500).json({ error: "Gemini client not initialized" });
+    return res.status(500).json({ error: 'Gemini client not initialized' });
   }
 
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
+      model: GEMINI_MODEL,
     });
 
     const prompt = `
-    You are a content generator for an English speaking practice platform.
+You are a content generator for an English speaking practice platform.
 
-Given a topic parameter: "${topic}", generate a complete OPIC-style speaking set.
+Given parameters:
+- topic: "${topic}"
+- subTopic: "${subTopic}"
+- level: "${fixedLevel}"
+
+Generate a complete OPIC-style speaking set mainly focused on the subTopic.
 
 Follow these rules strictly:
 
 0. Generate a short, natural English TITLE that summarizes the situation.
-   - The title should sound like a speaking-topic headline.
-   - Example style: "Overcoming Difficulties During Travel"
-   - Do NOT make it a full sentence.
-   - Use Title Case.
+   - Make the title vary each time even for the same topic.
+   - Choose ONE angle randomly from: memory, problem-solving, comparison, advice, unexpected event, preference shift, habit change.
+   - Avoid generic titles like "Describing Your Daily Routine".
+   - Internally brainstorm 3 distinct title candidates, then output only the best one.
+   - Candidates must be meaningfully different.
+   - Output only the chosen title.
    
-1. Generate exactly ONE question related to the topic.
+1. Generate exactly ONE question related to the topic and subTopic.
    - The question must be natural, commonly used in OPIC-style exams.
-   - The question must be suitable for intermediate-level learners.
+   - The question must match the level: "${fixedLevel}".
+   - The question must be suitable for intermediate-level learners if level is intermediate.
 
 2. Generate a coherent spoken answer to the question.
    - The answer should sound natural and conversational.
@@ -76,10 +110,12 @@ Follow these rules strictly:
 {
   "title": "Short English title here",
   "topic": "${topic}",
+  "subTopic": "${subTopic}",
+  "level": "${fixedLevel}",
   "sentences": [
     {
       "position": 1,
-      "type": 2,
+      "type": 1,
       "eng": "Question sentence in English",
       "kor": "Question sentence in Korean"
     },
@@ -92,7 +128,7 @@ Follow these rules strictly:
   ]
 }
 
-8. The first sentence (position 1) MUST have type = 1.
+8. The first sentence (Question sentence, position 1) MUST have type = 1.
 9. All other sentences (position 2 and onward) MUST have type = 2.
 10. Do not include IDs, timestamps, or database-related fields.
 `;
@@ -100,29 +136,34 @@ Follow these rules strictly:
     const result = await model.generateContent({
       contents: [
         {
-          role: "user",
+          role: 'user',
           parts: [{ text: prompt }],
         },
       ],
+      generationConfig: {
+        temperature: 1.0,
+        topP: 0.95,
+        topK: 40,
+      },
     });
 
     const response = result.response;
 
     let text = response.text();
 
-    if (text.startsWith("```")) {
-      text = text.replace(/^```(?:json)?\s*/i, "");
-      text = text.replace(/```$/, "").trim();
+    if (text.startsWith('```')) {
+      text = text.replace(/^```(?:json)?\s*/i, '');
+      text = text.replace(/```$/, '').trim();
     }
 
     let parsed;
     try {
       parsed = JSON.parse(text);
     } catch (error) {
-      console.error("[ai-generate-sentence] JSON parse error : ", text);
-      console.error("[ai-generate-sentence] error : ", error);
+      console.error('[ai-generate-sentence] JSON parse error : ', text);
+      console.error('[ai-generate-sentence] error : ', error);
       return res.status(500).json({
-        error: "Gemini did not return valid JSON",
+        error: 'Gemini did not return valid JSON',
         raw: text,
       });
     }
@@ -139,7 +180,7 @@ Follow these rules strictly:
       cause?: unknown;
     };
 
-    console.error("[ai-generate-sentence] error", {
+    console.error('[ai-generate-sentence] error', {
       message: err?.message,
       status: err?.status,
       statusText: err?.statusText,
@@ -147,10 +188,10 @@ Follow these rules strictly:
       cause: err?.cause,
     });
 
-    const status = typeof err?.status === "number" ? err.status : 500;
+    const status = typeof err?.status === 'number' ? err.status : 500;
 
     return res.status(status === 503 ? 503 : 500).json({
-      error: err?.message ?? "Unknown error",
+      error: err?.message ?? 'Unknown error',
       status: err?.status ?? null,
       statusText: err?.statusText ?? null,
     });
