@@ -42,6 +42,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const fixedLevel = level ?? 'intermediate';
 
+  if (!topic || !subTopic) {
+    return res.status(400).json({ error: 'topic and subTopic are required' });
+  }
+
   if (!genAI) {
     return res.status(500).json({ error: 'Gemini client not initialized' });
   }

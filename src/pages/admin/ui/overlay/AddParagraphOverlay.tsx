@@ -147,11 +147,14 @@ export const AddParagraphOverlay = ({
                   setSelectedSubTopic(null); // Reset selected subtopic
 
                   const selectedTheme = themes?.find((t) => t.slug === slug);
+
                   if (selectedTheme) {
-                    paragraphStore.setParagraph({
-                      ...paragraphStore.paragraph!,
-                      theme_id: selectedTheme.id,
-                    });
+                    const current = paragraphStore.paragraph;
+                    paragraphStore.setParagraph(
+                      current
+                        ? { ...current, theme_id: selectedTheme.id }
+                        : { theme_id: selectedTheme.id, title: '' },
+                    );
                   }
                 }}
               >

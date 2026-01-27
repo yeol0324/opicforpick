@@ -15,8 +15,15 @@ export async function requestGenerateSubTopic(
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || 'Failed to generate sub-topics');
+    const text = await response.text().catch(() => '');
+    let message = 'Failed to generate sub-topics';
+    try {
+      const errorData = JSON.parse(text);
+      message = errorData.error || message;
+    } catch {
+      if (text) message = text;
+    }
+    throw new Error(message);
   }
 
   return response.json();
