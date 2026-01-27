@@ -6,13 +6,14 @@ import type {
 export async function requestGenerateSentence(
   params: GenerateSentenceRequest,
 ): Promise<GenerateSentenceResponse> {
-  const { topic, level } = params;
+  const { topic, subTopic, level } = params;
 
   const response = await fetch('/api/ai-generate-sentence', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       topic,
+      subTopic,
       level,
     }),
   });

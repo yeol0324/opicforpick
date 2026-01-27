@@ -71,19 +71,24 @@ export const AddParagraphOverlay = ({
   };
 
   const HandleGetGenerateSentence = async () => {
-    const { result } = await generateSentence();
-    const themeId = await getThemeIdBySlug(result.topic);
-    paragraphStore.setParagraph({
-      theme_id: themeId,
-      title: result.title,
-    });
-    setSelectedTopic(result.topic); // Update selectedTopic state
-    const sentencesToStore = result.sentences.map((sentence) => ({
-      sentence_eng: sentence.eng,
-      sentence_kor: sentence.kor,
-    }));
-    paragraphStore.setSentences(sentencesToStore);
+    try {
+      const { result } = await generateSentence();
+      const themeId = await getThemeIdBySlug(result.topic);
+      paragraphStore.setParagraph({
+        theme_id: themeId,
+        title: result.title,
+      });
+      setSelectedTopic(result.topic); // Update selectedTopic state
+      const sentencesToStore = result.sentences.map((sentence) => ({
+        sentence_eng: sentence.eng,
+        sentence_kor: sentence.kor,
+      }));
+      paragraphStore.setSentences(sentencesToStore);
+    } catch (error) {
+      console.error('Failed to generate sentence:', error);
+    }
   };
+
   const HandleUpdateSentence = async () => {
     if (!paragraphStore.paragraph) return;
     const themeId = await getThemeIdBySlug(selectedTopic ?? derivedTopic);
