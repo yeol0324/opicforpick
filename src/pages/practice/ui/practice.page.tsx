@@ -1,32 +1,32 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
-import type { ParagraphRow } from "@entities/paragraph";
-import { paragraphQueries } from "@entities/paragraph/api";
+import type { ParagraphRow } from '@entities/paragraph';
+import { paragraphQueries } from '@entities/paragraph/api';
 
-import { useDebouncedValue, APP, useInfiniteScroll } from "@shared/lib";
+import { useDebouncedValue, APP, useInfiniteScroll } from '@shared/lib';
 import {
   Spinner,
   ErrorMessage,
   EmptyState,
   SearchInput,
   Card,
-} from "@shared/ui";
+} from '@shared/ui';
 
-import { ParagraphListItem } from "./paragraph-list-item";
-import { PracticeOverlay } from "./practice.overlay";
+import { ParagraphListItem } from './paragraph-list-item';
+import { PracticeOverlay } from './practice.overlay';
 
 export function Practice() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedParagraphId, setSelectedParagraphId] = useState<string | null>(
-    null
+    null,
   );
 
   const pageSize = APP.DEFAULT_PAGE_SIZE;
   const debouncedSearchTerm = useDebouncedValue(
     searchTerm,
-    APP.DEFAULT_DEBOUNCE_DELAY
+    APP.DEFAULT_DEBOUNCE_DELAY,
   );
 
   const paragraphsQuery = useInfiniteQuery({
@@ -36,7 +36,8 @@ export function Practice() {
     paragraphsQuery.data?.pages
       .flatMap((page) => page.items as ParagraphRow[])
       .filter(
-        (item, index, self) => index === self.findIndex((t) => t.id === item.id)
+        (item, index, self) =>
+          index === self.findIndex((t) => t.id === item.id),
       ) ?? [];
 
   const total = paragraphsQuery.data?.pages[0]?.total ?? 0;
@@ -51,15 +52,16 @@ export function Practice() {
 
   const handleParagraphClick = (paragraphId: string) => {
     setSelectedParagraphId((prev) =>
-      prev === paragraphId ? prev : paragraphId
+      prev === paragraphId ? prev : paragraphId,
     );
   };
 
-  const containerRef = useInfiniteScroll({
-    onLoadMore: () => {
-      if (paragraphsQuery.isFetchingNextPage || hasError || !hasMore) return;
-      paragraphsQuery.fetchNextPage();
-    },
+  const onIntersect = () => {
+    if (paragraphsQuery.isFetchingNextPage || hasError || !hasMore) return;
+    paragraphsQuery.fetchNextPage();
+  };
+  const { setTarget } = useInfiniteScroll({
+    onIntersect,
     enabled: !paragraphsQuery.isFetchingNextPage && !hasError && !!hasMore,
   });
 
@@ -86,10 +88,7 @@ export function Practice() {
           placeholder="검색어"
         />
       </div>
-      <div
-        className="flex flex-col flex-1 overflow-y-auto w-full"
-        ref={containerRef}
-      >
+      <div className="flex flex-col flex-1 overflow-y-auto w-full">
         {isLoading ? (
           <Spinner />
         ) : hasError ? (
@@ -117,6 +116,20 @@ export function Practice() {
             )}
           </>
         )}
+        <div ref={setTarget} className="h-20">
+          {/* {isFetchingNextPage && (
+            <div className="space-y-4 mt-4">
+              {[...Array(2)].map((_, i) => (
+                <SalonCardSkeleton key={i} />
+              ))}
+            </div>
+          )}
+          {!hasNextPage && salons.length > 0 && (
+            <p className="text-sm text-gray-500 text-center">
+              모든 미용실을 확인했습니다.
+            </p>
+          )} */}
+        </div>
       </div>
       {/* </section> */}
     </div>

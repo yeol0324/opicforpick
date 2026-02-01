@@ -50,6 +50,9 @@ export function Home() {
 
   const handleFeedbackClick = () => {
     if (!audioInfo || !sentence) return;
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
     submitFeedback({
       audioBlob: audioInfo.blob,
       question: sentence,

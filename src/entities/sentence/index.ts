@@ -1,4 +1,3 @@
-export * from "./ui";
-export * from "./api";
+export * from './api';
 
-export * from "./model/sentence.type";
+export * from './model/sentence.type';

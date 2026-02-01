@@ -1,16 +1,19 @@
-import js from "@eslint/js";
-import globals from "globals";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
-import tseslint from "typescript-eslint";
-import importPlugin from "eslint-plugin-import";
-import { globalIgnores } from "eslint/config";
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
+import importPlugin from 'eslint-plugin-import';
+import { globalIgnores } from 'eslint/config';
 
 export default tseslint.config([
-  globalIgnores(["dist"]),
+  globalIgnores(['dist']),
 
+  /**
+   * 공통 룰: TS/React + import 정렬
+   */
   {
-    files: ["**/*.{ts,tsx}"],
+    files: ['**/*.{ts,tsx}'],
 
     plugins: {
       import: importPlugin,
@@ -28,24 +31,55 @@ export default tseslint.config([
     },
 
     rules: {
-      "import/order": [
-        "error",
+      /**
+       * 기존 import/order 유지
+       */
+      'import/order': [
+        'error',
         {
-          groups: [
-            "external", // 외부 라이브러리 (예: react, axios)
-            "internal", // 프로젝트 내부 import (@/components 등)
-            ["parent", "sibling", "index"], // 상대경로 import (../, ./)
-          ],
+          groups: ['external', 'internal', ['parent', 'sibling', 'index']],
           pathGroups: [
-            { pattern: "react", group: "external", position: "before" },
-            { pattern: "@pages/**", group: "internal", position: "before" },
-            { pattern: "@features/**", group: "internal", position: "before" },
-            { pattern: "@entities/**", group: "internal", position: "before" },
-            { pattern: "@shared/**", group: "internal", position: "before" },
+            { pattern: 'react', group: 'external', position: 'before' },
+            { pattern: '@pages/**', group: 'internal', position: 'before' },
+            { pattern: '@features/**', group: 'internal', position: 'before' },
+            { pattern: '@entities/**', group: 'internal', position: 'before' },
+            { pattern: '@shared/**', group: 'internal', position: 'before' },
           ],
-          pathGroupsExcludedImportTypes: ["builtin"],
-          "newlines-between": "always",
-          alphabetize: { order: "asc", caseInsensitive: true },
+          pathGroupsExcludedImportTypes: ['builtin'],
+        },
+      ],
+
+      /**
+       * entities는 public API로만 import
+       * - @entities/sentence
+       */
+      'import/no-internal-modules': [
+        'error',
+        {
+          forbid: [
+            '@entities/*/api/**',
+            '@entities/*/model/**',
+            '@entities/*/ui/**',
+          ],
+        },
+      ],
+    },
+  },
+
+  /**
+   * shared 계층: 상위 계층 import 금지
+   */
+  {
+    files: ['src/shared/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@pages/**', '@features/**', '@entities/**', '@app/**'],
+            },
+          ],
         },
       ],
     },
