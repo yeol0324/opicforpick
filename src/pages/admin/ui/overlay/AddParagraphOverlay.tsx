@@ -209,7 +209,7 @@ export const AddParagraphOverlay = ({
 
           {paragraphStore.paragraph && (
             <>
-              <article className="m-2 h-100 overflow-scroll">
+              <article className="h-100 m-2 overflow-scroll">
                 <p>제목: {paragraphStore.paragraph.title}</p>
                 <ul>
                   {paragraphStore.sentences.map((sentence, index) => (

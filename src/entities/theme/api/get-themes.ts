@@ -10,9 +10,7 @@ export interface Theme {
 }
 
 export const getThemes = async () => {
-  const { data, error } = await supabase
-    .from('themes')
-    .select('id, name, slug');
+  const { data, error } = await supabase.from('themes').select('id, name, slug');
 
   if (error) {
     throw new Error(error.message);
