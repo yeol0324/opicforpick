@@ -1,81 +1,65 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import {
-  SegmentedControl,
-  TextField,
-  PrimaryButton,
-  TextButton,
-  ErrorMessage,
-} from "@shared/ui";
+import { TextField, BaseButton, ErrorMessage, Spinner } from '@shared/ui';
+import { useEmailAuth } from '../model/use-email-auth';
 
-import { useEmailAuth } from "../model/use-email-auth";
+type EmailLoginFormProps = {
+  mode: 'login' | 'register';
+};
 
-export function EmailLoginForm() {
+export function EmailLoginForm({ mode }: EmailLoginFormProps) {
   const { login, register, loading, error } = useEmailAuth();
-  const [mode, setMode] = useState<"login" | "register">("login");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (mode === "login") {
+    if (mode === 'login') {
       await login(email, btoa(password));
     } else {
       await register(email, btoa(password));
     }
   };
 
-  const isLogin = mode === "login";
+  const isLogin = mode === 'login';
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <SegmentedControl
-        options={[
-          { value: "login", label: "이메일 로그인" },
-          { value: "register", label: "회원가입" },
-        ]}
-        value={mode}
-        onChange={setMode}
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <TextField
+        label="이메일"
+        type="email"
+        value={email}
+        autoComplete="email"
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        placeholder="you@email.com"
+        className="pl-10"
+      />
+      <TextField
+        label="비밀번호"
+        type="password"
+        value={password}
+        autoComplete={isLogin ? 'current-password' : 'new-password'}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        placeholder="8자 이상 입력해주세요"
+        className="pl-10"
       />
 
-      <div className="space-y-4">
-        <TextField
-          label="이메일"
-          type="email"
-          value={email}
-          autoComplete="email"
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          placeholder="you@email.com"
-        />
+      {error && (
+        <div className="slide-up">
+          <ErrorMessage message={error} />
+        </div>
+      )}
 
-        <TextField
-          label="비밀번호"
-          type="password"
-          value={password}
-          autoComplete={isLogin ? "current-password" : "new-password"}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          placeholder="8자 이상 입력해주세요"
-        />
-      </div>
-
-      <ErrorMessage message={error} />
-
-      <PrimaryButton type="submit" disabled={loading}>
-        {loading ? "처리 중..." : isLogin ? "로그인" : "회원가입 완료"}
-      </PrimaryButton>
-
-      <TextButton
-        type="button"
-        onClick={() =>
-          setMode((prev) => (prev === "login" ? "register" : "login"))
-        }
+      <BaseButton
+        variant="primary"
+        type="submit"
+        disabled={loading}
+        className="w-full"
       >
-        {isLogin
-          ? "아직 계정이 없나요? 회원가입 하기"
-          : "이미 계정이 있나요? 로그인 하기"}
-      </TextButton>
+        {loading ? <Spinner /> : isLogin ? '로그인' : '회원가입'}
+      </BaseButton>
     </form>
   );
 }

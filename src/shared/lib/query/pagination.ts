@@ -1,5 +1,4 @@
-export const DEFAULT_PAGE = 1;
-export const DEFAULT_PAGE_SIZE = 20;
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '../constants';
 
 export type PaginationFilter = {
   page?: number;
@@ -7,7 +6,7 @@ export type PaginationFilter = {
 };
 
 export function applyPaginationDefaults<T extends PaginationFilter>(
-  filter?: T
+  filter?: T,
 ): T & { page: number; pageSize: number } {
   return {
     ...(filter ?? ({} as T)),

@@ -1,10 +1,10 @@
-import { supabase, unwrap } from "@shared/api";
+import { supabase, unwrap } from '@shared/api';
 
-import type { UserWordType } from "../model/user-word.type";
+import type { UserWordType } from '../model/user-word.type';
 
 export async function getUserWords(userId: string): Promise<UserWordType[]> {
   const { data, error } = await supabase
-    .from("user_words")
+    .from('user_words')
     .select(
       `
       id,
@@ -17,10 +17,10 @@ export async function getUserWords(userId: string): Promise<UserWordType[]> {
         meaning,
         created_at
       )
-    `
+    `,
     )
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
 
   const rawItems = unwrap({ data, error });
 

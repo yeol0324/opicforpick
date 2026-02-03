@@ -1,14 +1,14 @@
-import { applyPaginationDefaults, type PaginationFilter } from "./pagination";
+import { applyPaginationDefaults, type PaginationFilter } from './pagination';
 
 export function buildListKey<TFilter extends PaginationFilter>(
   baseKey: readonly unknown[],
-  filter?: TFilter
+  filter?: TFilter,
 ) {
   const { page, pageSize } = applyPaginationDefaults(filter);
 
   return [
     ...baseKey,
-    "list",
+    'list',
     {
       ...(filter ?? {}),
       page,

@@ -1,4 +1,4 @@
-import { supabase } from "@shared/api";
+import { supabase } from '@shared/api';
 
 export async function uploadRecording(opts: {
   userId: string;
@@ -7,20 +7,20 @@ export async function uploadRecording(opts: {
 }): Promise<string> {
   const { userId, sentenceId, blob } = opts;
 
-  const mime = blob.type || "audio/webm";
+  const mime = blob.type || 'audio/webm';
   const ext =
-    mime === "audio/webm"
-      ? "webm"
-      : mime === "audio/mp4" || mime === "audio/m4a"
-      ? "m4a"
-      : "dat";
+    mime === 'audio/webm'
+      ? 'webm'
+      : mime === 'audio/mp4' || mime === 'audio/m4a'
+        ? 'm4a'
+        : 'dat';
 
   const fileName = `${userId}/${
-    sentenceId ?? "no-sentence"
+    sentenceId ?? 'no-sentence'
   }/${Date.now()}.${ext}`;
 
   const { data, error } = await supabase.storage
-    .from("recording")
+    .from('recording')
     .upload(fileName, blob, {
       contentType: mime,
       upsert: false,

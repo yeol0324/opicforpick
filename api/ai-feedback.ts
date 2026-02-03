@@ -1,17 +1,17 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const apiKey = process.env.GEMINI_API_KEY;
 
 if (!apiKey) {
-  console.warn("[ai-feedback] GEMINI_API_KEY is not set");
+  console.warn('[ai-feedback] GEMINI_API_KEY is not set');
 }
 
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== "POST") {
-    return res.status(405).send("Method Not Allowed");
+  if (req.method !== 'POST') {
+    return res.status(405).send('Method Not Allowed');
   }
 
   const { question, level, audioBase64, mimeType } = req.body as {
@@ -22,16 +22,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   };
 
   if (!audioBase64 || !mimeType) {
-    return res.status(400).json({ error: "Missing audio" });
+    return res.status(400).json({ error: 'Missing audio' });
   }
 
   if (!genAI) {
-    return res.status(500).json({ error: "Gemini client not initialized" });
+    return res.status(500).json({ error: 'Gemini client not initialized' });
   }
 
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
+      model: 'gemini-2.5-flash',
     });
 
     const prompt = `
@@ -106,7 +106,7 @@ Important:
     const result = await model.generateContent({
       contents: [
         {
-          role: "user",
+          role: 'user',
           parts: [
             { text: prompt },
             {
@@ -124,19 +124,19 @@ Important:
 
     let text = response.text();
 
-    if (text.startsWith("```")) {
-      text = text.replace(/^```(?:json)?\s*/i, "");
-      text = text.replace(/```$/, "").trim();
+    if (text.startsWith('```')) {
+      text = text.replace(/^```(?:json)?\s*/i, '');
+      text = text.replace(/```$/, '').trim();
     }
 
     let parsed;
     try {
       parsed = JSON.parse(text);
     } catch (error) {
-      console.error("[ai-feedback] JSON parse error : ", text);
-      console.error("[ai-feedback] error : ", error);
+      console.error('[ai-feedback] JSON parse error : ', text);
+      console.error('[ai-feedback] error : ', error);
       return res.status(500).json({
-        error: "Gemini did not return valid JSON",
+        error: 'Gemini did not return valid JSON',
         raw: text,
       });
     }
@@ -153,7 +153,7 @@ Important:
       cause?: unknown;
     };
 
-    console.error("[ai-feedback] error", {
+    console.error('[ai-feedback] error', {
       message: err?.message,
       status: err?.status,
       statusText: err?.statusText,
@@ -161,10 +161,10 @@ Important:
       cause: err?.cause,
     });
 
-    const status = typeof err?.status === "number" ? err.status : 500;
+    const status = typeof err?.status === 'number' ? err.status : 500;
 
     return res.status(status === 503 ? 503 : 500).json({
-      error: err?.message ?? "Unknown error",
+      error: err?.message ?? 'Unknown error',
       status: err?.status ?? null,
       statusText: err?.statusText ?? null,
     });

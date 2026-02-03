@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 
-import { wordQueries } from "@entities/word/api/word.queries";
+import { wordQueries } from '@entities/word/api/word.queries';
 
-import { Card } from "@shared/ui";
+import { Card } from '@shared/ui';
 
-import { WordbookOverlay } from "./wordbook.overlay";
+import { WordbookOverlay } from './wordbook.overlay';
 
 export function Wordbook() {
   const { data } = useQuery(wordQueries.list());
@@ -23,16 +23,16 @@ export function Wordbook() {
 
   return (
     <div className="flex flex-col items-center gap-6 p-6">
-      <section className="space-y-4 w-full">
+      <section className="w-full space-y-4">
         <h2 className="text-lg font-semibold text-slate-900">단어장 📕</h2>
         <Card>
           <ul>
             {items.map((word, idx) => (
               <li
                 className={[
-                  "cursor-pointer rounded-md p-2 transition-colors",
-                  "hover:bg-slate-100",
-                ].join(" ")}
+                  'cursor-pointer rounded-md p-2 transition-colors',
+                  'hover:bg-slate-100',
+                ].join(' ')}
                 key={word.id}
                 onClick={() => open(idx)}
               >

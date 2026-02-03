@@ -1,8 +1,8 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 
-import { addSentenceSchema, type AddSentenceInput } from "@shared/lib";
-import { TextField } from "@shared/ui";
+import { addSentenceSchema, type AddSentenceInput } from '@shared/lib';
+import { TextField } from '@shared/ui';
 
 type Props = {
   onSuccess?: (data: AddSentenceInput) => void;
@@ -16,8 +16,8 @@ export function AddSentenceForm({ onSuccess }: Props) {
     reset,
   } = useForm<AddSentenceInput>({
     resolver: yupResolver(addSentenceSchema),
-    mode: "onChange",
-    defaultValues: { text: "", note: "", source: "" },
+    mode: 'onChange',
+    defaultValues: { text: '', note: '', source: '' },
   });
   console.log(onSuccess, reset);
 
@@ -30,17 +30,17 @@ export function AddSentenceForm({ onSuccess }: Props) {
       <TextField
         label="문장"
         error={errors.text?.message}
-        {...register("text")}
+        {...register('text')}
       />
       <TextField
         label="메모(선택)"
         error={errors.note?.message}
-        {...register("note")}
+        {...register('note')}
       />
       <TextField
         label="출처(선택)"
         error={errors.source?.message}
-        {...register("source")}
+        {...register('source')}
       />
 
       <button
@@ -48,7 +48,7 @@ export function AddSentenceForm({ onSuccess }: Props) {
         disabled={!isValid || isSubmitting}
         className="w-full rounded-lg bg-emerald-600 px-4 py-2 text-white disabled:opacity-50"
       >
-        {isSubmitting ? "저장중" : "추가하기"}
+        {isSubmitting ? '저장중' : '추가하기'}
       </button>
     </form>
   );

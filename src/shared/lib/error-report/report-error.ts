@@ -1,15 +1,15 @@
-import type { ReportErrorPayload } from "./error-report.type";
+import type { ReportErrorPayload } from './error-report.type';
 
 export type ReportErrorResult = {
   issueUrl?: string;
 };
 
 export async function reportErrorToServer(
-  payload: ReportErrorPayload
+  payload: ReportErrorPayload,
 ): Promise<ReportErrorResult> {
-  const response = await fetch("/api/report-error", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+  const response = await fetch('/api/report-error', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
 
@@ -19,7 +19,7 @@ export async function reportErrorToServer(
     throw new Error(
       `reportErrorToServer failed (${response.status}): ${
         text || response.statusText
-      }`
+      }`,
     );
   }
 

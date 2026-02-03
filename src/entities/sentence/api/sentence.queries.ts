@@ -1,18 +1,18 @@
-import { keepPreviousData, queryOptions } from "@tanstack/react-query";
+import { keepPreviousData, queryOptions } from '@tanstack/react-query';
 
-import type { Paged } from "@shared/api";
-import { buildListKey, type ProficiencyLevel } from "@shared/lib";
+import type { Paged } from '@shared/api';
+import { buildListKey, type ProficiencyLevel } from '@shared/lib';
 
-import { fetchDailySentence } from "./get-daily-sentence";
-import { getSentences } from "./get-sentences";
-import type { SentenceFilterType, SentenceRow } from "../model/sentence.type";
+import { fetchDailySentence } from './get-daily-sentence';
+import { getSentences } from './get-sentences';
+import type { SentenceFilterType, SentenceRow } from '../model/sentence.type';
 
 const sentenceKeys = {
-  all: () => ["sentences"] as const,
+  all: () => ['sentences'] as const,
   list: (filter?: SentenceFilterType) =>
     buildListKey(sentenceKeys.all(), filter),
-  byId: (id: string) => [...sentenceKeys.all(), "detail", id] as const,
-  daily: () => ["daily-sentence"] as const,
+  byId: (id: string) => [...sentenceKeys.all(), 'detail', id] as const,
+  daily: () => ['daily-sentence'] as const,
   byLevel: (level: ProficiencyLevel) =>
     [...sentenceKeys.daily(), level] as const,
 };
@@ -26,7 +26,7 @@ export const sentenceQueries = {
       placeholderData: keepPreviousData,
     }),
 
-  infiniteList: (filter: Omit<SentenceFilterType, "page">) => ({
+  infiniteList: (filter: Omit<SentenceFilterType, 'page'>) => ({
     queryKey: sentenceKeys.list({ ...filter, page: 1 }),
     queryFn: ({ pageParam = 1 }: { pageParam?: number }) => {
       return getSentences({ ...filter, page: pageParam });
@@ -51,7 +51,7 @@ export const sentenceQueries = {
       },
       enabled: !!id,
     }),
-  daily: (level: ProficiencyLevel = "Advanced") =>
+  daily: (level: ProficiencyLevel = 'Advanced') =>
     queryOptions({
       queryKey: sentenceKeys.byLevel(level),
       queryFn: () => fetchDailySentence(level),

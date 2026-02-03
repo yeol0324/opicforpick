@@ -4,28 +4,28 @@ import {
   calculatePagination,
   createPagedResult,
   type Paged,
-} from "@shared/api";
+} from '@shared/api';
 
-import type { WordType, WordFilterType } from "../model/word.type";
+import type { WordType, WordFilterType } from '../model/word.type';
 
 export async function getWords(
-  filter?: WordFilterType
+  filter?: WordFilterType,
 ): Promise<Paged<WordType>> {
   const { page, pageSize, from, to } = calculatePagination(
     filter?.page,
-    filter?.pageSize
+    filter?.pageSize,
   );
 
   let queryBuilder = supabase
-    .from("words")
-    .select("*", { count: "exact" })
-    .order("created_at", { ascending: false });
+    .from('words')
+    .select('*', { count: 'exact' })
+    .order('created_at', { ascending: false });
 
   const q = filter?.q?.trim();
   if (q) {
     const searchKeyword = `%${q}%`;
     queryBuilder = queryBuilder.or(
-      `expression.ilike.${searchKeyword},meaning.ilike.${searchKeyword}`
+      `expression.ilike.${searchKeyword},meaning.ilike.${searchKeyword}`,
     );
   }
 

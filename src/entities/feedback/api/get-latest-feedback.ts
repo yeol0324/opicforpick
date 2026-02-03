@@ -1,6 +1,6 @@
-import { supabase } from "@shared/api";
+import { supabase } from '@shared/api';
 
-import type { FeedbackType } from "../model/feedback.type";
+import type { FeedbackType } from '../model/feedback.type';
 
 type LatestFeedbackParams = {
   userId: string;
@@ -18,13 +18,13 @@ export async function getLatestFeedback({
   tomorrow.setDate(today.getDate() + 1);
 
   const { data, error } = await supabase
-    .from("ai_feedbacks")
-    .select("*")
-    .eq("user_id", userId)
-    .eq("sentence_id", sentenceId)
-    .gte("created_at", today.toISOString())
-    .lt("created_at", tomorrow.toISOString())
-    .order("created_at", { ascending: false })
+    .from('ai_feedbacks')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('sentence_id', sentenceId)
+    .gte('created_at', today.toISOString())
+    .lt('created_at', tomorrow.toISOString())
+    .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle();
 

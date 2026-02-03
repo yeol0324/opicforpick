@@ -21,7 +21,8 @@
   ```typescript
   const sentenceKeys = {
     all: () => ['sentences'] as const,
-    daily: (level: ProficiencyLevel) => [...sentenceKeys.all(), 'daily', level] as const,
+    daily: (level: ProficiencyLevel) =>
+      [...sentenceKeys.all(), 'daily', level] as const,
   };
   ```
 
@@ -39,7 +40,7 @@
         const audioPath = await uploadRecording(params.audioBlob);
         await createRecording({ audioPath, ...params });
         return feedback;
-      }
+      },
     });
   }
   ```
@@ -65,7 +66,7 @@ src/shared/styles/
 ### 구조 분해 패턴으로 className 덮어쓰기 방지
 
 ```tsx
-export function Button({ className = "", children, ...props }: ButtonProps) {
+export function Button({ className = '', children, ...props }: ButtonProps) {
   return (
     <button {...props} className={`btn bg-brand ${className}`}>
       {children}

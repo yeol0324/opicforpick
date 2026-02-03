@@ -1,1 +1,1 @@
-export { Wordbook } from "./ui/wordbook.page";
+export { Wordbook } from './ui/wordbook.page';

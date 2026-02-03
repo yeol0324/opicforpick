@@ -3,7 +3,7 @@ export function blobToBase64(blob: Blob): Promise<string> {
     const reader = new FileReader();
     reader.onloadend = () => {
       const dataUrl = reader.result as string;
-      const base64 = dataUrl.split(",")[1];
+      const base64 = dataUrl.split(',')[1];
       resolve(base64);
     };
     reader.onerror = reject;

@@ -1,17 +1,17 @@
-import { keepPreviousData, queryOptions } from "@tanstack/react-query";
+import { keepPreviousData, queryOptions } from '@tanstack/react-query';
 
-import { buildListKey } from "@shared/lib";
+import { buildListKey } from '@shared/lib';
 
-
-import { getFeedback } from "./get-feedback";
-import { getLatestFeedback } from "./get-latest-feedback";
-import type { FeedbackFilterType } from "../model/feedback.type";
+import { getFeedback } from './get-feedback';
+import { getLatestFeedback } from './get-latest-feedback';
+import type { FeedbackFilterType } from '../model/feedback.type';
 
 const feedbackKeys = {
-  all: () => ["feedback"] as const,
-  list: (filter?: FeedbackFilterType) => buildListKey(feedbackKeys.all(), filter),
+  all: () => ['feedback'] as const,
+  list: (filter?: FeedbackFilterType) =>
+    buildListKey(feedbackKeys.all(), filter),
   latest: (userId: string, sentenceId: string) =>
-    [...feedbackKeys.all(), "latest", userId, sentenceId] as const,
+    [...feedbackKeys.all(), 'latest', userId, sentenceId] as const,
 };
 
 export const feedbackQueries = {
@@ -28,7 +28,7 @@ export const feedbackQueries = {
       queryKey:
         userId && sentenceId
           ? feedbackKeys.latest(userId, sentenceId)
-          : [...feedbackKeys.all(), "latest", "disabled"],
+          : [...feedbackKeys.all(), 'latest', 'disabled'],
       queryFn: () => {
         if (!userId || !sentenceId) return Promise.resolve(null);
         return getLatestFeedback({ userId, sentenceId });

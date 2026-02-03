@@ -1,13 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 import {
   isRouteErrorResponse,
   useLocation,
   useRouteError,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import { reportAppError } from "@shared/lib/error-report";
-import { ErrorFallback } from "@shared/ui/status";
+import { reportAppError } from '@shared/lib/error-report';
+import { ErrorFallback } from '@shared/ui/status';
 
 export function RouteErrorBoundary() {
   const error = useRouteError();
@@ -21,8 +21,8 @@ export function RouteErrorBoundary() {
 
     reportAppError({
       error,
-      source: "route",
-      severity: "error",
+      source: 'route',
+      severity: 'error',
       meta: {
         pathname: location.pathname,
         search: location.search,
@@ -33,4 +33,3 @@ export function RouteErrorBoundary() {
 
   return <ErrorFallback />;
 }
-

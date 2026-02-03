@@ -1,6 +1,6 @@
-import { useAuthContext } from "@entities/auth";
+import { useAuthContext } from '@entities/auth';
 
-import { BaseButton, Card } from "@shared/ui";
+import { BorderButton, Card } from '@shared/ui';
 
 export const ProfilePage = () => {
   const auth = useAuthContext();
@@ -9,12 +9,12 @@ export const ProfilePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 p-6 overflow-hidden">
+    <div className="flex flex-col items-center gap-6 overflow-hidden p-6">
       <Card className="w-full">
         <h2>{auth.auth.user?.email}</h2>
-        <BaseButton onClick={handleLogout} style={{ margin: "10px 0" }}>
+        <BorderButton variant="primary" onClick={handleLogout}>
           로그아웃
-        </BaseButton>
+        </BorderButton>
       </Card>
       <Card className="w-full">
         <ul>

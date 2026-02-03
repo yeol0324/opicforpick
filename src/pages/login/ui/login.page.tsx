@@ -1,40 +1,37 @@
-import { useEffect } from "react";
+import { useState } from 'react';
+import { Sparkles } from 'lucide-react';
 
-import { useNavigate } from "react-router-dom";
-
-import { DemoLoginButton } from "@features/auth-demo/ui/demo-login-button";
-import { EmailLoginForm } from "@features/auth-email/ui/email-login-form";
-
-import { useAuthContext } from "@entities/auth/model/auth-context";
-
-import { CenterColumn, Card } from "@shared/ui";
+import { EmailLoginForm, ModeToggleButton } from '@features/auth-email';
+import { AnonymousSignInnButton } from '@features/auth-anonymous';
+import { Card, Divider, TextLogo } from '@shared/ui';
 
 export function Login() {
-  const { auth, isLoading } = useAuthContext();
-  const navigate = useNavigate();
+  const [mode, setMode] = useState<'login' | 'register'>('login');
 
-  useEffect(() => {
-    if (!isLoading && auth.mode !== "none") {
-      navigate("/", { replace: true });
-    }
-  }, [auth.mode, isLoading, navigate]);
+  const toggleMode = () => {
+    setMode((prev) => (prev === 'login' ? 'register' : 'login'));
+  };
+
+  const isLogin = mode === 'login';
 
   return (
-    <CenterColumn>
-      <header className="mb-8">
-        <p className="text-xs font-semibold tracking-[0.12em] text-teal-500">
-          OPIC FORPIC
-        </p>
-        <h1 className="mt-2 text-2xl font-semibold text-slate-900">로그인</h1>
-      </header>
+    <main className="flex-col-center mx-auto min-h-screen px-4">
+      <Card className="w-full max-w-md">
+        <div className="flex-col-center mb-3 gap-2">
+          <Sparkles className="h-10 w-10 text-brand" />
+          <TextLogo />
+        </div>
 
-      <Card>
-        <EmailLoginForm />
+        <EmailLoginForm mode={mode} />
+
+        {isLogin && (
+          <div className="mt-6 space-y-4">
+            <Divider label="OR" />
+            <AnonymousSignInnButton />
+            <ModeToggleButton mode={mode} onToggle={toggleMode} />
+          </div>
+        )}
       </Card>
-
-      <section className="mt-4">
-        <DemoLoginButton />
-      </section>
-    </CenterColumn>
+    </main>
   );
 }

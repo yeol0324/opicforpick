@@ -1,8 +1,8 @@
-import { useState, type ReactNode, forwardRef } from "react";
+import { useState, type ReactNode, forwardRef } from 'react';
 
-import { twMerge } from "tailwind-merge";
+import { twMerge } from 'tailwind-merge';
 
-type CardMode = "default" | "scroll" | "expand";
+type CardMode = 'default' | 'scroll' | 'expand';
 
 export interface CardProps {
   children: ReactNode;
@@ -25,33 +25,33 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(
   {
     children,
     className,
-    mode = "default",
+    mode = 'default',
     minHeight,
     maxHeight,
-    expandLabel = "더보기",
-    collapseLabel = "접기",
+    expandLabel = '더보기',
+    collapseLabel = '접기',
   },
-  ref
+  ref,
 ) {
   const [expanded, setExpanded] = useState(false);
 
   const baseClass =
-    "rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.08)]";
+    'mx-auto rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.08)]';
 
   const modeStyle =
-    mode === "scroll"
+    mode === 'scroll'
       ? {
           minHeight,
           maxHeight,
-          overflowY: "auto" as const,
+          overflowY: 'auto' as const,
         }
-      : mode === "expand"
-      ? {
-          minHeight,
-          maxHeight: expanded ? "none" : maxHeight ?? minHeight,
-          overflow: "hidden" as const,
-        }
-      : undefined;
+      : mode === 'expand'
+        ? {
+            minHeight,
+            maxHeight: expanded ? 'none' : (maxHeight ?? minHeight),
+            overflow: 'hidden' as const,
+          }
+        : undefined;
 
   return (
     <section
@@ -61,7 +61,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(
     >
       {children}
 
-      {mode === "expand" && (
+      {mode === 'expand' && (
         <div className="mt-4 text-center">
           <button
             type="button"

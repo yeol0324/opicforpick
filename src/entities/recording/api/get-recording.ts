@@ -4,25 +4,25 @@ import {
   calculatePagination,
   createPagedResult,
   type Paged,
-} from "@shared/api";
+} from '@shared/api';
 
 import type {
   RecordingFilterType,
   SpeechRecordingWithRelations,
-} from "../model/recording.type";
+} from '../model/recording.type';
 
 export async function getRecording(
-  filter?: RecordingFilterType
+  filter?: RecordingFilterType,
 ): Promise<Paged<SpeechRecordingWithRelations>> {
   const { page, pageSize, from, to } = calculatePagination(
     filter?.page,
-    filter?.pageSize
+    filter?.pageSize,
   );
 
   const queryBuilder = supabase
-    .from("speech_recordings")
-    .select("*, sentences(*), ai_feedbacks(*)", { count: "exact" })
-    .order("created_at", { ascending: false });
+    .from('speech_recordings')
+    .select('*, sentences(*), ai_feedbacks(*)', { count: 'exact' })
+    .order('created_at', { ascending: false });
 
   const response = await queryBuilder.range(from, to);
   const items = unwrap<SpeechRecordingWithRelations[]>(response);

@@ -1,7 +1,11 @@
-import { BaseButton } from '@shared/ui';
-import { useAnonymousAuth } from '../use-anonymous-auth';
+import { BorderButton } from '@shared/ui';
+import { useAnonymousAuth } from '../model/use-anonymous-auth';
 
-export const AnonymousLoginButton = () => {
+export const AnonymousSignInnButton = () => {
   const { login } = useAnonymousAuth();
-  return <BaseButton onClick={login}>익명으로 로그인</BaseButton>;
+  return (
+    <BorderButton variant="primary" onClick={login} className="w-full">
+      게스트로 둘러보기
+    </BorderButton>
+  );
 };

@@ -1,1 +1,1 @@
-export * from "./model/word.type";
+export * from './model/word.type';

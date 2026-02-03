@@ -1,1 +1,1 @@
-export * from "./model/use-record-flow";
+export * from './model/use-record-flow';

@@ -15,4 +15,3 @@ export type WordFilterType = {
   page?: number;
   pageSize?: number;
 };
-

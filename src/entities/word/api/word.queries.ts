@@ -1,13 +1,12 @@
-import { keepPreviousData, queryOptions } from "@tanstack/react-query";
+import { keepPreviousData, queryOptions } from '@tanstack/react-query';
 
-import { buildListKey } from "@shared/lib";
+import { buildListKey } from '@shared/lib';
 
-import { getWords } from "./get-words";
-import type { WordFilterType } from "../model/word.type";
-
+import { getWords } from './get-words';
+import type { WordFilterType } from '../model/word.type';
 
 const wordKeys = {
-  all: () => ["words"] as const,
+  all: () => ['words'] as const,
   list: (filter?: WordFilterType) => buildListKey(wordKeys.all(), filter),
 };
 

@@ -1,0 +1,14 @@
+/** Bottom Navigation */
+.bottom-nav .link {
+  display: block;
+  padding: 0.75rem 0.5rem;
+  font-size: 1rem;
+  color: #9ca3af;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.bottom-nav .link.active {
+  color: #000;
+  font-weight: 700;
+}

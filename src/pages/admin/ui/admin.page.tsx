@@ -1,10 +1,10 @@
-import { overlay } from "overlay-kit";
+import { overlay } from 'overlay-kit';
 
-import { useAuthContext } from "@entities/auth";
+import { useAuthContext } from '@entities/auth';
 
-import { Card, TextButton } from "@shared/ui";
+import { Card, TextButton } from '@shared/ui';
 
-import { AddParagraphOverlay } from "./overlay/AddParagraphOverlay";
+import { AddParagraphOverlay } from './overlay/AddParagraphOverlay';
 
 export const AdminPage = () => {
   const { auth } = useAuthContext();
@@ -22,7 +22,7 @@ export const AdminPage = () => {
     ));
   };
   return (
-    <div className="flex flex-col items-center gap-6 p-6 overflow-hidden">
+    <div className="flex flex-col items-center gap-6 overflow-hidden p-6">
       <Card className="w-full">
         <ul>
           <li>

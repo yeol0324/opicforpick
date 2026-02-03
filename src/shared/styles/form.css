@@ -1,0 +1,85 @@
+.form-input {
+  display: block;
+  width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+.form-error {
+  font-size: 0.875rem;
+  color: #ef4444;
+  margin-top: 0.25rem;
+}
+
+/* Floating Label Styles */
+.floating-input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.floating-input {
+  display: block;
+  width: 100%;
+  padding: 1.25rem 0.75rem 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  transition: all 0.2s ease;
+}
+
+.floating-input:focus {
+  outline: none;
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+.floating-label {
+  position: absolute;
+  left: 0.75rem;
+  top: 1rem;
+  font-size: 1rem;
+  color: #6b7280;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  background-color: #fff;
+  padding: 0 0.25rem;
+}
+
+/* Label floats up when input is focused or has value */
+.floating-input:focus + .floating-label,
+.floating-input:not(:placeholder-shown) + .floating-label {
+  top: -0.5rem;
+  left: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #0ea5e9;
+}
+
+/* Keep label color neutral when not focused but has value */
+.floating-input:not(:focus):not(:placeholder-shown) + .floating-label {
+  color: #374151;
+}

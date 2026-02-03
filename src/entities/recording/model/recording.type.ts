@@ -1,15 +1,15 @@
-import type { FeedbackType } from "@entities/feedback/model/feedback.type";
-import type { SentenceRow } from "@entities/sentence/model/sentence.type";
+import type { FeedbackType } from '@entities/feedback/model/feedback.type';
+import type { SentenceRow } from '@entities/sentence/model/sentence.type';
 
-import type { Database } from "@shared/api/generated/database";
+import type { Database } from '@shared/api/generated/database';
 
 export type RecordingRow =
-  Database["public"]["Tables"]["speech_recordings"]["Row"];
+  Database['public']['Tables']['speech_recordings']['Row'];
 
 type SpeechRecordingRow =
-  Database["public"]["Tables"]["speech_recordings"]["Row"];
+  Database['public']['Tables']['speech_recordings']['Row'];
 
-type AiFeedbackRow = Database["public"]["Tables"]["ai_feedbacks"]["Row"];
+type AiFeedbackRow = Database['public']['Tables']['ai_feedbacks']['Row'];
 
 export type SpeechRecordingWithRelations = SpeechRecordingRow & {
   sentences: SentenceRow | null; // 1:1 이면

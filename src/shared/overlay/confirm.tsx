@@ -1,6 +1,6 @@
-import { overlay } from "overlay-kit";
+import { overlay } from 'overlay-kit';
 
-import { BaseButton } from "@shared/ui";
+import { BaseButton } from '@shared/ui';
 
 type ConfirmOptions = {
   title?: string;
@@ -11,10 +11,10 @@ type ConfirmOptions = {
 
 export function openConfirm(options: ConfirmOptions = {}): Promise<boolean> {
   const {
-    title = "확인",
-    description = "이 작업을 진행할까요?",
-    confirmText = "확인",
-    cancelText = "취소",
+    title = '확인',
+    description = '이 작업을 진행할까요?',
+    confirmText = '확인',
+    cancelText = '취소',
   } = options;
 
   return overlay.openAsync<boolean>(({ isOpen, close, unmount }) => {
@@ -36,10 +36,10 @@ export function openConfirm(options: ConfirmOptions = {}): Promise<boolean> {
           )}
 
           <div className="flex justify-end gap-2">
-            <BaseButton onClick={() => handleClose(false)}>
+            <BaseButton variant="secondary" onClick={() => handleClose(false)}>
               {cancelText}
             </BaseButton>
-            <BaseButton onClick={() => handleClose(true)}>
+            <BaseButton variant="secondary" onClick={() => handleClose(true)}>
               {confirmText}
             </BaseButton>
           </div>

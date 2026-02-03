@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useFeedback } from "@features/ai-feedback";
+import { useFeedback } from '@features/ai-feedback';
 import {
   useDailyQuestion,
   DailyQuestionSection,
-} from "@features/daily-question";
-import { type AudioInfo } from "@features/record-start-stop";
+} from '@features/daily-question';
+import { type AudioInfo } from '@features/record-start-stop';
 
-import { useLatestFeedback } from "@entities/feedback";
+import { useLatestFeedback } from '@entities/feedback';
 
-import { Spinner } from "@shared/ui";
+import { Spinner } from '@shared/ui';
 
-import { ExistingFeedbackSection } from "./existing-feedback-section";
-import { RecordingFlowSection } from "./recording-flow-section";
+import { ExistingFeedbackSection } from './existing-feedback-section';
+import { RecordingFlowSection } from './recording-flow-section';
 
 export function Home() {
   const [audioInfo, setAudioInfo] = useState<AudioInfo | null>(null);
@@ -32,7 +32,7 @@ export function Home() {
     data: sentence,
     isLoading: isQuestionLoading,
     error: questionError,
-  } = useDailyQuestion("Advanced");
+  } = useDailyQuestion('Advanced');
 
   const {
     data: latestFeedback,
@@ -56,7 +56,7 @@ export function Home() {
     submitFeedback({
       audioBlob: audioInfo.blob,
       question: sentence,
-      level: "Intermediate",
+      level: 'Intermediate',
     });
   };
 

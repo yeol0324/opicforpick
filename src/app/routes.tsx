@@ -1,76 +1,111 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense } from 'react';
+import { createBrowserRouter } from 'react-router-dom';
 
-import { AuthGuard } from "@app/providers/auth-guard";
-import { createBrowserRouter } from "react-router-dom";
+// Eager loading
+import { Layout } from '@app/layout';
+import { AuthGuard } from '@app/providers/auth-guard';
+import { Login } from '@pages/login';
+import { Home } from '@pages/home';
 
-import { Spinner } from "@shared/ui";
+import { Spinner } from '@shared/ui';
 
-const Layout = lazy(() =>
-  import("@app/layout").then((m) => ({ default: m.Layout }))
-);
+// Lazy loading
 const RouteErrorBoundary = lazy(() =>
-  import("@pages/error/route-error-boundary").then((m) => ({
+  import('@pages/error/route-error-boundary').then((m) => ({
     default: m.RouteErrorBoundary,
-  }))
+  })),
 );
 
-const HomePage = lazy(() =>
-  import("@pages/home").then((m) => ({ default: m.Home }))
-);
-const LoginPage = lazy(() =>
-  import("@pages/login").then((m) => ({ default: m.Login }))
+const PracticePage = lazy(() =>
+  import('@pages/practice').then((m) => ({ default: m.Practice })),
 );
 const MyRecordsPage = lazy(() =>
-  import("@pages/my-records").then((m) => ({ default: m.MyRecords }))
-);
-const PracticePage = lazy(() =>
-  import("@pages/practice").then((m) => ({ default: m.Practice }))
+  import('@pages/my-records').then((m) => ({ default: m.MyRecords })),
 );
 const WordbookPage = lazy(() =>
-  import("@pages/wordbook").then((m) => ({
+  import('@pages/wordbook').then((m) => ({
     default: m.Wordbook,
-  }))
+  })),
 );
 const ProfilePage = lazy(() =>
-  import("@pages/profile").then((m) => ({
+  import('@pages/profile').then((m) => ({
     default: m.ProfilePage,
-  }))
+  })),
 );
 const AdminPage = lazy(() =>
-  import("@pages/admin").then((m) => ({
+  import('@pages/admin').then((m) => ({
     default: m.AdminPage,
-  }))
-);
-const DemoLoginRedirectPage = lazy(() =>
-  import("@features/auth-demo/ui/demo-login-redirect").then((m) => ({
-    default: m.DemoLoginRedirect,
-  }))
+  })),
 );
 
 export const router = createBrowserRouter([
   {
-    element: (
-      <Suspense fallback={<Spinner />}>
-        <Layout />
-      </Suspense>
-    ),
+    path: '/login',
+    element: <AuthGuard requireAuth={false} />,
     errorElement: (
       <Suspense fallback={<Spinner />}>
         <RouteErrorBoundary />
       </Suspense>
     ),
     children: [
-      { path: "/login", element: <LoginPage /> },
-      { path: "/demo-login", element: <DemoLoginRedirectPage /> },
+      {
+        index: true,
+        element: <Login />,
+      },
+    ],
+  },
+  {
+    element: <Layout />,
+    errorElement: (
+      <Suspense fallback={<Spinner />}>
+        <RouteErrorBoundary />
+      </Suspense>
+    ),
+    children: [
       {
         element: <AuthGuard />,
         children: [
-          { index: true, path: "/", element: <HomePage /> },
-          { path: "/my-record", element: <MyRecordsPage /> },
-          { path: "/wordbook", element: <WordbookPage /> },
-          { path: "/practice", element: <PracticePage /> },
-          { path: "/profile", element: <ProfilePage /> },
-          { path: "/admin", element: <AdminPage /> },
+          { index: true, path: '/', element: <Home /> },
+          {
+            path: '/my-record',
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <MyRecordsPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: '/wordbook',
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <WordbookPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: '/practice',
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <PracticePage />
+              </Suspense>
+            ),
+          },
+          {
+            path: '/profile',
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <ProfilePage />
+              </Suspense>
+            ),
+          },
+          {
+            path: '/admin',
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <AdminPage />
+              </Suspense>
+            ),
+          },
         ],
       },
     ],

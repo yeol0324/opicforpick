@@ -71,7 +71,7 @@ export function Practice() {
   });
 
   return (
-    <div className="flex flex-col items-center gap-6 p-6 overflow-hidden">
+    <div className="flex flex-col items-center gap-6 overflow-hidden p-6">
       {/* <section className="space-y-4 w-full"> */}
       <h2 className="text-lg font-semibold text-slate-900">단어장 📕</h2>
       {paragraphSentencesQuery.isSuccess && paragraphSentencesQuery.data && (
@@ -88,14 +88,14 @@ export function Practice() {
           placeholder="검색어"
         />
       </div>
-      <div className="flex flex-col flex-1 overflow-y-auto w-full">
+      <div className="flex w-full flex-1 flex-col overflow-y-auto">
         {isLoading ? (
           <Spinner />
         ) : hasError ? (
           <ErrorMessage />
         ) : (
           <>
-            <div className="text-sm text-slate-600 mb-2">총 {total}개</div>
+            <div className="mb-2 text-sm text-slate-600">총 {total}개</div>
             <Card>
               <ul className="list-disc list-none space-y-1">
                 {paragraphs.map((paragraph) => (

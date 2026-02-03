@@ -1,9 +1,9 @@
-import { FeedbackPanel } from "@features/ai-feedback";
+import { FeedbackPanel } from '@features/ai-feedback';
 
-import type { FeedbackContentType } from "@entities/feedback";
-import type { SpeechRecordingWithRelations } from "@entities/recording";
+import type { FeedbackContentType } from '@entities/feedback';
+import type { SpeechRecordingWithRelations } from '@entities/recording';
 
-import { Card, CloseButton, EmptyState } from "@shared/ui";
+import { Card, CloseButton, EmptyState } from '@shared/ui';
 
 type RecordingDetailOverlayProps = {
   params: SpeechRecordingWithRelations;
@@ -21,7 +21,7 @@ export const RecordingDetailOverlay = ({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-sm  max-h-[80dvh] rounded-2xl bg-white p-4 shadow-lg"
+        className="max-h-[80dvh] w-full max-w-sm rounded-2xl bg-white p-4 shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-3 flex items-center justify-between">

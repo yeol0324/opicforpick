@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 interface CenterColumnProps {
   children: ReactNode;
@@ -8,12 +8,12 @@ interface CenterColumnProps {
 
 export function CenterColumn({
   children,
-  maxWidthClassName = "max-w-md",
+  maxWidthClassName = '',
 }: CenterColumnProps) {
   return (
     <main className="min-h-screen bg-white">
       <div
-        className={`mx-auto flex min-h-[calc(100vh-4rem)] ${maxWidthClassName} flex-col justify-center px-4 pb-12 pt-10`}
+        className={`mx-auto flex min-h-[calc(100vh-4rem)] ${maxWidthClassName} flex-col justify-center px-4 pt-10 pb-12`}
       >
         {children}
       </div>

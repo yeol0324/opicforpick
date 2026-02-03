@@ -1,0 +1,17 @@
+@theme {
+  /* Brand Color */
+  --color-brand: #32b6bf;
+  --color-brand-lighter: #d4f4f7; /* 배경, 아주 연한 강조 - 검정 글씨 */
+  --color-brand-light: #82d9e3; /* 보조 버튼 - 검정 글씨 */
+  --color-brand-dark: #27949c; /* Active 상태 - 흰 글씨 */
+  --color-brand-darker: #1d6b71; /* 진한 버튼 - 흰 글씨 */
+
+  /* Primary Color */
+  --color-primary-50: #f0f9ff;
+
+  /* Semantic Colors - Status and feedback */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+}

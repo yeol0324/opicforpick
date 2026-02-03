@@ -1,0 +1,40 @@
+@theme {
+  /* ============================================
+     FONT FAMILIES
+     ============================================ */
+
+  --font-family-sans: Inter, system-ui, sans-serif;
+  --font-family-display: Poppins, system-ui, sans-serif;
+
+  /* ============================================
+     FONT SIZES
+     ============================================ */
+
+  /* Extra Small - Captions, labels */
+  --font-size-xs: 0.75rem;
+  --font-size-xs--line-height: 1rem;
+
+  /* Small - Helper text, small UI elements */
+  --font-size-sm: 0.875rem;
+  --font-size-sm--line-height: 1.25rem;
+
+  /* Base - Body text */
+  --font-size-base: 1rem;
+  --font-size-base--line-height: 1.5rem;
+
+  /* Large - Emphasized body text */
+  --font-size-lg: 1.125rem;
+  --font-size-lg--line-height: 1.75rem;
+
+  /* Extra Large - Subheadings */
+  --font-size-xl: 1.25rem;
+  --font-size-xl--line-height: 1.75rem;
+
+  /* 2XL - Section headings */
+  --font-size-2xl: 1.5rem;
+  --font-size-2xl--line-height: 2rem;
+
+  /* 3XL - Page headings */
+  --font-size-3xl: 1.875rem;
+  --font-size-3xl--line-height: 2.25rem;
+}
