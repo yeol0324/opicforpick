@@ -1,52 +1,37 @@
-import { useCallback, useRef } from "react";
+import { useEffect, useState } from 'react';
+
+import {
+  INFINITE_SCROLL_THRESHOLD,
+  INFINITE_SCROLL_ROOT_MARGIN,
+} from '@shared/lib';
 
 type UseInfiniteScrollOptions = {
-  onLoadMore: () => void;
-  threshold?: number;
+  onIntersect: () => void;
   enabled?: boolean;
+  threshold?: number;
+  rootMargin?: string;
 };
 
 export function useInfiniteScroll({
-  onLoadMore,
-  threshold = 200,
+  onIntersect,
   enabled = true,
+  threshold = INFINITE_SCROLL_THRESHOLD,
+  rootMargin = INFINITE_SCROLL_ROOT_MARGIN,
 }: UseInfiniteScrollOptions) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [target, setTarget] = useState<HTMLElement | null>(null);
 
-  const handleScroll = useCallback(
-    (event: Event) => {
-      if (!enabled) return;
-      console.log("handleScroll");
+  useEffect(() => {
+    if (!target || !enabled) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        console.log(entries);
+        if (entries[0].intersectionRatio <= 0) return;
+        onIntersect();
+      },
+      { threshold, rootMargin },
+    );
+    observer.observe(target);
+  }, [target, enabled, onIntersect, threshold, rootMargin]);
 
-      const target = event.target as HTMLDivElement | null;
-      const container = target ?? containerRef.current;
-      if (!container) return;
-
-      const isAtBottom =
-        container.scrollTop + container.clientHeight >=
-        container.scrollHeight - threshold;
-
-      if (isAtBottom) {
-        onLoadMore();
-      }
-    },
-    [enabled, threshold, onLoadMore]
-  );
-
-  const setRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (containerRef.current) {
-        containerRef.current.removeEventListener("scroll", handleScroll);
-      }
-
-      containerRef.current = node;
-
-      if (node && enabled) {
-        node.addEventListener("scroll", handleScroll);
-      }
-    },
-    [enabled, handleScroll]
-  );
-
-  return setRef;
+  return { setTarget };
 }

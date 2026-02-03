@@ -1,11 +1,11 @@
-import type { FeedbackContentType } from "@entities/feedback";
-import { createUserWords } from "@entities/user-word/api/create-user-words";
-import { createWords } from "@entities/word/api/create-words";
-import type { WordCandidateType } from "@entities/word/model/word.type";
+import type { FeedbackContentType } from '@entities/feedback';
+import { createUserWords } from '@entities/user-word/api/create-user-words';
+import { createWords } from '@entities/word/api/create-words';
+import type { WordCandidateType } from '@entities/word/model/word.type';
 
 export type SaveRecommendWordsParams = {
   userId: string;
-  vocabulary: FeedbackContentType["recommendVoca"];
+  vocabulary: FeedbackContentType['recommendVoca'];
 };
 
 export async function saveRecommendWords({

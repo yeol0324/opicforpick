@@ -7,11 +7,11 @@ function blobToBase64(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onloadend = () => {
-      if (typeof reader.result === "string") {
-        const base64String = reader.result.split(",")[1];
+      if (typeof reader.result === 'string') {
+        const base64String = reader.result.split(',')[1];
         resolve(base64String);
       } else {
-        reject(new Error("Failed to read blob as string."));
+        reject(new Error('Failed to read blob as string.'));
       }
     };
     reader.onerror = reject;
@@ -21,14 +21,14 @@ function blobToBase64(blob: Blob): Promise<string> {
 
 export async function requestTranscribe(audioBlob: Blob): Promise<string> {
   if (!audioBlob) {
-    throw new Error("Audio Blob is required for transcription.");
+    throw new Error('Audio Blob is required for transcription.');
   }
   const audioBase64 = await blobToBase64(audioBlob);
 
-  const response = await fetch("/api/azure-transcribe", {
-    method: "POST",
+  const response = await fetch('/api/azure-transcribe', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       audioBase64: audioBase64,
@@ -56,4 +56,3 @@ export async function requestTranscribe(audioBlob: Blob): Promise<string> {
 
   return data.transcript as string;
 }
-

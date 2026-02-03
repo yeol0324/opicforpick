@@ -4,32 +4,32 @@ import {
   calculatePagination,
   createPagedResult,
   type Paged,
-} from "@shared/api";
+} from '@shared/api';
 
-import type { SentenceFilterType, SentenceRow } from "../model/sentence.type";
+import type { SentenceFilterType, SentenceRow } from '../model/sentence.type';
 
 export async function getSentences(
-  filter?: SentenceFilterType
+  filter?: SentenceFilterType,
 ): Promise<Paged<SentenceRow>> {
   const { page, pageSize, from, to } = calculatePagination(
     filter?.page,
-    filter?.pageSize
+    filter?.pageSize,
   );
 
   let queryBuilder = supabase
-    .from("sentences")
-    .select("*", { count: "exact" })
-    .order("created_at", { ascending: false });
+    .from('sentences')
+    .select('*', { count: 'exact' })
+    .order('created_at', { ascending: false });
 
   if (filter?.id) {
-    queryBuilder = queryBuilder.eq("id", filter.id);
+    queryBuilder = queryBuilder.eq('id', filter.id);
   }
   if (filter?.type !== undefined) {
-    queryBuilder = queryBuilder.eq("type", filter.type);
+    queryBuilder = queryBuilder.eq('type', filter.type);
   }
-  if (filter?.q && filter.q.trim() !== "") {
+  if (filter?.q && filter.q.trim() !== '') {
     const searchKeyword = `%${filter.q.trim()}%`;
-    queryBuilder = queryBuilder.ilike("sentence_eng", searchKeyword);
+    queryBuilder = queryBuilder.ilike('sentence_eng', searchKeyword);
   }
 
   const response = await queryBuilder.range(from, to);

@@ -1,7 +1,7 @@
-import type { WordType } from "@entities/word";
+import type { WordType } from '@entities/word';
 
-import { Card, CloseButton } from "@shared/ui";
-import { CircleButton } from "@shared/ui/elements/circle-button";
+import { Card, CloseButton } from '@shared/ui';
+import { CircleButton } from '@shared/ui/elements/circle-button';
 
 type WordbookOverlayProps = {
   word: WordType;
@@ -26,7 +26,7 @@ export const WordbookOverlay = ({
       onClick={onClose}
     >
       <div
-        className="w-full h-[80dvh] max-w-sm rounded-2xl bg-white p-4"
+        className="h-[80dvh] w-full max-w-sm rounded-2xl bg-white p-4"
         onClick={(e) => e.stopPropagation()}
       >
         <header className="mb-3 flex justify-between">
@@ -46,7 +46,7 @@ export const WordbookOverlay = ({
           <div className="text-sm text-slate-600">{word.meaning}</div>
         </Card>
 
-        <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2 pointer-events-none">
+        <div className="pointer-events-none absolute inset-y-0 right-0 left-0 flex items-center justify-between px-2">
           <CircleButton className="pointer-events-auto" onClick={onPrev}>
             ←
           </CircleButton>

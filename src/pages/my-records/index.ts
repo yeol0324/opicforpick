@@ -1,1 +1,1 @@
-export { MyRecords } from "./ui/my-records.page";
+export { MyRecords } from './ui/my-records.page';

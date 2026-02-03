@@ -1,6 +1,6 @@
-import { supabase } from "@shared/api";
+import { supabase } from '@shared/api';
 
-import type { RecordingType } from "../model/recording.type";
+import type { RecordingType } from '../model/recording.type';
 
 export type CreateRecordingParam = {
   userId: string;
@@ -10,16 +10,16 @@ export type CreateRecordingParam = {
 };
 
 export async function createRecording(
-  params: CreateRecordingParam
+  params: CreateRecordingParam,
 ): Promise<RecordingType> {
   const { data, error } = await supabase
-    .from("speech_recordings")
+    .from('speech_recordings')
     .insert({
       user_id: params.userId,
       sentence_id: params.sentenceId,
       audio_url: params.audioUrl,
     })
-    .select("*")
+    .select('*')
     .single();
 
   if (error) throw error;

@@ -1,1 +1,1 @@
-export * from "./common.type.ts";
+export * from './common.type.ts';

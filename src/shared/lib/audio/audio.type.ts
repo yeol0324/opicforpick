@@ -1,4 +1,4 @@
-export type RecordingMime = "audio/webm" | "audio/wav";
+export type RecordingMime = 'audio/webm' | 'audio/wav';
 
 export type RecordingBlob = {
   blob: Blob;
@@ -6,15 +6,15 @@ export type RecordingBlob = {
   durationMs: number;
 };
 
-export type RecorderState = "idle" | "recording" | "paused";
+export type RecorderState = 'idle' | 'recording' | 'paused';
 
 export type RecorderErrorCode =
-  | "PERMISSION_DENIED"
-  | "DEVICE_NOT_FOUND"
-  | "TYPE_UNSUPPORTED"
-  | "ALREADY_RUNNING"
-  | "NOT_STARTED"
-  | "UNKNOWN";
+  | 'PERMISSION_DENIED'
+  | 'DEVICE_NOT_FOUND'
+  | 'TYPE_UNSUPPORTED'
+  | 'ALREADY_RUNNING'
+  | 'NOT_STARTED'
+  | 'UNKNOWN';
 
 export interface RecorderError {
   code: RecorderErrorCode;

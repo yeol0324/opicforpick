@@ -1,1 +1,1 @@
-export { getThemeIdBySlug } from "./api/get-theme-id";
+export { getThemeIdBySlug } from './api/get-theme-id';

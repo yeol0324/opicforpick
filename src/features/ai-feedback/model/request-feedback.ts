@@ -1,6 +1,6 @@
-import { blobToBase64 } from "@shared/lib";
+import { blobToBase64 } from '@shared/lib';
 
-import type { FeedbackResponse } from "./ai-feedback.type";
+import type { FeedbackResponse } from './ai-feedback.type';
 
 export type GetFeedbackParams = {
   question: string;
@@ -9,17 +9,17 @@ export type GetFeedbackParams = {
 };
 
 export async function requestFeedback(
-  params: GetFeedbackParams
+  params: GetFeedbackParams,
 ): Promise<FeedbackResponse> {
   const { question, audio, level } = params;
 
   // Blob → base64
   const audioBase64 = await blobToBase64(audio);
-  const mimeType = audio.type || "audio/webm";
+  const mimeType = audio.type || 'audio/webm';
 
-  const res = await fetch("/api/ai-feedback", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+  const res = await fetch('/api/ai-feedback', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       question,
       level,
@@ -29,9 +29,9 @@ export async function requestFeedback(
   });
 
   if (!res.ok) {
-    const text = await res.text().catch(() => "");
+    const text = await res.text().catch(() => '');
     throw new Error(
-      `Feedback API failed: ${res.status} ${res.statusText} ${text}`
+      `Feedback API failed: ${res.status} ${res.statusText} ${text}`,
     );
   }
 

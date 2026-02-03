@@ -3,6 +3,5 @@
  */
 export const THEME = {
   /** 브랜드 메인 컬러 */
-  BRAND: "#32B6BF",
+  BRAND: '#32B6BF',
 } as const;
-

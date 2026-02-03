@@ -1,25 +1,22 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from 'react';
 
-import type { Session } from "@supabase/supabase-js";
+import type { Session } from '@supabase/supabase-js';
 
-import { AuthContext, type AuthStateType } from "@entities/auth";
+import { AuthContext, type AuthStateType } from '@entities/auth';
 
-import { supabase } from "@shared/api";
-
-const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
-const demoPassword = import.meta.env.VITE_DEMO_PASSWORD;
+import { supabase } from '@shared/api';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [auth, setAuth] = useState<AuthStateType>({
-    mode: "none",
+    mode: 'none',
     user: null,
   });
   const [isLoading, setIsLoading] = useState(true);
-  const isAuthed = auth.mode === "member";
+  const isAuthed = auth.mode === 'member';
 
   const applySession = (session: Session) => {
     setAuth({
-      mode: "member",
+      mode: 'member',
       user: session.user,
     });
   };
@@ -34,7 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         applySession(session);
       } else {
         setAuth({
-          mode: "none",
+          mode: 'none',
           user: null,
         });
       }
@@ -50,9 +47,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      if (event === "SIGNED_OUT") {
+      if (event === 'SIGNED_OUT') {
         setAuth({
-          mode: "none",
+          mode: 'none',
           user: null,
         });
       }
@@ -78,21 +75,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    setAuth({ mode: "none", user: null });
+    setAuth({ mode: 'none', user: null });
   };
 
-  const loginAsDemo = async () => {
-    if (!demoEmail || !demoPassword) {
-      throw new Error("Demo 계정 env가 설정되어 있지 않습니다.");
-    }
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: demoEmail,
-      password: demoPassword,
-    });
-
+  const signInAsAnonymous = async () => {
+    const { error } = await supabase.auth.signInAnonymously();
     if (error) throw error;
-    // 세션 생성 후 onAuthStateChange / init에서 applySession이 알아서 태움
   };
 
   return (
@@ -104,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signInWithEmail,
         signUpWithEmail,
         signOut,
-        loginAsDemo,
+        signInAsAnonymous,
       }}
     >
       {children}

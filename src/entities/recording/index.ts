@@ -1,2 +1,2 @@
-export * from "./api";
-export * from "./model/recording.type";
+export * from './api';
+export * from './model/recording.type';

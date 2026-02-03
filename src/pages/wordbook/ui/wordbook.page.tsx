@@ -1,16 +1,27 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { useQuery } from "@tanstack/react-query";
+import { wordQueries } from '@entities/word';
+import type { WordType } from '@entities/word';
+import { useInfiniteScroll, APP } from '@shared/lib';
+import { Card, Spinner } from '@shared/ui';
 
-import { wordQueries } from "@entities/word/api/word.queries";
-
-import { Card } from "@shared/ui";
-
-import { WordbookOverlay } from "./wordbook.overlay";
+import { WordbookOverlay } from './wordbook.overlay';
 
 export function Wordbook() {
-  const { data } = useQuery(wordQueries.list());
-  const items = data?.items ?? [];
+  const pageSize = APP.DEFAULT_PAGE_SIZE;
+
+  const wordsQuery = useInfiniteQuery({
+    ...wordQueries.infiniteList({ pageSize }),
+  });
+
+  const words =
+    wordsQuery.data?.pages
+      .flatMap((page) => page.items as WordType[])
+      .filter(
+        (item, index, self) =>
+          index === self.findIndex((t) => t.id === item.id),
+      ) ?? [];
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(false);
@@ -21,18 +32,35 @@ export function Wordbook() {
 
   const close = () => setIsOpen(false);
 
+  const hasMore = wordsQuery.hasNextPage;
+  const isLoading = wordsQuery.isLoading;
+  const hasError = !!wordsQuery.error;
+
+  const onIntersect = () => {
+    if (wordsQuery.isFetchingNextPage || hasError || !hasMore) return;
+    wordsQuery.fetchNextPage();
+  };
+
+  const { setTarget } = useInfiniteScroll({
+    onIntersect,
+    enabled: !wordsQuery.isFetchingNextPage && !hasError && !!hasMore,
+  });
+
   return (
-    <div className="flex flex-col items-center gap-6 p-6">
-      <section className="space-y-4 w-full">
-        <h2 className="text-lg font-semibold text-slate-900">단어장 📕</h2>
-        <Card>
+    <div className="flex h-full flex-col gap-6 p-6">
+      <h2 className="text-lg font-semibold text-slate-900">단어장 📕</h2>
+
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <Card className="min-h-0 flex-1 overflow-y-auto" mode="scroll">
           <ul>
-            {items.map((word, idx) => (
+            {words.map((word, idx) => (
               <li
                 className={[
-                  "cursor-pointer rounded-md p-2 transition-colors",
-                  "hover:bg-slate-100",
-                ].join(" ")}
+                  'cursor-pointer rounded-md p-2 transition-colors',
+                  'hover:bg-slate-100',
+                ].join(' ')}
                 key={word.id}
                 onClick={() => open(idx)}
               >
@@ -41,16 +69,19 @@ export function Wordbook() {
               </li>
             ))}
           </ul>
+          {wordsQuery.isFetchingNextPage && <Spinner />}
+          <div ref={setTarget} className="h-10" />
         </Card>
-      </section>
+      )}
+
       {isOpen && (
         <WordbookOverlay
-          word={items[currentIndex]}
+          word={words[currentIndex]}
           index={currentIndex}
-          total={items.length}
+          total={words.length}
           onPrev={() => setCurrentIndex((i) => Math.max(i - 1, 0))}
           onNext={() =>
-            setCurrentIndex((i) => Math.min(i + 1, items.length - 1))
+            setCurrentIndex((i) => Math.min(i + 1, words.length - 1))
           }
           onClose={close}
         />

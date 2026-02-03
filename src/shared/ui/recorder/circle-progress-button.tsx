@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo } from "react";
+import { type ReactNode, useMemo } from 'react';
 
 type Props = {
   /** 0 ~ 1 */
@@ -68,7 +68,7 @@ export function CircleProgressButton({
         />
       </svg>
 
-      <div className="relative grid place-items-center rounded-full w-[70%] h-[70%] bg-black text-white">
+      <div className="relative grid h-[70%] w-[70%] place-items-center rounded-full bg-black text-white">
         {children}
       </div>
     </button>

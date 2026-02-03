@@ -1,9 +1,25 @@
-type Props = React.ButtonHTMLAttributes<HTMLButtonElement>;
-export function BaseButton(props: Props) {
+import type { ButtonHTMLAttributes } from 'react';
+
+type BaseButtonVariant = 'primary' | 'secondary';
+
+export type BaseButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: BaseButtonVariant;
+};
+
+export function BaseButton({
+  variant = 'secondary',
+  className = '',
+  children,
+  ...props
+}: BaseButtonProps) {
+  const variantStyles: Record<BaseButtonVariant, string> = {
+    primary: 'bg-brand text-white',
+    secondary: 'bg-brand-lighter text-black',
+  };
+
   return (
-    <button
-      className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-      {...props}
-    />
+    <button {...props} className={`btn ${variantStyles[variant]} ${className}`}>
+      {children}
+    </button>
   );
 }

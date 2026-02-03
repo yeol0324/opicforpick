@@ -1,8 +1,8 @@
-import type { JSX } from "react";
+import type { JSX } from 'react';
 
-import { Navigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 
-import { useAuthContext } from "@entities/auth/model/auth-context";
+import { useAuthContext } from '@entities/auth/model/auth-context';
 
 type Props = {
   children: JSX.Element;

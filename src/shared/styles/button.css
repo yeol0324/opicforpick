@@ -1,0 +1,19 @@
+.btn {
+  border-radius: var(--radius-xl);
+  padding-inline: calc(var(--spacing) * 4);
+  padding-block: calc(var(--spacing) * 2);
+
+  box-shadow: var(--shadow-xs);
+
+  transition: filter 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    will-change: filter;
+    filter: brightness(1.05);
+  }
+  &:disabled {
+    opacity: 50%;
+    cursor: not-allowed;
+  }
+}

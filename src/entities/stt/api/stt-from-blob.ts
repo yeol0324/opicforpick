@@ -1,22 +1,22 @@
-import * as speechsdk from "microsoft-cognitiveservices-speech-sdk";
+import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
 
-import { convertWebmBlobToWav } from "@shared/lib";
+import { convertWebmBlobToWav } from '@shared/lib';
 
-import { requestAzureToken } from "./request-azure-token";
+import { requestAzureToken } from './request-azure-token';
 
 export async function recognizeFromBlob(
   blob: Blob,
-  lang: string = "en-US"
+  lang: string = 'en-US',
 ): Promise<string> {
   const { authToken, region } = await requestAzureToken();
 
   const speechConfig = speechsdk.SpeechConfig.fromAuthorizationToken(
     authToken,
-    region
+    region,
   );
   speechConfig.speechRecognitionLanguage = lang;
   const wavBlob = await convertWebmBlobToWav(blob);
-  const wavFile = new File([wavBlob], "audio.wav", { type: "audio/wav" });
+  const wavFile = new File([wavBlob], 'audio.wav', { type: 'audio/wav' });
 
   const audioConfig = speechsdk.AudioConfig.fromWavFileInput(wavFile);
   const recognizer = new speechsdk.SpeechRecognizer(speechConfig, audioConfig);
@@ -29,8 +29,8 @@ export async function recognizeFromBlob(
         } else {
           reject(
             new Error(
-              `STT failed. reason=${result.reason}, error=${result.errorDetails}`
-            )
+              `STT failed. reason=${result.reason}, error=${result.errorDetails}`,
+            ),
           );
         }
         recognizer.close();
@@ -38,8 +38,7 @@ export async function recognizeFromBlob(
       (err) => {
         recognizer.close();
         reject(err);
-      }
+      },
     );
   });
 }
-

@@ -1,10 +1,10 @@
 // src/shared/ui/error-boundary/ErrorBoundary.tsx
-import type { ReactNode, ErrorInfo } from "react";
-import { Component } from "react";
+import type { ReactNode, ErrorInfo } from 'react';
+import { Component } from 'react';
 
-import { reportAppError } from "@shared/lib/error-report";
+import { reportAppError } from '@shared/lib/error-report';
 
-import { ErrorFallback } from "./error-fallBack";
+import { ErrorFallback } from './error-fallBack';
 
 type Props = {
   children: ReactNode;
@@ -25,8 +25,8 @@ export class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, info: ErrorInfo) {
     reportAppError({
       error,
-      source: "render",
-      severity: "fatal",
+      source: 'render',
+      severity: 'fatal',
       meta: {
         reactComponentStack: info.componentStack,
       },

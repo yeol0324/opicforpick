@@ -1,0 +1,37 @@
+/* ============================================
+   TAILWIND CSS MAIN ENTRY POINT
+   ============================================ */
+
+/* Import Tailwind CSS base */
+@import 'tailwindcss';
+
+/* ============================================
+   DESIGN SYSTEM
+   Global variables, theme tokens, and typography
+   ============================================ */
+
+/* Global CSS variables (layout dimensions) */
+@import './global.css';
+
+/* Theme tokens (colors, shadows) */
+@import './theme.css';
+
+/* Typography (font families, font sizes) */
+@import './typography.css';
+
+/* Animations (keyframes and animation utilities) */
+@import './animations.css';
+
+/* Custom utilities (commonly used utility combinations) */
+@import './utilities.css';
+
+/* ============================================
+   COMPONENTS
+   Reusable component styles
+   ============================================ */
+
+/* Button elements */
+@import './button.css';
+
+/* Form elements (inputs, labels, floating labels) */
+@import './form.css';

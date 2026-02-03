@@ -1,47 +1,47 @@
-import type { SentenceRow } from "@entities/sentence/model/sentence.type";
+import type { SentenceRow } from '@entities/sentence/model/sentence.type';
 
-import { supabase } from "@shared/api/supabase-client";
-import type { ProficiencyLevel } from "@shared/lib";
+import { supabase } from '@shared/api/supabase-client';
+import type { ProficiencyLevel } from '@shared/lib';
 
 /**
  * @param data - 변환할 원본 데이터 객체
  * @returns 표준화된 Sentence 객체 또는 null
  */
 function mapToSentence(data: unknown): SentenceRow | null {
-  if (!data || typeof data !== "object") {
+  if (!data || typeof data !== 'object') {
     return null;
   }
 
-  if (!("id" in data) || !("created_at" in data)) {
+  if (!('id' in data) || !('created_at' in data)) {
     console.error(
       "Invalid sentence data: 'id' or 'created_at' is missing.",
-      data
+      data,
     );
     return null;
   }
 
   const sentenceEng =
-    ("sentence_eng" in data && String(data.sentence_eng)) ||
-    ("sentenceEng" in data && String(data.sentenceEng)) ||
-    ("text" in data && String(data.text)) ||
-    ("content" in data && String(data.content)) ||
-    "";
+    ('sentence_eng' in data && String(data.sentence_eng)) ||
+    ('sentenceEng' in data && String(data.sentenceEng)) ||
+    ('text' in data && String(data.text)) ||
+    ('content' in data && String(data.content)) ||
+    '';
 
   const sentenceKor =
-    ("sentence_kor" in data && String(data.sentence_kor)) || "";
+    ('sentence_kor' in data && String(data.sentence_kor)) || '';
 
   return {
     id: String(data.id),
     created_at: String(data.created_at),
     sentence_eng: sentenceEng,
     sentence_kor: sentenceKor,
-    type: "type" in data && typeof data.type === "number" ? data.type : 0,
+    type: 'type' in data && typeof data.type === 'number' ? data.type : 0,
     level:
-      "level" in data && typeof data.level === "string"
+      'level' in data && typeof data.level === 'string'
         ? data.level
-        : "Beginner",
+        : 'Beginner',
     theme_id:
-      "theme_id" in data && typeof data.theme_id === "number"
+      'theme_id' in data && typeof data.theme_id === 'number'
         ? data.theme_id
         : 0,
   };
@@ -52,15 +52,15 @@ function mapToSentence(data: unknown): SentenceRow | null {
  * Supabase RPC 함수 get_daily_sentence 사용
  */
 export async function fetchDailySentence(
-  level: ProficiencyLevel = "Advanced"
+  level: ProficiencyLevel = 'Advanced',
 ): Promise<SentenceRow | null> {
   try {
-    const { data, error } = await supabase.rpc("get_daily_sentence", {
+    const { data, error } = await supabase.rpc('get_daily_sentence', {
       level_input: level,
     });
 
     if (error) {
-      console.error("[fetchDailySentence] RPC Error:", error);
+      console.error('[fetchDailySentence] RPC Error:', error);
       throw error;
     }
 
@@ -73,7 +73,7 @@ export async function fetchDailySentence(
 
     return mapToSentence(rawSentence);
   } catch (error) {
-    console.error("[fetchDailySentence] Exception:", error);
+    console.error('[fetchDailySentence] Exception:', error);
     throw error;
   }
 }

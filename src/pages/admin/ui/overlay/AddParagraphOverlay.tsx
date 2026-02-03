@@ -135,7 +135,7 @@ export const AddParagraphOverlay = ({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-sm  max-h-[80dvh] rounded-2xl bg-white p-4 shadow-lg"
+        className="max-h-[80dvh] w-full max-w-sm rounded-2xl bg-white p-4 shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
         <h1>문단 추가</h1>

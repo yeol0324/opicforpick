@@ -1,6 +1,6 @@
-import type { SentenceRow } from "@entities/sentence/model/sentence.type";
+import type { SentenceRow } from '@entities/sentence/model/sentence.type';
 
-import { Card, Spinner } from "@shared/ui";
+import { Card, Spinner } from '@shared/ui';
 
 interface Props {
   loading: boolean;
@@ -10,7 +10,7 @@ interface Props {
 
 export function DailyQuestionSection({ loading, error, sentence }: Props) {
   return (
-    <section className="space-y-4 w-full">
+    <section className="w-full space-y-4">
       <h2 className="text-lg font-semibold text-slate-900">오늘의 질문 💬</h2>
       <Card>
         <div className="min-h-[3.5rem]">
@@ -27,7 +27,7 @@ export function DailyQuestionSection({ loading, error, sentence }: Props) {
           )}
 
           {!loading && sentence && (
-            <p className="text-base text-slate-900 leading-relaxed">
+            <p className="text-base leading-relaxed text-slate-900">
               {sentence.sentence_eng}
             </p>
           )}

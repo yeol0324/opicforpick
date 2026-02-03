@@ -1,14 +1,14 @@
-import { keepPreviousData, queryOptions } from "@tanstack/react-query";
+import { keepPreviousData, queryOptions } from '@tanstack/react-query';
 
-import { buildListKey } from "@shared/lib";
+import { buildListKey } from '@shared/lib';
 
-import { getRecording } from "./get-recording";
-import type { RecordingFilterType } from "../model/recording.type";
-
+import { getRecording } from './get-recording';
+import type { RecordingFilterType } from '../model/recording.type';
 
 const recordingKeys = {
-  all: () => ["recording"] as const,
-  list: (filter?: RecordingFilterType) => buildListKey(recordingKeys.all(), filter),
+  all: () => ['recording'] as const,
+  list: (filter?: RecordingFilterType) =>
+    buildListKey(recordingKeys.all(), filter),
 };
 
 export const recordingQueries = {

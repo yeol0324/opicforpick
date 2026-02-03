@@ -1,6 +1,6 @@
-export type ErrorSource = "route" | "render" | "global";
+export type ErrorSource = 'route' | 'render' | 'global';
 
-export type ErrorSeverity = "info" | "warning" | "error" | "fatal";
+export type ErrorSeverity = 'info' | 'warning' | 'error' | 'fatal';
 
 export type ReportErrorPayload = {
   message: string;

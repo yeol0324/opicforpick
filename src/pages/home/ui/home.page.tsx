@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useFeedback } from "@features/ai-feedback";
+import { useFeedback } from '@features/ai-feedback';
 import {
   useDailyQuestion,
   DailyQuestionSection,
-} from "@features/daily-question";
-import { type AudioInfo } from "@features/record-start-stop";
+} from '@features/daily-question';
+import { type AudioInfo } from '@features/record-start-stop';
 
-import { useLatestFeedback } from "@entities/feedback";
+import { useLatestFeedback } from '@entities/feedback';
 
-import { Spinner } from "@shared/ui";
+import { Spinner } from '@shared/ui';
 
-import { ExistingFeedbackSection } from "./existing-feedback-section";
-import { RecordingFlowSection } from "./recording-flow-section";
+import { ExistingFeedbackSection } from './existing-feedback-section';
+import { RecordingFlowSection } from './recording-flow-section';
 
 export function Home() {
   const [audioInfo, setAudioInfo] = useState<AudioInfo | null>(null);
@@ -32,7 +32,7 @@ export function Home() {
     data: sentence,
     isLoading: isQuestionLoading,
     error: questionError,
-  } = useDailyQuestion("Advanced");
+  } = useDailyQuestion('Advanced');
 
   const {
     data: latestFeedback,
@@ -50,10 +50,13 @@ export function Home() {
 
   const handleFeedbackClick = () => {
     if (!audioInfo || !sentence) return;
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
     submitFeedback({
       audioBlob: audioInfo.blob,
       question: sentence,
-      level: "Intermediate",
+      level: 'Intermediate',
     });
   };
 
@@ -63,7 +66,7 @@ export function Home() {
   const isBusy = isFeedbackLoading;
 
   return (
-    <div className="flex flex-col items-center gap-6 p-6">
+    <div className="flex h-full flex-col gap-6 overflow-y-auto p-6">
       <DailyQuestionSection
         sentence={sentence}
         loading={isQuestionLoading}

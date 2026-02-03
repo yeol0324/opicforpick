@@ -1,1 +1,1 @@
-export * from "./AddNoteForm";
+export * from './AddSentenceForm';

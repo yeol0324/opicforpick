@@ -21,15 +21,15 @@ function audioBufferToWav(audioBuffer: AudioBuffer): ArrayBuffer {
   let offset = 0;
 
   // "RIFF"
-  writeString(view, offset, "RIFF");
+  writeString(view, offset, 'RIFF');
   offset += 4;
   view.setUint32(offset, 36 + dataSize, true);
   offset += 4;
-  writeString(view, offset, "WAVE");
+  writeString(view, offset, 'WAVE');
   offset += 4;
 
   // "fmt "
-  writeString(view, offset, "fmt ");
+  writeString(view, offset, 'fmt ');
   offset += 4;
   view.setUint32(offset, 16, true);
   offset += 4;
@@ -47,7 +47,7 @@ function audioBufferToWav(audioBuffer: AudioBuffer): ArrayBuffer {
   offset += 2;
 
   // "data"
-  writeString(view, offset, "data");
+  writeString(view, offset, 'data');
   offset += 4;
   view.setUint32(offset, dataSize, true);
   offset += 4;
@@ -77,5 +77,5 @@ export async function convertWebmBlobToWav(blob: Blob): Promise<Blob> {
   const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
   const wavArrayBuffer = audioBufferToWav(audioBuffer);
 
-  return new Blob([wavArrayBuffer], { type: "audio/wav" });
+  return new Blob([wavArrayBuffer], { type: 'audio/wav' });
 }

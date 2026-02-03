@@ -2,8 +2,8 @@ import type {
   ErrorSource,
   ErrorSeverity,
   ReportErrorPayload,
-} from "./error-report.type";
-import { reportErrorToServer } from "./report-error";
+} from './error-report.type';
+import { reportErrorToServer } from './report-error';
 
 type ReportAppErrorParams =
   | {
@@ -24,9 +24,9 @@ type ReportAppErrorParams =
     };
 
 function normalizeError(
-  params: ReportAppErrorParams
-): Pick<ReportErrorPayload, "message" | "stack"> {
-  if ("error" in params && params.error !== undefined) {
+  params: ReportAppErrorParams,
+): Pick<ReportErrorPayload, 'message' | 'stack'> {
+  if ('error' in params && params.error !== undefined) {
     const err = params.error;
     if (err instanceof Error) {
       return {
@@ -41,7 +41,7 @@ function normalizeError(
   }
 
   return {
-    message: params.message ?? "",
+    message: params.message ?? '',
     stack: params.stack,
   };
 }
@@ -49,9 +49,9 @@ function normalizeError(
 export function reportAppError(params: ReportAppErrorParams) {
   if (import.meta.env.DEV) {
     const { message, stack } = normalizeError(params);
-    console.error("[AppError][DEV]", {
+    console.error('[AppError][DEV]', {
       source: params.source,
-      severity: params.severity ?? "error",
+      severity: params.severity ?? 'error',
       message,
       stack,
       meta: params.meta,
@@ -59,7 +59,7 @@ export function reportAppError(params: ReportAppErrorParams) {
     return;
   }
 
-  const { source, severity = "error", meta } = params;
+  const { source, severity = 'error', meta } = params;
   const { message, stack } = normalizeError(params);
 
   const payload: ReportErrorPayload = {
@@ -67,8 +67,8 @@ export function reportAppError(params: ReportAppErrorParams) {
     stack,
     source,
     severity,
-    url: typeof window !== "undefined" ? window.location.href : "N/A",
-    userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "N/A",
+    url: typeof window !== 'undefined' ? window.location.href : 'N/A',
+    userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A',
     meta,
   };
 

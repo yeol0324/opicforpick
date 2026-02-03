@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
-import { createRecorder, getNow } from "@shared/lib";
+import { createRecorder, getNow } from '@shared/lib';
 
-type State = "idle" | "recording" | "preview" | "saving";
+type State = 'idle' | 'recording' | 'preview' | 'saving';
 export type AudioInfo = {
   blob: Blob;
   durationMs: number;
@@ -23,10 +23,10 @@ export function useRecordFlow({
     createRecorder({
       autoPauseOnHidden: true,
       timesliceMs: 250,
-    })
+    }),
   );
 
-  const [state, setState] = useState<State>("idle");
+  const [state, setState] = useState<State>('idle');
   const [error, setError] = useState<string | null>(null);
   const [elapsedMs, setElapsedMs] = useState(0);
   const [audioInfo, setAudioInfo] = useState<AudioInfo | null>(null);
@@ -55,7 +55,7 @@ export function useRecordFlow({
     try {
       await recorderRef.current.start();
     } catch (error: unknown) {
-      let message = "녹음을 실패했습니다.";
+      let message = '녹음을 실패했습니다.';
       if (error instanceof Error && error.message) {
         message = error.message;
       }
@@ -65,7 +65,7 @@ export function useRecordFlow({
 
     startedAtRef.current = getNow();
     setElapsedMs(0);
-    setState("recording");
+    setState('recording');
     rafRef.current = requestAnimationFrame(tick);
   };
 
@@ -81,13 +81,13 @@ export function useRecordFlow({
     onComplete?.(result);
     startedAtRef.current = null;
     setElapsedMs(0);
-    setState("preview");
+    setState('preview');
   };
 
   const retry = () => {
     setAudioInfo(null);
     setElapsedMs(0);
-    setState("idle");
+    setState('idle');
     onReset();
   };
 
@@ -95,7 +95,7 @@ export function useRecordFlow({
     () => () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     },
-    []
+    [],
   );
 
   const progress = maxMs ? Math.min(1, elapsedMs / maxMs) : 0;

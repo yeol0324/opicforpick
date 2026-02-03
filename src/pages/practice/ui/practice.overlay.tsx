@@ -1,6 +1,6 @@
-import type { ParagraphWithSentenceType } from "@entities/paragraph";
+import type { ParagraphWithSentenceType } from '@entities/paragraph';
 
-import { Card, CloseButton, EmptyState } from "@shared/ui";
+import { Card, CloseButton, EmptyState } from '@shared/ui';
 
 type PracticeOverlayProps = {
   practiceInfo: ParagraphWithSentenceType;
@@ -20,7 +20,7 @@ export const PracticeOverlay = ({
       onClick={onClose}
     >
       <div
-        className="w-full h-[80dvh] max-w-sm rounded-2xl bg-white p-4"
+        className="h-[80dvh] w-full max-w-sm rounded-2xl bg-white p-4"
         onClick={(e) => e.stopPropagation()}
       >
         <header className="mb-3 flex justify-between">

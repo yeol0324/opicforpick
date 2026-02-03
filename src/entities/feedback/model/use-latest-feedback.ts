@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 
-import { useAuthContext } from "@entities/auth";
-import { feedbackQueries } from "@entities/feedback";
+import { useAuthContext } from '@entities/auth';
+import { feedbackQueries } from '@entities/feedback';
 
 export function useLatestFeedback(sentenceId?: string) {
   const { auth } = useAuthContext();
@@ -9,4 +9,3 @@ export function useLatestFeedback(sentenceId?: string) {
 
   return useQuery(feedbackQueries.latest(userId, sentenceId));
 }
-

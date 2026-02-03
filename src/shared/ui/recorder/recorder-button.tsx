@@ -1,6 +1,6 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
-import { CircleProgress } from "../elements/circle-progress";
+import { CircleProgress } from '../elements/circle-progress';
 
 type RecordingCircleButtonProps = {
   progress: number;
@@ -20,10 +20,10 @@ export function RecorderButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="relative grid place-items-center w-[120px] h-[120px] rounded-full"
+      className="relative grid h-[120px] w-[120px] place-items-center rounded-full"
     >
       <CircleProgress progress={progress} />
-      <div className="relative grid place-items-center w-[70%] h-[70%] rounded-full bg-black text-white">
+      <div className="relative grid h-[70%] w-[70%] place-items-center rounded-full bg-black text-white">
         {children}
       </div>
     </button>

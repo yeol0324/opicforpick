@@ -1,4 +1,4 @@
-import { fixWebmDuration } from "@fix-webm-duration/fix";
+import { fixWebmDuration } from '@fix-webm-duration/fix';
 
 import type {
   Recorder,
@@ -7,12 +7,12 @@ import type {
   RecordingMime,
   RecorderError,
   RecorderState,
-} from "./audio.type";
+} from './audio.type';
 
 function pickMime(preferred?: RecordingMime): RecordingMime {
   const supported = (t: string) =>
-    typeof MediaRecorder !== "undefined" &&
-    typeof MediaRecorder.isTypeSupported === "function" &&
+    typeof MediaRecorder !== 'undefined' &&
+    typeof MediaRecorder.isTypeSupported === 'function' &&
     MediaRecorder.isTypeSupported(t);
 
   if (preferred && supported(preferred)) {
@@ -22,24 +22,24 @@ function pickMime(preferred?: RecordingMime): RecordingMime {
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
   if (isIOS) {
-    const iosCandidateList = ["audio/mp4", "audio/aac"];
+    const iosCandidateList = ['audio/mp4', 'audio/aac'];
     for (const t of iosCandidateList) {
       if (supported(t)) return t as RecordingMime;
     }
   }
 
-  const webmCandidateList = ["audio/webm;codecs=opus", "audio/webm"];
+  const webmCandidateList = ['audio/webm;codecs=opus', 'audio/webm'];
   for (const t of webmCandidateList) {
     if (supported(t)) return t as RecordingMime;
   }
 
-  return "" as RecordingMime;
+  return '' as RecordingMime;
 }
 
 function toError(
-  code: RecorderError["code"],
+  code: RecorderError['code'],
   cause?: unknown,
-  message?: string
+  message?: string,
 ): RecorderError {
   return { code, cause, message };
 }
@@ -49,7 +49,7 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
   let stream: MediaStream | null = null;
   let chunks: Blob[] = [];
   let startedAt = 0;
-  let _state: RecorderState = "idle";
+  let _state: RecorderState = 'idle';
   // let visibilityHandlerAttached = false;
 
   const mime: RecordingMime = pickMime(opts.mime);
@@ -78,11 +78,11 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
   }
 
   async function start(): Promise<void> {
-    if (_state !== "idle") {
+    if (_state !== 'idle') {
       const err = toError(
-        "ALREADY_RUNNING",
+        'ALREADY_RUNNING',
         undefined,
-        "Recorder already started"
+        'Recorder already started',
       );
       fireError(err);
       throw err;
@@ -103,26 +103,26 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
     } catch (e: unknown) {
       stream = null;
       if (e instanceof DOMException) {
-        if (e.name === "NotAllowedError" || e.name === "SecurityError") {
+        if (e.name === 'NotAllowedError' || e.name === 'SecurityError') {
           const err = toError(
-            "PERMISSION_DENIED",
+            'PERMISSION_DENIED',
             e,
-            "Microphone permission denied"
+            'Microphone permission denied',
           );
           fireError(err);
           throw err;
         }
-        if (e.name === "NotFoundError" || e.name === "OverconstrainedError") {
+        if (e.name === 'NotFoundError' || e.name === 'OverconstrainedError') {
           const err = toError(
-            "DEVICE_NOT_FOUND",
+            'DEVICE_NOT_FOUND',
             e,
-            "No suitable audio input device found"
+            'No suitable audio input device found',
           );
           fireError(err);
           throw err;
         }
       }
-      const err = toError("UNKNOWN", e, "Failed to getUserMedia");
+      const err = toError('UNKNOWN', e, 'Failed to getUserMedia');
       fireError(err);
       throw err;
     }
@@ -135,9 +135,9 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
     } catch (e: unknown) {
       cleanupStream();
       const err = toError(
-        "TYPE_UNSUPPORTED",
+        'TYPE_UNSUPPORTED',
         e,
-        `MediaRecorder type not supported: ${mime || "(default)"}`
+        `MediaRecorder type not supported: ${mime || '(default)'}`,
       );
       fireError(err);
       throw err;
@@ -154,7 +154,7 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
     };
 
     mediaRecorder.onerror = (evt: ErrorEvent) => {
-      const err = toError("UNKNOWN", evt.error, "MediaRecorder error");
+      const err = toError('UNKNOWN', evt.error, 'MediaRecorder error');
       fireError(err);
     };
 
@@ -166,12 +166,12 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
         : undefined;
 
     mediaRecorder.start(slice);
-    _state = "recording";
+    _state = 'recording';
   }
 
   async function stop(): Promise<RecordingBlob> {
     if (!mediaRecorder) {
-      const err = toError("NOT_STARTED", undefined, "Recorder not started");
+      const err = toError('NOT_STARTED', undefined, 'Recorder not started');
       fireError(err);
       throw err;
     }
@@ -184,7 +184,7 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
         resolve();
       };
 
-      if (mr.state === "inactive") {
+      if (mr.state === 'inactive') {
         finish();
         return;
       }
@@ -206,12 +206,12 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
     try {
       fixedBlob = await fixWebmDuration(rawBlob, durationMs);
     } catch (e) {
-      console.warn("[recorder] fixWebmDuration failed, using raw blob", e);
+      console.warn('[recorder] fixWebmDuration failed, using raw blob', e);
     }
 
     cleanupStream();
     mediaRecorder = null;
-    _state = "idle";
+    _state = 'idle';
 
     return {
       blob: fixedBlob,
@@ -221,22 +221,22 @@ export function createRecorder(opts: RecorderOptions = {}): Recorder {
   }
 
   function pause() {
-    if (_state !== "recording") return;
+    if (_state !== 'recording') return;
     try {
       mediaRecorder?.pause();
-      _state = "paused";
+      _state = 'paused';
     } catch (e: unknown) {
-      fireError(toError("UNKNOWN", e, "Pause failed"));
+      fireError(toError('UNKNOWN', e, 'Pause failed'));
     }
   }
 
   function resume() {
-    if (_state !== "paused") return;
+    if (_state !== 'paused') return;
     try {
       mediaRecorder?.resume();
-      _state = "recording";
+      _state = 'recording';
     } catch (e: unknown) {
-      fireError(toError("UNKNOWN", e, "Resume failed"));
+      fireError(toError('UNKNOWN', e, 'Resume failed'));
     }
   }
 

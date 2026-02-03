@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo } from 'react';
 
 type CircleProgressProps = {
   progress: number; // 0 ~ 1
@@ -12,8 +12,8 @@ export function CircleProgress({
   progress,
   size = 120,
   stroke = 8,
-  trackColor = "#000000",
-  progressColor = "#000000",
+  trackColor = '#000000',
+  progressColor = '#000000',
 }: CircleProgressProps) {
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;

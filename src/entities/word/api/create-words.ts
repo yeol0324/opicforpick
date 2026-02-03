@@ -1,9 +1,9 @@
-import { supabase, unwrap } from "@shared/api";
+import { supabase, unwrap } from '@shared/api';
 
-import type { WordType, WordCandidateType } from "../model/word.type";
+import type { WordType, WordCandidateType } from '../model/word.type';
 
 export async function createWords(
-  candidates: WordCandidateType[]
+  candidates: WordCandidateType[],
 ): Promise<WordType[]> {
   if (candidates.length === 0) {
     return [];
@@ -20,17 +20,17 @@ export async function createWords(
   const uniqueCandidates = Array.from(uniqueMap.values());
 
   const { data, error } = await supabase
-    .from("words")
+    .from('words')
     .upsert(
       uniqueCandidates.map((item) => ({
         expression: item.expression,
         meaning: item.meaning,
       })),
       {
-        onConflict: "expression",
-      }
+        onConflict: 'expression',
+      },
     )
-    .select("*");
+    .select('*');
 
   const items = unwrap<WordType[]>({ data, error });
 

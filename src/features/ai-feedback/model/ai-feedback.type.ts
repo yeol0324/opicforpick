@@ -1,7 +1,7 @@
-import type { FeedbackContentType } from "@entities/feedback";
-import type { SentenceRow } from "@entities/sentence";
+import type { FeedbackContentType } from '@entities/feedback';
+import type { SentenceRow } from '@entities/sentence';
 
-import type { ProficiencyLevel } from "@shared/lib";
+import type { ProficiencyLevel } from '@shared/lib';
 
 export interface UseFeedbackParam {
   question: SentenceRow;

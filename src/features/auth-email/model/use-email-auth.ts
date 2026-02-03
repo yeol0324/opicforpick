@@ -1,6 +1,5 @@
-import { useState } from "react";
-
-import { useAuthContext } from "@entities/auth/model/auth-context";
+import { useState } from 'react';
+import { useAuthContext } from '@entities/auth';
 
 export function useEmailAuth() {
   const { signInWithEmail, signUpWithEmail } = useAuthContext();
@@ -13,7 +12,7 @@ export function useEmailAuth() {
     try {
       await signInWithEmail(email, password);
     } catch (error: unknown) {
-      let message = "로그인 실패";
+      let message = '로그인 실패';
 
       if (error instanceof Error && error.message) {
         message = error.message;
@@ -31,7 +30,7 @@ export function useEmailAuth() {
     try {
       await signUpWithEmail(email, password);
     } catch (error: unknown) {
-      let message = "회원가입 실패";
+      let message = '회원가입 실패';
 
       if (error instanceof Error && error.message) {
         message = error.message;

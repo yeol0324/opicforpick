@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { FeedbackPanel } from "@features/ai-feedback";
-import { useRecordFlow, type AudioInfo } from "@features/record-start-stop";
+import { FeedbackPanel } from '@features/ai-feedback';
+import { useRecordFlow, type AudioInfo } from '@features/record-start-stop';
 import {
   saveRecommendWords,
   RecommendVocaPicker,
-} from "@features/word-from-feedback";
+} from '@features/word-from-feedback';
 
-import { useAuthContext } from "@entities/auth";
-import type { FeedbackContentType } from "@entities/feedback";
-import type { SentenceRow } from "@entities/sentence";
+import { useAuthContext } from '@entities/auth';
+import type { FeedbackContentType } from '@entities/feedback';
+import type { SentenceRow } from '@entities/sentence';
 
-import { BlobPlayer, formatMmSs } from "@shared/lib";
-import { BaseButton, Card, RecorderButton, Spinner } from "@shared/ui";
+import { BlobPlayer, formatMmSs } from '@shared/lib';
+import { BaseButton, Card, RecorderButton, Spinner } from '@shared/ui';
 
 type RecordingFlowSectionProps = {
   sentence: SentenceRow | null | undefined;
@@ -37,9 +37,9 @@ export const RecordingFlowSection = ({
     onComplete,
     onReset,
   });
-  const isRecording = recordFlow.state === "recording";
-  const isSaving = recordFlow.state === "saving";
-  const recordIcon = isRecording ? "⏺" : "▶";
+  const isRecording = recordFlow.state === 'recording';
+  const isSaving = recordFlow.state === 'saving';
+  const recordIcon = isRecording ? '⏺' : '▶';
   const displayTime = formatMmSs(isRecording ? recordFlow.elapsedMs : 0);
   const handleRecordClick = isRecording ? recordFlow.stop : recordFlow.start;
 
@@ -48,7 +48,7 @@ export const RecordingFlowSection = ({
   const [isWordSaving, setIsWordSaving] = useState(false);
 
   const handleSaveWords = async (
-    selected: FeedbackContentType["recommendVoca"]
+    selected: FeedbackContentType['recommendVoca'],
   ) => {
     if (!user) return;
 
@@ -58,7 +58,7 @@ export const RecordingFlowSection = ({
         userId: user.id,
         vocabulary: selected,
       });
-      alert("저장완료");
+      alert('저장완료');
     } finally {
       setIsWordSaving(false);
     }
@@ -66,7 +66,7 @@ export const RecordingFlowSection = ({
 
   if (recordFlow.audioInfo && sentence) {
     return (
-      <section className="flex flex-col items-center gap-4 w-full">
+      <section className="flex w-full flex-col items-center gap-4">
         <BlobPlayer blob={recordFlow.audioInfo.blob} />
 
         <div className="flex gap-2">
@@ -75,7 +75,7 @@ export const RecordingFlowSection = ({
               onClick={onFeedbackClick}
               disabled={isSaving || isFeedbackLoading}
             >
-              {isFeedbackLoading ? "피드백 요청 중..." : "AI 피드백 받기"}
+              {isFeedbackLoading ? '피드백 요청 중...' : 'AI 피드백 받기'}
             </BaseButton>
           )}
           <BaseButton
@@ -123,7 +123,7 @@ export const RecordingFlowSection = ({
         <div className="text-4xl">{recordIcon}</div>
       </RecorderButton>
 
-      <div className="text-3xl tabular-nums tracking-wider text-black">
+      <div className="text-3xl tracking-wider text-black tabular-nums">
         {displayTime}
       </div>
     </div>

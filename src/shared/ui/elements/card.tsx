@@ -1,8 +1,8 @@
-import { useState, type ReactNode, forwardRef } from "react";
+import { useState, type ReactNode, forwardRef } from 'react';
 
-import { twMerge } from "tailwind-merge";
+import { twMerge } from 'tailwind-merge';
 
-type CardMode = "default" | "scroll" | "expand";
+type CardMode = 'default' | 'scroll' | 'expand';
 
 export interface CardProps {
   children: ReactNode;
@@ -25,43 +25,47 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(
   {
     children,
     className,
-    mode = "default",
+    mode = 'default',
     minHeight,
     maxHeight,
-    expandLabel = "더보기",
-    collapseLabel = "접기",
+    expandLabel = '더보기',
+    collapseLabel = '접기',
   },
-  ref
+  ref,
 ) {
   const [expanded, setExpanded] = useState(false);
 
-  const baseClass =
-    "rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.08)]";
-
+  // Only apply inline styles for expand mode to control max-height dynamically
   const modeStyle =
-    mode === "scroll"
+    mode === 'expand'
       ? {
           minHeight,
-          maxHeight,
-          overflowY: "auto" as const,
+          maxHeight: expanded ? 'none' : (maxHeight ?? minHeight),
+          overflow: 'hidden' as const,
         }
-      : mode === "expand"
-      ? {
-          minHeight,
-          maxHeight: expanded ? "none" : maxHeight ?? minHeight,
-          overflow: "hidden" as const,
-        }
-      : undefined;
+      : mode === 'scroll'
+        ? {
+            minHeight,
+            maxHeight,
+          }
+        : undefined;
+
+  // For scroll mode, apply overflow via className instead of inline style
+  const scrollClass = mode === 'scroll' ? 'overflow-y-auto' : '';
 
   return (
     <section
       ref={ref}
-      className={twMerge(baseClass, className)}
+      className={twMerge(
+        'rounded-2xl bg-white p-6 shadow-sm',
+        scrollClass,
+        className,
+      )}
       style={modeStyle}
     >
       {children}
 
-      {mode === "expand" && (
+      {mode === 'expand' && (
         <div className="mt-4 text-center">
           <button
             type="button"

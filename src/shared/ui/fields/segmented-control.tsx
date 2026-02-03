@@ -23,12 +23,11 @@ export function SegmentedControl<T extends string>({
             key={option.value}
             type="button"
             onClick={() => onChange(option.value)}
-            className={`px-4 py-1.5 rounded-full font-medium transition
-                ${
-                  active
-                    ? "bg-white text-slate-900 shadow-sm"
-                    : "text-slate-500 hover:text-slate-900"
-                }`}
+            className={`rounded-full px-4 py-1.5 font-medium transition ${
+              active
+                ? 'bg-white text-slate-900 shadow-sm'
+                : 'text-slate-500 hover:text-slate-900'
+            }`}
           >
             {option.label}
           </button>

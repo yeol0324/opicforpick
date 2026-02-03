@@ -1,8 +1,8 @@
-import type { WordCandidateType } from "@entities/word";
+import type { WordCandidateType } from '@entities/word';
 
-import type { Database } from "@shared/api/generated/database";
+import type { Database } from '@shared/api/generated/database';
 
-export type FeedbackType = Database["public"]["Tables"]["ai_feedbacks"]["Row"];
+export type FeedbackType = Database['public']['Tables']['ai_feedbacks']['Row'];
 
 export type FeedbackContentType = {
   pronunciationComment: string;

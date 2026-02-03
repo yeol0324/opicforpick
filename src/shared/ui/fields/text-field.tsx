@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId } from 'react';
 
 interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -8,25 +8,23 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export function TextField({
   label,
   error,
-  className = "",
+  className = '',
   ...props
 }: TextFieldProps) {
   const id = useId();
 
   return (
-    <div className="space-y-1.5">
-      <label htmlFor={id} className="block text-xs font-medium text-slate-700">
-        {label}
-      </label>
+    <div className="floating-input-group">
       <input
         id={id}
         {...props}
-        className={`w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900
-          outline-none ring-0 transition
-          placeholder:text-slate-400
-          focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-100 ${className}`}
+        className={`floating-input ${className}`}
+        placeholder=" "
       />
-      {error && <span className="text-xs text-red-600">{error}</span>}
+      <label htmlFor={id} className="floating-label">
+        {label}
+      </label>
+      {error && <span className="form-error">{error}</span>}
     </div>
   );
 }

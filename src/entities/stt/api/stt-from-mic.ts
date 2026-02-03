@@ -1,13 +1,13 @@
-import * as speechsdk from "microsoft-cognitiveservices-speech-sdk";
+import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
 
-import { requestAzureToken } from "./request-azure-token";
+import { requestAzureToken } from './request-azure-token';
 
-export async function sttFromMic(lang = "ko-KR") {
+export async function sttFromMic(lang = 'ko-KR') {
   const { authToken, region } = await requestAzureToken();
 
   const speechConfig = speechsdk.SpeechConfig.fromAuthorizationToken(
     authToken,
-    region
+    region,
   );
   speechConfig.speechRecognitionLanguage = lang;
 
@@ -27,8 +27,7 @@ export async function sttFromMic(lang = "ko-KR") {
       (err) => {
         recognizer.close();
         reject(err);
-      }
+      },
     );
   });
 }
-

@@ -1,25 +1,5 @@
-@import "tailwindcss";
-
 :root {
+  --header-h: 56px;
+  --nav-h: 56px;
   --gap: 16px;
-}
-* {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-}
-@property --brand {
-  syntax: "<color>";
-  initial-value: #32b6bf;
-  inherits: false;
-}
-
-/** bottom-nav */
-.bottom-nav .link {
-  @apply block px-2 py-3 text-base text-gray-400 text-center;
-}
-.bottom-nav .link.active {
-  @apply text-black font-bold font-medium;
 }

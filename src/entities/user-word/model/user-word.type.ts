@@ -1,4 +1,4 @@
-import type { WordType } from "@entities/word";
+import type { WordType } from '@entities/word';
 
 export type UserWordType = {
   id: number;
@@ -7,4 +7,3 @@ export type UserWordType = {
   created_at: string;
   word?: WordType;
 };
-

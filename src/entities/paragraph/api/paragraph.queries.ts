@@ -1,26 +1,26 @@
-import { keepPreviousData, queryOptions } from "@tanstack/react-query";
+import { keepPreviousData, queryOptions } from '@tanstack/react-query';
 
-import { getParagraphWithSentences } from "@entities/paragraph";
+import { getParagraphWithSentences } from '@entities/paragraph';
 
-import type { Paged } from "@shared/api";
-import { buildListKey } from "@shared/lib";
+import type { Paged } from '@shared/api';
+import { buildListKey } from '@shared/lib';
 
-import { getParagraphs } from "./get-paragraphs";
+import { getParagraphs } from './get-paragraphs';
 import type {
   ParagraphFilterType,
   ParagraphRow,
-} from "../model/paragraph.type";
+} from '../model/paragraph.type';
 
 const paragraphKeys = {
-  all: () => ["paragraphs"] as const,
+  all: () => ['paragraphs'] as const,
   list: (filter?: ParagraphFilterType) =>
     buildListKey(paragraphKeys.all(), filter),
   random: (type?: ParagraphRow) =>
-    [...paragraphKeys.all(), "random", type ?? "any"] as const,
+    [...paragraphKeys.all(), 'random', type ?? 'any'] as const,
   detail: (paragraphId: string) =>
     [...paragraphKeys.all(), paragraphId] as const,
   sentences: (paragraphId: string) =>
-    [...paragraphKeys.detail(paragraphId), "sentences"] as const,
+    [...paragraphKeys.detail(paragraphId), 'sentences'] as const,
 };
 
 export const paragraphQueries = {
@@ -31,13 +31,13 @@ export const paragraphQueries = {
       staleTime: 60_000,
       placeholderData: keepPreviousData,
     }),
-  infiniteList: (filter?: Omit<ParagraphFilterType, "page">) => ({
+  infiniteList: (filter?: Omit<ParagraphFilterType, 'page'>) => ({
     queryKey: paragraphKeys.list(filter),
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getParagraphs({ ...filter, page: pageParam }),
     getNextPageParam: (
       lastPage: Paged<ParagraphRow>,
-      allPages: Paged<ParagraphRow>[]
+      allPages: Paged<ParagraphRow>[],
     ) => {
       const pageSize = filter?.pageSize ?? 20;
       const currentTotal = allPages.length * pageSize;

@@ -1,6 +1,6 @@
-import { APP } from "@shared/lib";
+import { APP } from '@shared/lib';
 
-import type { Paged } from "./supabase.type";
+import type { Paged } from './supabase.type';
 
 export function calculatePagination(page?: number, pageSize?: number) {
   const normalizedPage = Math.max(1, page ?? 1);
