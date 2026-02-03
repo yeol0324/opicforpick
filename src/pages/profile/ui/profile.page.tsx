@@ -9,7 +9,7 @@ export const ProfilePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 overflow-hidden p-6">
+    <div className="flex h-full flex-col gap-6 p-6">
       <Card className="w-full">
         <h2>{auth.auth.user?.email}</h2>
         <BorderButton variant="primary" onClick={handleLogout}>

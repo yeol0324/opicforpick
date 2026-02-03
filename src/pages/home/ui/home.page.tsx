@@ -66,7 +66,7 @@ export function Home() {
   const isBusy = isFeedbackLoading;
 
   return (
-    <div className="flex flex-col items-center gap-6 p-6">
+    <div className="flex h-full flex-col gap-6 overflow-y-auto p-6">
       <DailyQuestionSection
         sentence={sentence}
         loading={isQuestionLoading}

@@ -4,7 +4,6 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 import type { ParagraphRow } from '@entities/paragraph';
 import { paragraphQueries } from '@entities/paragraph/api';
-
 import { useDebouncedValue, APP, useInfiniteScroll } from '@shared/lib';
 import {
   Spinner,
@@ -71,9 +70,9 @@ export function Practice() {
   });
 
   return (
-    <div className="flex flex-col items-center gap-6 overflow-hidden p-6">
-      {/* <section className="space-y-4 w-full"> */}
+    <div className="flex h-full flex-col gap-6 p-6">
       <h2 className="text-lg font-semibold text-slate-900">단어장 📕</h2>
+
       {paragraphSentencesQuery.isSuccess && paragraphSentencesQuery.data && (
         <PracticeOverlay
           practiceInfo={paragraphSentencesQuery.data}
@@ -81,57 +80,36 @@ export function Practice() {
         />
       )}
 
-      <div className="flex flex-wrap gap-2">
-        <SearchInput
-          value={searchTerm}
-          onChange={handleSearchChange}
-          placeholder="검색어"
-        />
-      </div>
-      <div className="flex w-full flex-1 flex-col overflow-y-auto">
-        {isLoading ? (
-          <Spinner />
-        ) : hasError ? (
-          <ErrorMessage />
-        ) : (
-          <>
-            <div className="mb-2 text-sm text-slate-600">총 {total}개</div>
-            <Card>
-              <ul className="list-disc list-none space-y-1">
-                {paragraphs.map((paragraph) => (
-                  <ParagraphListItem
-                    key={paragraph.id}
-                    paragraph={paragraph}
-                    isSelected={paragraph.id === selectedParagraphId}
-                    onClick={() => handleParagraphClick(paragraph.id)}
-                  />
-                ))}
-              </ul>
-              {isEmpty && <EmptyState message="단락이 없습니다" />}
-            </Card>
-            {paragraphsQuery.isFetchingNextPage && (
-              <div className="py-4">
-                <Spinner />
-              </div>
-            )}
-          </>
-        )}
-        <div ref={setTarget} className="h-20">
-          {/* {isFetchingNextPage && (
-            <div className="space-y-4 mt-4">
-              {[...Array(2)].map((_, i) => (
-                <SalonCardSkeleton key={i} />
+      <SearchInput
+        value={searchTerm}
+        onChange={handleSearchChange}
+        placeholder="검색어"
+      />
+
+      {isLoading ? (
+        <Spinner />
+      ) : hasError ? (
+        <ErrorMessage />
+      ) : (
+        <>
+          <div className="text-sm text-slate-600">총 {total}개</div>
+          <Card className="min-h-0 flex-1 overflow-y-auto" mode="scroll">
+            <ul className="list-none space-y-1">
+              {paragraphs.map((paragraph) => (
+                <ParagraphListItem
+                  key={paragraph.id}
+                  paragraph={paragraph}
+                  isSelected={paragraph.id === selectedParagraphId}
+                  onClick={() => handleParagraphClick(paragraph.id)}
+                />
               ))}
-            </div>
-          )}
-          {!hasNextPage && salons.length > 0 && (
-            <p className="text-sm text-gray-500 text-center">
-              모든 미용실을 확인했습니다.
-            </p>
-          )} */}
-        </div>
-      </div>
-      {/* </section> */}
+            </ul>
+            {isEmpty && <EmptyState message="단락이 없습니다" />}
+            {paragraphsQuery.isFetchingNextPage && <Spinner />}
+            <div ref={setTarget} className="h-10" />
+          </Card>
+        </>
+      )}
     </div>
   );
 }

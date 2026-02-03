@@ -21,39 +21,17 @@ export function useInfiniteScroll({
   const [target, setTarget] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (!target || enabled) return;
+    if (!target || !enabled) return;
     const observer = new IntersectionObserver(
       (entries) => {
         console.log(entries);
         if (entries[0].intersectionRatio <= 0) return;
-        console.log('new Item Load');
         onIntersect();
       },
       { threshold, rootMargin },
     );
     observer.observe(target);
   }, [target, enabled, onIntersect, threshold, rootMargin]);
-  // const containerRef = useRef<HTMLDivElement | null>(null);
-
-  // const handleScroll = useCallback(
-  //   (event: Event) => {
-  //     if (!enabled) return;
-  //     console.log('handleScroll');
-
-  //     const target = event.target as HTMLDivElement | null;
-  //     const container = target ?? containerRef.current;
-  //     if (!container) return;
-
-  //     const isAtBottom =
-  //       container.scrollTop + container.clientHeight >=
-  //       container.scrollHeight - threshold;
-
-  //     if (isAtBottom) {
-  //       onLoadMore();
-  //     }
-  //   },
-  //   [enabled, threshold, onLoadMore],
-  // );
 
   return { setTarget };
 }

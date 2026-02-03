@@ -15,26 +15,24 @@ export function BottomNav() {
   const isActive = (to: string) => pathname === to;
 
   return (
-    <nav className="bottom-nav fixed inset-x-0 bottom-0 z-40 bg-white backdrop-blur">
-      <div className="mx-auto">
-        <ul className="flex justify-between px-4 py-1">
-          {NAV_ITEM_LIST.map((item) => {
-            const active = isActive(item.to);
-            return (
-              <li key={item.to} className="flex-1">
-                <Link
-                  to={item.to}
-                  className={`flex flex-col items-center justify-center gap-0.5 py-1.5 text-[11px] ${
-                    active ? 'active' : ''
-                  } link`}
-                >
-                  <span>{item.label}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+    <nav className="bottom-navigation fixed inset-x-0 bottom-0 z-40 h-nav w-full bg-white backdrop-blur">
+      <ul className="flex-center justify-between">
+        {NAV_ITEM_LIST.map((item) => {
+          const active = isActive(item.to);
+          return (
+            <li key={item.to} className="flex-1">
+              <Link
+                to={item.to}
+                className={`block px-2 py-3 text-center text-base transition-all duration-200 ${
+                  active ? 'font-bold text-black' : 'text-gray-400'
+                }`}
+              >
+                <span>{item.label}</span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }

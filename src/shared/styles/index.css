@@ -30,9 +30,6 @@
    Reusable component styles
    ============================================ */
 
-/* UI components (navigation, buttons, cards, etc.) */
-@import './components.css';
-
 /* Button elements */
 @import './button.css';
 

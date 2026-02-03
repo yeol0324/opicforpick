@@ -14,4 +14,8 @@
   --color-warning: #f59e0b;
   --color-error: #ef4444;
   --color-info: #3b82f6;
+
+  /* Layout Spacing */
+  --spacing-header: 56px;
+  --spacing-nav: 48px;
 }
